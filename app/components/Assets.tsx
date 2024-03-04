@@ -35,9 +35,9 @@ export const Assets: FunctionComponent = () => {
   });
   const { withdraw, unsettledPnL } = useWithdraw();
 
-  console.log('account?.chainId', account);
-  console.log('connectedChain', connectedChain);
-  console.log('isTestnet', isTestnet);
+  // console.log('account?.chainId', account);
+  // console.log('connectedChain', connectedChain);
+  // console.log('isTestnet', isTestnet);
 
   return (
     <div>

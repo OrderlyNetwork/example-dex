@@ -3,6 +3,7 @@ import { Button, DropdownMenu } from '@radix-ui/themes';
 import { Link } from '@remix-run/react';
 import { FunctionComponent, useState } from 'react';
 
+import { OrderlyConnect } from '~/components/OrderlyConnect';
 import { WalletConnection } from '~/components/WalletConnection';
 
 export const NavBar: FunctionComponent = () => {
@@ -43,6 +44,7 @@ export const NavBar: FunctionComponent = () => {
           <DropdownMenu.Item>TODO</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
+      <OrderlyConnect />
     </nav>
   );
 };

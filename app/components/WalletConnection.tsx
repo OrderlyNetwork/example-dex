@@ -1,10 +1,22 @@
+import { useAccount } from '@orderly.network/hooks';
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 
 export const WalletConnection: FunctionComponent = () => {
+  const { account } = useAccount();
   const [{ wallet }, connectWallet, disconnectWallet] = useConnectWallet();
   const [{ connectedChain }, setChain] = useSetChain();
+
+  useEffect(() => {
+    if (!wallet) return;
+    account.setAddress(wallet.accounts[0].address, {
+      provider: wallet.provider,
+      chain: {
+        id: wallet.chains[0].id
+      }
+    });
+  }, [wallet, account]);
 
   let chainIcon;
   switch (connectedChain?.id) {
