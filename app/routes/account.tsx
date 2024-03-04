@@ -1,7 +1,7 @@
-export default function Index() {
+export default function Account() {
   return (
     <div className="max-w-lg w-md">
-      <h1>Orderly DEX</h1>
+      <h1>Account</h1>
       <div>WIP</div>
     </div>
   );

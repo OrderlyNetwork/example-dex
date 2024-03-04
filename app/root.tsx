@@ -8,8 +8,8 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
-import { WalletConnection } from './components/WalletConnection';
-
+import { NavBar } from '~/components/NavBar';
+import globalCss from '~/global.css';
 import uno from '~/styles/uno.css';
 
 const { Theme } = RadixTheme;
@@ -70,6 +70,7 @@ export const meta: MetaFunction = () => [
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  { rel: 'stylesheet', href: globalCss },
   {
     rel: 'stylesheet',
     href: radixTheme
@@ -85,10 +86,16 @@ export default function App() {
         <Links />
       </head>
       <body className="m5">
-        <Theme>
+        <Theme
+          appearance="dark"
+          accentColor="iris"
+          radius="small"
+          scaling="105%"
+          className="flex flex-col flex-items-center"
+        >
           <Web3OnboardProvider web3Onboard={web3Onboard}>
             <OrderlyConfigProvider networkId="testnet" brokerId="orderly">
-              <WalletConnection />
+              <NavBar />
               <Outlet />
             </OrderlyConfigProvider>
           </Web3OnboardProvider>
