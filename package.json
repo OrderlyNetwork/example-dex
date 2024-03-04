@@ -4,8 +4,13 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev --manual",
+    "generate:css": "unocss './app/**/*.{js,ts,jsx,tsx}' -o ./app/styles/uno.css",
+    "build": "run-s \"build:*\"",
+    "build:css": "npm run generate:css",
+    "build:remix": "remix build",
+    "dev": "run-p \"dev:*\"",
+    "dev:css": "npm run generate:css -- --watch",
+    "dev:remix": "remix dev --manual",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --write . && yarn eslint --fix .",
     "start": "remix-serve ./build/index.js",
@@ -34,6 +39,7 @@
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
+    "@unocss/cli": "^0.58.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-typescript": "^3.0.0",
@@ -43,8 +49,10 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "unocss": "^0.58.5"
   },
   "engines": {
     "node": ">=18.0.0"

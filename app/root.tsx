@@ -2,13 +2,15 @@ import { OrderlyConfigProvider } from '@orderly.network/hooks';
 import * as RadixTheme from '@radix-ui/themes';
 import radixTheme from '@radix-ui/themes/styles.css';
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction } from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
 import { WalletConnection } from './components/WalletConnection';
+
+import uno from '~/styles/uno.css';
 
 const { Theme } = RadixTheme;
 
@@ -58,24 +60,31 @@ const web3Onboard = init({
   }
 });
 
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'Orderly DEX',
+    viewport: 'width=device-width,initial-scale=1'
+  }
+];
+
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   {
     rel: 'stylesheet',
     href: radixTheme
-  }
+  },
+  { rel: 'stylesheet', href: uno }
 ];
 
 export default function App() {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="m5">
         <Theme>
           <Web3OnboardProvider web3Onboard={web3Onboard}>
             <OrderlyConfigProvider networkId="testnet" brokerId="orderly">
