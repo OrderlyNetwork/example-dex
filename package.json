@@ -29,6 +29,7 @@
     "@web3-onboard/react": "^2.8.13",
     "@web3-onboard/walletconnect": "^2.5.3",
     "axios": "^1.6.7",
+    "ethers": "^6.11.1",
     "isbot": "^5.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

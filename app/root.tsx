@@ -1,14 +1,13 @@
-import { OrderlyConfigProvider } from '@orderly.network/hooks';
 import * as RadixTheme from '@radix-ui/themes';
 import radixTheme from '@radix-ui/themes/styles.css';
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import type { LinksFunction } from '@remix-run/node';
+import { Links, LiveReload, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
-import { NavBar } from '~/components/NavBar';
+import { App } from '~/App';
 import globalCss from '~/global.css';
 import uno from '~/styles/uno.css';
 
@@ -60,14 +59,6 @@ const web3Onboard = init({
   }
 });
 
-export const meta: MetaFunction = () => [
-  {
-    charset: 'utf-8',
-    title: 'Orderly DEX',
-    viewport: 'width=device-width,initial-scale=1'
-  }
-];
-
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   { rel: 'stylesheet', href: globalCss },
@@ -78,10 +69,13 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: uno }
 ];
 
-export default function App() {
+export default function Root() {
   return (
     <html lang="en">
       <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Orderly DEX</title>
         <Meta />
         <Links />
       </head>
@@ -94,10 +88,7 @@ export default function App() {
           className="flex flex-col flex-items-center"
         >
           <Web3OnboardProvider web3Onboard={web3Onboard}>
-            <OrderlyConfigProvider networkId="testnet" brokerId="orderly">
-              <NavBar />
-              <Outlet />
-            </OrderlyConfigProvider>
+            <App />
           </Web3OnboardProvider>
         </Theme>
         <ScrollRestoration />

@@ -1,8 +1,12 @@
+import { Assets } from '~/components/Assets';
+
 export default function Account() {
   return (
-    <div className="max-w-lg w-md">
+    <div className="max-w-full w-md">
       <h1>Account</h1>
-      <div>WIP</div>
+      <div>
+        <Assets />
+      </div>
     </div>
   );
 }

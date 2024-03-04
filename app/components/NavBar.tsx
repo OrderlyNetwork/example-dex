@@ -24,7 +24,7 @@ export const NavBar: FunctionComponent = () => {
               setOpen(!open);
             }}
           >
-            Navigation
+            <span className="hidden sm:inline">Navigation</span>
             <HamburgerMenuIcon />
           </Button>
         </DropdownMenu.Trigger>
