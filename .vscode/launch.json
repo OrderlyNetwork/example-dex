@@ -9,7 +9,7 @@
       "request": "launch",
       "runtimeExecutable": "/usr/bin/brave",
       "name": "Brave",
-      "url": "http://localhost:5173",
+      "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     }
   ]
