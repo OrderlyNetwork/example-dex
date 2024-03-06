@@ -1,4 +1,4 @@
-import { Assets } from '~/components/Assets';
+import { Assets } from '~/components';
 
 export default function Account() {
   return (

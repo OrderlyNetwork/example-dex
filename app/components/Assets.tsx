@@ -8,14 +8,16 @@ import {
 import { API } from '@orderly.network/types';
 import { Table } from '@radix-ui/themes';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
+import { FixedNumber } from 'ethers';
 import { FunctionComponent, useMemo } from 'react';
 
-import { useIsTestnet } from '~/hooks/useIsTestnet';
-import { supportedChains } from '~/utils/network';
+import { OrderlyDeposit } from '~/components';
+import { useIsTestnet } from '~/hooks';
+import { formatUsd, supportedChains } from '~/utils';
 
 export const Assets: FunctionComponent = () => {
   const { account, state } = useAccount();
-  const isTestnet = useIsTestnet();
+  const [isTestnet] = useIsTestnet();
   const collateral = useCollateral();
   const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
     filter: (item: API.Chain) => supportedChains.includes(item.network_infos?.chain_id)
@@ -40,23 +42,29 @@ export const Assets: FunctionComponent = () => {
   // console.log('isTestnet', isTestnet);
 
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       <Table.Root>
         <Table.Body>
           <Table.Row>
             <Table.RowHeaderCell>Wallet Balance:</Table.RowHeaderCell>
-            <Table.Cell>{deposit.balance}</Table.Cell>
+            <Table.Cell>{formatUsd(Number(deposit.balance))}</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.RowHeaderCell>Deposit Balance:</Table.RowHeaderCell>
-            <Table.Cell>{collateral.availableBalance}</Table.Cell>
+            <Table.RowHeaderCell>Orderly Balance:</Table.RowHeaderCell>
+            <Table.Cell>{formatUsd(collateral.availableBalance)}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Unsettled PnL:</Table.RowHeaderCell>
-            <Table.Cell>{unsettledPnL}</Table.Cell>
+            <Table.Cell>{formatUsd(unsettledPnL)}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table.Root>
+      <OrderlyDeposit
+        walletBalance={FixedNumber.fromString(deposit.balance, { decimals: 6 })}
+        orderlyBalance={FixedNumber.fromString(String(collateral.availableBalance), {
+          decimals: 6
+        })}
+      />
     </div>
   );
 };

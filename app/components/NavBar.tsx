@@ -3,8 +3,7 @@ import { Button, DropdownMenu } from '@radix-ui/themes';
 import { Link } from '@remix-run/react';
 import { FunctionComponent, useState } from 'react';
 
-import { OrderlyConnect } from '~/components/OrderlyConnect';
-import { WalletConnection } from '~/components/WalletConnection';
+import { OrderlyConnect, WalletConnection } from '~/components';
 
 export const NavBar: FunctionComponent = () => {
   const [open, setOpen] = useState(false);

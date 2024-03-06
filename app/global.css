@@ -10,6 +10,26 @@ a {
   text-decoration: none;
 }
 
+input {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  padding: 0 0.6rem;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+input:hover {
+  border: 2px solid white;
+}
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg);

@@ -5,16 +5,13 @@ import { Button, Dialog, Separator } from '@radix-ui/themes';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Spinner } from './Spinner';
-
-import { WalletConnection } from '~/components/WalletConnection';
-import { useIsTestnet } from '~/hooks/useIsTestnet';
+import { WalletConnection, PendingButton } from '~/components';
+import { useIsTestnet } from '~/hooks';
 
 export const OrderlyConnect: FunctionComponent = () => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [{ wallet }] = useConnectWallet();
-  const isTestnet = useIsTestnet();
+  const [isTestnet] = useIsTestnet();
   const [timer, setTimer] = useState<number>();
 
   const { account, createOrderlyKey, state } = useAccount();
@@ -47,7 +44,7 @@ export const OrderlyConnect: FunctionComponent = () => {
         }}
       >
         <Dialog.Title className="flex justify-between flex-items-center">
-          <span>Connect with Orderly Network</span>
+          <span className="mr-2">Connect with Orderly Network</span>
           <Button
             variant="ghost"
             color="crimson"
@@ -58,7 +55,6 @@ export const OrderlyConnect: FunctionComponent = () => {
             <Cross1Icon />
           </Button>
         </Dialog.Title>
-        <Dialog.Description size="2" mb="4"></Dialog.Description>
 
         <div className="flex flex-col flex-items-center gap-6 pt-6">
           <div className="flex flex-col flex-items-center gap-2">
@@ -68,11 +64,9 @@ export const OrderlyConnect: FunctionComponent = () => {
           <Separator size="4" />
           <div className="flex flex-col flex-items-center gap-2">
             <span>Register your account first.</span>
-            <Button
-              className="relative"
-              disabled={isRegistered || loading}
+            <PendingButton
+              disabled={isRegistered}
               onClick={async () => {
-                setLoading(true);
                 const { update } = customNotification({
                   eventCode: 'register',
                   type: 'pending',
@@ -84,7 +78,7 @@ export const OrderlyConnect: FunctionComponent = () => {
                     eventCode: 'registerSuccess',
                     type: 'success',
                     message: 'Registration complete!',
-                    autoDismiss: 5000
+                    autoDismiss: 5_000
                   });
                 } catch (err) {
                   console.error(err);
@@ -92,16 +86,14 @@ export const OrderlyConnect: FunctionComponent = () => {
                     eventCode: 'registerError',
                     type: 'error',
                     message: 'Registration failed!',
-                    autoDismiss: 5000
+                    autoDismiss: 5_000
                   });
-                } finally {
-                  setLoading(false);
+                  throw err;
                 }
               }}
             >
-              {isRegistered && <CheckCircledIcon color="green" />}
-              {loading && <Spinner overlay={true} />} Register
-            </Button>
+              {isRegistered && <CheckCircledIcon color="green" />} Register
+            </PendingButton>
           </div>
           <Separator size="4" />
           <div className="flex flex-col flex-items-center gap-2">
@@ -109,11 +101,9 @@ export const OrderlyConnect: FunctionComponent = () => {
               Create a key pair to interact with our API. It will be stored in your browser&apos;s
               local storage and is unique per device.
             </span>
-            <Button
-              className="relative"
-              disabled={hasOrderlyKey || loading}
+            <PendingButton
+              disabled={hasOrderlyKey}
               onClick={async () => {
-                setLoading(true);
                 const { update } = customNotification({
                   eventCode: 'orderlyKey',
                   type: 'pending',
@@ -125,7 +115,7 @@ export const OrderlyConnect: FunctionComponent = () => {
                     eventCode: 'orderlyKeySuccess',
                     type: 'success',
                     message: 'Key registration complete!',
-                    autoDismiss: 5000
+                    autoDismiss: 5_000
                   });
                 } catch (err) {
                   console.error(err);
@@ -133,16 +123,14 @@ export const OrderlyConnect: FunctionComponent = () => {
                     eventCode: 'orderlyKeyError',
                     type: 'error',
                     message: 'Key registration failed!',
-                    autoDismiss: 5000
+                    autoDismiss: 5_000
                   });
-                } finally {
-                  setLoading(false);
+                  throw err;
                 }
               }}
             >
-              {hasOrderlyKey && <CheckCircledIcon color="green" />}
-              {loading && <Spinner overlay={true} />} Create Key
-            </Button>
+              {hasOrderlyKey && <CheckCircledIcon color="green" />} Create Key
+            </PendingButton>
           </div>
         </div>
       </Dialog.Content>
