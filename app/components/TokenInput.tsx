@@ -1,18 +1,30 @@
 import { FixedNumber } from 'ethers';
 import { FunctionComponent, useState } from 'react';
+import { ControllerRenderProps } from 'react-hook-form';
 
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '~/utils';
 
-export const TokenInput: FunctionComponent<{
-  decimals: number;
-  id?: string;
-  readonly?: boolean;
-  placeholder?: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  afterInputChange?: Function;
-  onValueChange?: (value: FixedNumber) => void | Promise<void>;
-  className?: string;
-}> = ({ id, readonly, placeholder, decimals, afterInputChange, onValueChange, className }) => {
+export const TokenInput: FunctionComponent<
+  {
+    decimals: number;
+    id?: string;
+    readonly?: boolean;
+    placeholder?: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    afterInputChange?: Function;
+    onValueChange?: (value: FixedNumber) => void | Promise<void>;
+    className?: string;
+  } & ControllerRenderProps
+> = ({
+  id,
+  readonly,
+  placeholder,
+  decimals,
+  afterInputChange,
+  onValueChange,
+  className,
+  ...props
+}) => {
   const [value, setValue] = useState('');
 
   const onInputChange = () => {
@@ -27,6 +39,7 @@ export const TokenInput: FunctionComponent<{
       type="string"
       id={id}
       value={value}
+      name={props.name}
       readOnly={readonly ?? false}
       placeholder={placeholder ?? '0.0'}
       onInput={onInputChange}
@@ -41,10 +54,12 @@ export const TokenInput: FunctionComponent<{
           }
           setValue(newValue);
         }
+        if (props.onChange) props.onChange(event);
       }}
       onBlur={(event) => {
         const quantity = getFormattedNumber(event.target.value, decimals);
         setValue(quantity);
+        if (props.onBlur) props.onBlur();
       }}
       autoComplete="off"
     />

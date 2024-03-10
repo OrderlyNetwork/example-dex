@@ -84,7 +84,6 @@ export default function Root() {
           appearance="dark"
           accentColor="iris"
           radius="small"
-          scaling="105%"
           className="flex flex-col flex-items-center"
         >
           <Web3OnboardProvider web3Onboard={web3Onboard}>

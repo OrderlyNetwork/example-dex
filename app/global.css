@@ -1,9 +1,18 @@
 :root {
   --account-center-z-index: 1000;
+
+  --color-bg-green: rgba(148, 249, 189, 0.3);
+  --color-bg-green-hover: rgba(148, 249, 189, 0.4);
+  --color-border-green: #2aa876;
+  --color-bg-red: rgba(255, 77, 109, 0.3);
+  --color-bg-red-hover: rgba(255, 77, 109, 0.4);
+  --color-border-red: #ff4d6d;
 }
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 a {
@@ -28,6 +37,26 @@ input:hover {
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+select {
+  background: transparent;
+  color: white;
+  border: 0.125rem solid lightgray;
+  border-radius: 0.4rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+
+  option {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 2.4rem 0;
+  }
+
+  &.readonly {
+    cursor: default;
+    border-color: gray;
+  }
 }
 
 @keyframes rotate {
