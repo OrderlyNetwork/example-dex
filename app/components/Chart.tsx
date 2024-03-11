@@ -1,4 +1,5 @@
 import { useConfig } from '@orderly.network/hooks';
+import { API } from '@orderly.network/types';
 import {
   createChart,
   type IChartApi,
@@ -29,7 +30,7 @@ type Kline = {
   v: number;
 };
 
-export const Chart: FunctionComponent<{ symbol: string }> = ({ symbol }) => {
+export const Chart: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [chartData, setChartData] = useState<[IChartApi, ISeriesApi<'Candlestick'>]>();
   const chartRef = useRef<HTMLDivElement>(null);
   const { width } = useResizeObserver<HTMLDivElement>({
@@ -45,7 +46,7 @@ export const Chart: FunctionComponent<{ symbol: string }> = ({ symbol }) => {
     const from = Math.trunc((Date.now() - 1_000 * 60 * 60 * 24 * 7) / 1_000);
     const to = Math.trunc(Date.now() / 1_000);
     fetch(
-      `${apiBaseUrl}/tv/history?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}`
+      `${apiBaseUrl}/tv/history?symbol=${symbol.symbol}&resolution=${resolution}&from=${from}&to=${to}`
     )
       .then((res) => res.json() as Promise<Klines>)
       .then((klines) => {

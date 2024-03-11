@@ -6,5 +6,7 @@ export * from './OrderlyConnect';
 export * from './OrderlyDeposit';
 export * from './PendingButton';
 export * from './Spinner';
+export * from './SymbolHeader';
+export * from './SymbolSelection';
 export * from './TokenInput';
 export * from './WalletConnection';

@@ -1,10 +1,30 @@
-import { Chart, CreateOrder } from '~/components';
+import { useQuery } from '@orderly.network/hooks';
+import { API } from '@orderly.network/types';
+import { useEffect, useState } from 'react';
+
+import { Chart, CreateOrder, Spinner, SymbolHeader } from '~/components';
 
 export default function Index() {
+  const [symbol, setSymbol] = useState<API.Symbol>();
+
+  const { data } = useQuery<API.Symbol[]>('/v1/public/info');
+
+  useEffect(() => {
+    if (!data || symbol) return;
+    setSymbol(data.find((cur) => cur.symbol === 'PERP_BTC_USDC')!);
+  }, [data, symbol, setSymbol]);
+
+  if (!symbol) {
+    return <Spinner />;
+  }
+
   return (
     <div className="max-w-full w-full mt-6 flex flex-col flex-items-center gap-4">
-      <Chart symbol="PERP_ETH_USDC" />
-      <CreateOrder />
+      <div className="max-w-full w-full flex flex-col gap-1">
+        <SymbolHeader symbol={symbol} setSymbol={setSymbol} />
+        <Chart symbol={symbol} />
+      </div>
+      <CreateOrder symbol={symbol} />
     </div>
   );
 }

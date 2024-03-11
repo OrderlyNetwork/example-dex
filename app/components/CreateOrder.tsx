@@ -1,3 +1,4 @@
+import { API } from '@orderly.network/types';
 import { FunctionComponent } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
@@ -10,7 +11,9 @@ type Inputs = {
   quantity: string;
 };
 
-export const CreateOrder: FunctionComponent = () => {
+export const CreateOrder: FunctionComponent<{
+  symbol: API.Symbol;
+}> = ({ symbol }) => {
   const { register, handleSubmit, watch, control } = useForm<Inputs>({
     defaultValues: {
       direction: 'Buy',
@@ -18,6 +21,8 @@ export const CreateOrder: FunctionComponent = () => {
     }
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbol);
 
   return (
     <form
@@ -47,12 +52,16 @@ export const CreateOrder: FunctionComponent = () => {
       <Controller
         name="price"
         control={control}
-        render={({ field }) => <TokenInput decimals={6} placeholder="Price" {...field} />}
+        render={({ field }) => (
+          <TokenInput decimals={quoteDecimals} placeholder="Price" {...field} />
+        )}
       />
       <Controller
         name="quantity"
         control={control}
-        render={({ field }) => <TokenInput decimals={6} placeholder="Quantity" {...field} />}
+        render={({ field }) => (
+          <TokenInput decimals={baseDecimals} placeholder="Quantity" {...field} />
+        )}
       />
 
       <button
@@ -64,3 +73,15 @@ export const CreateOrder: FunctionComponent = () => {
     </form>
   );
 };
+
+function getDecimalsFromTick(symbol: API.Symbol): [number, number] {
+  let baseDecimals: number = 0;
+  if (symbol.base_tick < 0) {
+    baseDecimals = (symbol.base_tick + '').split('.')[1].length;
+  }
+  let quoteDecimals: number = 0;
+  if (symbol.quote_tick < 0) {
+    quoteDecimals = (symbol.quote_tick + '').split('.')[1].length;
+  }
+  return [baseDecimals, quoteDecimals];
+}
