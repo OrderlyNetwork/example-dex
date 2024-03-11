@@ -1,4 +1,5 @@
 export * from './Assets';
+export * from './Chart';
 export * from './CreateOrder';
 export * from './NavBar';
 export * from './OrderlyConnect';
