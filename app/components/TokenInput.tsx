@@ -14,7 +14,7 @@ export const TokenInput: FunctionComponent<
     afterInputChange?: Function;
     onValueChange?: (value: FixedNumber) => void | Promise<void>;
     className?: string;
-  } & ControllerRenderProps
+  } & Partial<ControllerRenderProps>
 > = ({
   id,
   readonly,

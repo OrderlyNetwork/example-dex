@@ -75,7 +75,7 @@ export const OrderlyDeposit: FunctionComponent<{
               <>
                 <span>⇒</span>
                 <span
-                  className={`flex-1 text-end ${newWalletBalance < walletBalance ? 'color-red' : 'color-green'}`}
+                  className={`flex-1 text-end ${newWalletBalance.toUnsafeFloat() < walletBalance.toUnsafeFloat() ? 'color-red' : 'color-green'}`}
                 >
                   {newWalletBalance.toFormat({ decimals: 2 }).toString()}
                 </span>
@@ -91,7 +91,7 @@ export const OrderlyDeposit: FunctionComponent<{
               <>
                 <span>⇒</span>
                 <span
-                  className={`flex-1 text-end ${newOrderlyBalance < orderlyBalance ? 'color-red' : 'color-green'}`}
+                  className={`flex-1 text-end ${newOrderlyBalance.toUnsafeFloat() < orderlyBalance.toUnsafeFloat() ? 'color-red' : 'color-green'}`}
                 >
                   {newOrderlyBalance.toFormat({ decimals: 2 }).toString()}
                 </span>
