@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTickerStream } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { FunctionComponent } from 'react';
@@ -12,6 +11,19 @@ export const SymbolHeader: FunctionComponent<{
   const stream = useTickerStream(symbol.symbol);
 
   if (!stream) return;
+
+  let dailyChange: string | undefined;
+  let dailyChangePercentage: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((stream as any)['24h_change'] != null && stream.index_price != null) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dailyChange = String((stream as any)['24h_change'].toNumber());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dailyChangePercentage = (stream as any)['24h_change']
+      .div(stream.index_price)
+      .mul(100)
+      .toPrecision(4, 2);
+  }
 
   return (
     <div className="flex flex-items-center [&>*]:border-0 [&>*:not(:last-child)]:border-r-2 [&>*]:border-solid [&>*]:px-3 [&>*]:border-gray font-bold [&>*:not(:first-child)]:flex-1">
@@ -31,9 +43,13 @@ export const SymbolHeader: FunctionComponent<{
       <div className="flex flex-col font-size-[0.9rem]">
         <div className="font-size-[0.8rem] color-gray">24h change</div>
         <div>
-          {(stream as any)['24h_change']?.toNumber() ?? '-'} /{' '}
-          {(stream as any)['24h_change']?.div(stream.index_price).mul(100).toPrecision(4, 2) ?? '-'}
-          %
+          {dailyChange && dailyChangePercentage ? (
+            <>
+              {dailyChange} / {dailyChangePercentage}%
+            </>
+          ) : (
+            '-'
+          )}
         </div>
       </div>
     </div>

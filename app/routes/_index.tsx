@@ -2,7 +2,7 @@ import { useQuery } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useEffect, useState } from 'react';
 
-import { Chart, CreateOrder, Spinner, SymbolHeader } from '~/components';
+import { Chart, CreateOrder, Orderbook, Spinner, SymbolHeader } from '~/components';
 
 export default function Index() {
   const [symbol, setSymbol] = useState<API.Symbol>();
@@ -24,6 +24,7 @@ export default function Index() {
         <SymbolHeader symbol={symbol} setSymbol={setSymbol} />
         <Chart symbol={symbol} />
       </div>
+      <Orderbook symbol={symbol} />
       <CreateOrder symbol={symbol} />
     </div>
   );

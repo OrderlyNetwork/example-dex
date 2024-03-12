@@ -1,9 +1,11 @@
 :root {
   --account-center-z-index: 1000;
 
+  --color-green: rgb(4, 109, 4);
   --color-bg-green: rgba(148, 249, 189, 0.3);
   --color-bg-green-hover: rgba(148, 249, 189, 0.4);
   --color-border-green: #2aa876;
+  --color-red: rgb(161, 6, 6);
   --color-bg-red: rgba(255, 77, 109, 0.3);
   --color-bg-red-hover: rgba(255, 77, 109, 0.4);
   --color-border-red: #ff4d6d;

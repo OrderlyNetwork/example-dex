@@ -2,6 +2,7 @@ export * from './Assets';
 export * from './Chart';
 export * from './CreateOrder';
 export * from './NavBar';
+export * from './Orderbook';
 export * from './OrderlyConnect';
 export * from './OrderlyDeposit';
 export * from './PendingButton';
