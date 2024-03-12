@@ -56,6 +56,9 @@ const web3Onboard = init({
   accountCenter: {
     desktop: { enabled: false },
     mobile: { enabled: false }
+  },
+  connect: {
+    autoConnectLastWallet: true
   }
 });
 

@@ -8,11 +8,12 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { WalletConnection, PendingButton } from '~/components';
 import { useIsTestnet } from '~/hooks';
 
+let timer: number | undefined;
+
 export const OrderlyConnect: FunctionComponent = () => {
   const [open, setOpen] = useState(false);
   const [{ wallet }] = useConnectWallet();
   const [isTestnet] = useIsTestnet();
-  const [timer, setTimer] = useState<number>();
 
   const { account, createOrderlyKey, state } = useAccount();
 
@@ -22,16 +23,16 @@ export const OrderlyConnect: FunctionComponent = () => {
     if (timer != null) {
       clearTimeout(timer);
     }
-    if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
-      setTimer(
-        setTimeout(() => {
-          setOpen(true);
-          setTimer(undefined);
-        }, 3_000) as unknown as number
-      );
-    }
+    timer = setTimeout(() => {
+      console.log('state.status', state.status, AccountStatusEnum.EnableTrading);
+      console.log('wallet', wallet);
+      if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
+        setOpen(true);
+        timer = undefined;
+      }
+    }, 3_000) as unknown as number;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, setOpen, wallet, setTimer]);
+  }, [state, setOpen, wallet]);
 
   const isRegistered = state.status >= AccountStatusEnum.SignedIn;
   const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
