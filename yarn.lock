@@ -1574,56 +1574,56 @@
   dependencies:
     which "^3.0.0"
 
-"@orderly.network/core@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-0.2.4.tgz#d1a12f00d4605dbd7e800757340bff15a8def38e"
-  integrity sha512-27rRYi7XXvLe/oHwqIW0bz0OeekcRPzhZetN89rxgOUHbybdPNB+LFKfTPc8kvuIoxEQayGoj55W+hdztp13rQ==
+"@orderly.network/core@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-0.2.7.tgz#699c05907fb58781a7cfafba8fd5fe75d83c3bc9"
+  integrity sha512-u70HApMcENctZDGaVCLxwX7Yva8KTtdKWztzk766zk0w86+qQIp7a3U43mMjytDnqwTcYtrTgErHGtj14YPCvw==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/types" "0.2.4"
+    "@orderly.network/types" "0.2.7"
     bs58 "^5.0.0"
     ethers "^6.7.1"
     eventemitter3 "^5.0.1"
     lodash.merge "^4.6.2"
 
-"@orderly.network/hooks@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.1.4.tgz#a81eb245550e857c8a8ec345b7908d8ec544cd6b"
-  integrity sha512-AqPR8BMPLF3kMXGsAZgsHcMIvT2KCz2fojBiTZCpSYHMlxCz6AJpBOcsP3TGqB9vWOHQSSzTxZ8PUoQunhap9A==
+"@orderly.network/hooks@1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.1.8.tgz#53ebb1c848dbca8d19b111e2042f3c98bab87372"
+  integrity sha512-eUps56ac/h8rWmD09xaRmL6wUAvXZNf8LbVkAChyXrNnxWCJAaHBNGHEkUNDzzwXtJXey/VxLe1+2LmPlwtrVg==
   dependencies:
-    "@orderly.network/core" "0.2.4"
-    "@orderly.network/net" "1.1.4"
-    "@orderly.network/perp" "2.0.4"
-    "@orderly.network/types" "0.2.4"
-    "@orderly.network/utils" "0.1.4"
+    "@orderly.network/core" "0.2.7"
+    "@orderly.network/net" "1.1.7"
+    "@orderly.network/perp" "2.0.7"
+    "@orderly.network/types" "0.2.7"
+    "@orderly.network/utils" "0.1.7"
     ramda "^0.29.0"
     swr "^2.2.4"
     use-constant "^1.1.1"
     use-debounce "^9.0.4"
 
-"@orderly.network/net@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.1.4.tgz#7243a968eda199578b70c013f9b98abb232ca4a1"
-  integrity sha512-i1aArJRUa0ioEXn71ZRTfWM5F25IAtuMucdItHoC6IddoCVFCfIyhMNE5AZ6wzBqLyzkus1WVU/vFGFfANOTig==
+"@orderly.network/net@1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.1.7.tgz#29f3906fe7c31e8b8669417bbd6ee584af091c39"
+  integrity sha512-njC4+zKqbafIMHiuWx1JnmE1zu2sSiyn67HWGN5RVJTPDz/0CxUkiuNCyi+dhBY7h/WipNOrXY1v3FR3bLc37w==
 
-"@orderly.network/perp@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-2.0.4.tgz#61d7acef1a5d2e04514a10fa04251cd326af24dc"
-  integrity sha512-vV6kHJROnTqT+c4VpbJkIINvFpiQ+xu/9J09H8I/sW441Tk5qMSLwqNvhp4qQNIOzaoaElapmN2DMRvGgrWDDg==
+"@orderly.network/perp@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-2.0.7.tgz#5e3f2b56e4fae2ebf8e61c16bf4e123ee6deaeb7"
+  integrity sha512-bWy3IRStIRP8ddB6LrG+VAzd3A7IdjdGN16dGxt7wZojnFJFmXhRjBvvhyRNPyT82jN7q81SliYoNSrlcxBSag==
   dependencies:
-    "@orderly.network/types" "0.2.4"
-    "@orderly.network/utils" "0.1.4"
+    "@orderly.network/types" "0.2.7"
+    "@orderly.network/utils" "0.1.7"
 
-"@orderly.network/types@0.2.4", "@orderly.network/types@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-0.2.4.tgz#80f28334d7cbf3a31161bcb6760e0c32900ffa7c"
-  integrity sha512-F5MsWqd47uA6vbLHWyNTU+JFhYkUUG+PBV5YqYPscbxbbXXS2ADb2wfmjWzlSfg/QpyRw9Uw7voe/ejAdQWncA==
+"@orderly.network/types@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-0.2.7.tgz#2ee166f6cf59c128d7d03d7333ed49aaaa6ed77d"
+  integrity sha512-aRh7oDNaJ3GLS7DX1fP/qEHRKPYfa8TvtARBcVjzYjEaxS46mrclZiTaccG55GJD56M5z3M6tQwyhi3ypUOqpQ==
 
-"@orderly.network/utils@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-0.1.4.tgz#faf5f484f68e82e5c7ab6dabe50a3e043335db53"
-  integrity sha512-u4OsL52SyFuVtJcYF7ZmnEiBfeJKgePo6zFbSierg2X4koLOpLmnrml6IIW73Bb3dYOBz9gPjBCW4HUuJocZnQ==
+"@orderly.network/utils@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-0.1.7.tgz#6bbdf149360a80356465dc3ef8150d6c6a61f537"
+  integrity sha512-yGVlP4NyYCTy6kkgaYZ7PGX9gnp45YTjz3mBoCrkWA6yKj83PFRKTNnTSfsLZs8/Ihbv56TK+viSJSq2U7n4fA==
   dependencies:
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"

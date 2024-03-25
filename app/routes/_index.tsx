@@ -19,13 +19,15 @@ export default function Index() {
   }
 
   return (
-    <div className="max-w-full w-full mt-6 flex flex-col flex-items-center gap-4">
-      <div className="max-w-full w-full flex flex-col gap-1">
+    <div className="max-w-full w-full mt-6 flex flex-wrap flex-items-center gap-4">
+      <div className="max-w-[54rem] w-full flex flex-col gap-1">
         <SymbolHeader symbol={symbol} setSymbol={setSymbol} />
         <Chart symbol={symbol} />
       </div>
-      <Orderbook symbol={symbol} />
-      <CreateOrder symbol={symbol} />
+      <div className="flex flex-1 flex-items-center flex-justify-around gap-4">
+        <Orderbook symbol={symbol} />
+        <CreateOrder symbol={symbol} />
+      </div>
     </div>
   );
 }

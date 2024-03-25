@@ -81,7 +81,6 @@ export const Chart: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => 
   useEffect(() => {
     if (chartRef.current == null || width == null) return;
     if (!chartData) {
-      // console.log('height', height);
       const chart = createChart(chartRef.current, {
         width,
         height: chartRef.current.clientHeight,
@@ -110,7 +109,7 @@ export const Chart: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => 
     }
   }, [chartData, chartRef, width]);
 
-  return <div className="max-w-full w-full min-h-[35rem]" ref={chartRef} />;
+  return <div className="w-full min-h-[35rem]" ref={chartRef} />;
 };
 
 function klineToCandlestick(kline: Kline): SeriesDataItemTypeMap['Candlestick'] {

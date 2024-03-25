@@ -6,14 +6,17 @@ import { Spinner } from '.';
 export const PendingButton: FunctionComponent<
   PropsWithChildren<{
     onClick: MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+    type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
   }>
-> = ({ onClick, disabled, children }) => {
+> = ({ onClick, className, type, disabled, children }) => {
   const [loading, setLoading] = useState(false);
 
   return (
     <Button
-      className="relative"
+      className={`relative ${className ?? ''}`}
+      type={type}
       disabled={disabled || loading}
       onClick={async (event) => {
         setLoading(true);

@@ -36,7 +36,7 @@ export const Orderbook: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol })
               className="contents [&>*:nth-child(3n)]:text-end [&>*]:border-[rgba(255,255,255,0.5)] [&>*]:border-solid [&>*]:border-0 [&>*]:border-b-1"
               key={index}
             >
-              <div className="color-[var(--color-red)]">{price}</div>
+              <div className="color-[var(--color-light-red)]">{price}</div>
               <div>{quantity}</div>
               <div
                 style={{
@@ -61,7 +61,7 @@ export const Orderbook: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol })
               className="contents [&>*:nth-child(3n)]:text-end [&>*]:border-[rgba(255,255,255,0.5)] [&>*]:border-solid [&>*]:border-0 [&>*]:border-b-1"
               key={index}
             >
-              <div className="color-[var(--color-green)]">{price}</div>
+              <div className="color-[var(--color-light-green)]">{price}</div>
               <div>{quantity}</div>
               <div
                 style={{

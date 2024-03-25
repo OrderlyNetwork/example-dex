@@ -14,6 +14,7 @@ export const TokenInput: FunctionComponent<
     afterInputChange?: Function;
     onValueChange?: (value: FixedNumber) => void | Promise<void>;
     className?: string;
+    hasError?: boolean;
   } & Partial<ControllerRenderProps>
 > = ({
   id,
@@ -23,6 +24,7 @@ export const TokenInput: FunctionComponent<
   afterInputChange,
   onValueChange,
   className,
+  hasError,
   ...props
 }) => {
   const [value, setValue] = useState('');
@@ -35,7 +37,7 @@ export const TokenInput: FunctionComponent<
 
   return (
     <input
-      className={`${readonly ? 'cursor-default' : ''} ${className ?? ''} line-height-10 font-size-5`}
+      className={`${readonly ? 'cursor-default' : ''} ${className ?? ''} ${hasError ? 'error hover:border-[var(--color-light-red)]' : ''} line-height-10 font-size-5`}
       type="string"
       id={id}
       value={value}

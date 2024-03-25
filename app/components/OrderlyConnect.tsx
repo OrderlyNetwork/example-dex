@@ -24,8 +24,6 @@ export const OrderlyConnect: FunctionComponent = () => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      console.log('state.status', state.status, AccountStatusEnum.EnableTrading);
-      console.log('wallet', wallet);
       if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
         setOpen(true);
         timer = undefined;
