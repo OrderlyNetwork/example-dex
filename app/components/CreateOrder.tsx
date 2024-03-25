@@ -1,4 +1,4 @@
-import { useOrderEntry, usePrivateQuery } from '@orderly.network/hooks';
+import { useOrderEntry } from '@orderly.network/hooks';
 import { API, OrderSide, OrderType } from '@orderly.network/types';
 import { FunctionComponent, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
@@ -16,27 +16,17 @@ export const CreateOrder: FunctionComponent<{
   symbol: API.Symbol;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, watch, control, getValues } = useForm<Inputs>({
+  const { register, handleSubmit, watch, control } = useForm<Inputs>({
     defaultValues: {
       direction: 'Buy',
       type: 'Market'
     }
   });
-  const { data: orderbook } = usePrivateQuery<{
-    asks?: { price: number }[];
-    bids?: { price: number }[];
-  }>(`/v1/orderbook/${symbol.symbol}?max_level=1`);
-  const lowestAsk = orderbook?.asks?.[0].price;
-  const highestBid = orderbook?.bids?.[orderbook.bids.length - 1].price;
-  const minPrice = highestBid ? highestBid * (1 - symbol.price_range) : undefined;
-  const maxPrice = lowestAsk ? lowestAsk * (1 + symbol.price_range) : undefined;
-  const { onSubmit, freeCollateral, helper } = useOrderEntry(
+  const { onSubmit, helper } = useOrderEntry(
     {
       symbol: symbol.symbol,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      side: 'BUY' as any,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      order_type: 'MARKET' as any
+      side: OrderSide.BUY,
+      order_type: OrderType.MARKET
     },
     { watchOrderbook: true }
   );
@@ -44,24 +34,6 @@ export const CreateOrder: FunctionComponent<{
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
-      console.log('data', data);
-      console.log('symbol', symbol);
-      console.log('ORDER', {
-        symbol: symbol.symbol,
-        side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
-        order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
-        order_price: data.price,
-        order_quantity: data.quantity
-      });
-
-      const res = helper.validator({
-        symbol: symbol.symbol,
-        side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
-        order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
-        order_price: data.price,
-        order_quantity: data.quantity
-      });
-      console.log('res', res);
       await onSubmit({
         symbol: symbol.symbol,
         side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
@@ -69,6 +41,8 @@ export const CreateOrder: FunctionComponent<{
         order_price: data.price,
         order_quantity: data.quantity
       });
+    } catch (err) {
+      console.error(`Unhandled error in "submitForm":`, err);
     } finally {
       setLoading(false);
     }
@@ -76,31 +50,9 @@ export const CreateOrder: FunctionComponent<{
 
   const [_, base, quote] = symbol.symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbol);
-  const priceRequired = getValues('type') === 'Limit';
 
   const renderError = (error: FieldError) => {
-    let content;
-    switch (error.type) {
-      case 'required':
-        content = 'This field is required';
-        break;
-      case 'minBase':
-        content = `The minimum base token (${base}) amount is ${symbol.base_min}`;
-        break;
-      case 'minQuote':
-        content = `The minimum quote token (${quote}) amount is ${symbol.min_notional}`;
-        break;
-      case 'minPrice':
-        content = `The minimum price is ${minPrice}`;
-        break;
-      case 'maxPrice':
-        content = `The maximum price is ${maxPrice}`;
-        break;
-      default:
-        console.error('Unhandled form error:', error);
-        content = '';
-    }
-    return <span className="h-2 color-[var(--color-light-red)]">{content}</span>;
+    return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
   };
 
   return (
@@ -134,15 +86,10 @@ export const CreateOrder: FunctionComponent<{
           name="price"
           control={control}
           rules={{
-            required: priceRequired,
             validate: {
-              minPrice: (value) => {
-                if (minPrice == null || !priceRequired) return true;
-                return Number(value) >= minPrice;
-              },
-              maxPrice: (value) => {
-                if (maxPrice == null || !priceRequired) return true;
-                return Number(value) <= maxPrice;
+              custom: async (_, data) => {
+                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                return errors?.order_price != null ? errors.order_price.message : true;
               }
             }
           }}
@@ -169,14 +116,10 @@ export const CreateOrder: FunctionComponent<{
           name="quantity"
           control={control}
           rules={{
-            required: true,
             validate: {
-              minBase: (value) => {
-                return Number(value) >= symbol.base_min;
-              },
-              minQuote: (value) => {
-                if (Number(getValues('price') ?? '0') === 0) return true;
-                return Number(value) * Number(getValues('price')) >= symbol.min_notional;
+              custom: async (_, data) => {
+                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                return errors?.order_quantity != null ? errors.order_quantity.message : true;
               }
             }
           }}
@@ -218,4 +161,19 @@ function getDecimalsFromTick(symbol: API.Symbol): [number, number] {
     quoteDecimals = (symbol.quote_tick + '').split('.')[1].length;
   }
   return [baseDecimals, quoteDecimals];
+}
+
+async function getValidationErrors(
+  data: Inputs,
+  symbol: string,
+  validator: ReturnType<typeof useOrderEntry>['helper']['validator']
+): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
+  const input = {
+    symbol: symbol,
+    side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
+    order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
+    order_price: data.price,
+    order_quantity: data.quantity
+  };
+  return validator(input);
 }
