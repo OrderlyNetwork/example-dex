@@ -9,6 +9,8 @@ export const Orderbook: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol })
     level: 10
   });
 
+  const [_, base, quote] = symbol.symbol.split('_');
+
   if (isLoading) {
     return (
       <div className="w-[20rem] h-full flex-self-center flex flex-justify-center">
@@ -21,9 +23,9 @@ export const Orderbook: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol })
   let firstBid: number;
   return (
     <div className="grid gap-x-2 grid-cols-[5.5rem_5.5rem_8rem] font-bold font-size-[0.9rem] [&>*]:border-b [&>*]:border-[rgba(0, 0, 0, 0.2)] [&>*]:border-b-solid">
-      <div>Price (USDC)</div>
-      <div>Quantity (ETH)</div>
-      <div className="text-end">Total (ETH)</div>
+      <div>Price ({quote})</div>
+      <div>Quantity ({base})</div>
+      <div className="text-end">Total ({base})</div>
       {data.asks
         ?.filter(([price]) => !Number.isNaN(price))
         .map(([price, quantity, aggregated], index) => {
