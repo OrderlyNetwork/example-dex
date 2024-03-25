@@ -1,8 +1,8 @@
-import { useQuery } from '@orderly.network/hooks';
+import { useSymbolsInfo } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { Button, Dialog } from '@radix-ui/themes';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { Spinner } from '.';
 
@@ -11,14 +11,9 @@ export const SymbolSelection: FunctionComponent<{
   setSymbol: React.Dispatch<React.SetStateAction<API.Symbol | undefined>>;
 }> = ({ symbol, setSymbol }) => {
   const [open, setOpen] = useState(false);
-  const { data } = useQuery<API.Symbol[]>('/v1/public/info');
+  const symbolInfo = useSymbolsInfo();
 
-  useEffect(() => {
-    if (!data || symbol) return;
-    setSymbol(data.find((cur) => cur.symbol === 'PERP_BTC_USDC')!);
-  }, [data, symbol, setSymbol]);
-
-  if (!data || !symbol) {
+  if (!symbol) {
     return <Spinner />;
   }
 
@@ -36,7 +31,7 @@ export const SymbolSelection: FunctionComponent<{
         </Dialog.Title>
 
         <div className="flex flex-col max-h-[30rem]">
-          {data.map((cur) => {
+          {Object.values(symbolInfo).map((cur) => {
             return (
               <Button
                 key={cur.symbol}
