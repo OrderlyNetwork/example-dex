@@ -32,17 +32,18 @@ export const SymbolSelection: FunctionComponent<{
 
         <div className="flex flex-col max-h-[30rem]">
           {Object.values(symbolInfo).map((cur) => {
+            const symbol = cur();
             return (
               <Button
-                key={cur.symbol}
+                key={symbol.symbol}
                 variant="ghost"
                 className="border-rd-0 py-3 font-size-4"
                 onClick={() => {
-                  setSymbol(cur);
+                  setSymbol(symbol);
                   setOpen(false);
                 }}
               >
-                {cur.symbol}
+                {symbol.symbol}
               </Button>
             );
           })}

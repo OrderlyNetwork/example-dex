@@ -3,6 +3,7 @@ import { API } from '@orderly.network/types';
 import { useEffect, useState } from 'react';
 
 import { Chart, CreateOrder, Orderbook, Spinner, SymbolHeader } from '~/components';
+import { OrderTabs } from '~/components/OrderTabs';
 
 export default function Index() {
   const [symbol, setSymbol] = useState<API.Symbol>();
@@ -11,7 +12,7 @@ export default function Index() {
 
   useEffect(() => {
     if (symbol) return;
-    setSymbol(symbolInfo['PERP_BTC_USDC']);
+    setSymbol(symbolInfo['PERP_BTC_USDC']());
   }, [symbolInfo, symbol, setSymbol]);
 
   if (!symbol) {
@@ -24,9 +25,12 @@ export default function Index() {
         <SymbolHeader symbol={symbol} setSymbol={setSymbol} />
         <Chart symbol={symbol} />
       </div>
-      <div className="flex flex-1 flex-items-center flex-justify-around gap-4">
+      <div className="flex flex-1 w-full flex-wrap flex-items-center flex-justify-around gap-4">
         <Orderbook symbol={symbol} />
         <CreateOrder symbol={symbol} />
+      </div>
+      <div className="flex flex-1 min-w-full">
+        <OrderTabs symbol={symbol} />
       </div>
     </div>
   );
