@@ -1,9 +1,11 @@
 import { useOrderEntry } from '@orderly.network/hooks';
-import { API, OrderSide, OrderType } from '@orderly.network/types';
+import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { FunctionComponent, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Spinner, TokenInput } from '.';
+
+import { getDecimalsFromTick } from '~/helpers/api';
 
 type Inputs = {
   direction: 'Buy' | 'Sell';
@@ -34,13 +36,7 @@ export const CreateOrder: FunctionComponent<{
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
-      await onSubmit({
-        symbol: symbol.symbol,
-        side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
-        order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
-        order_price: data.price,
-        order_quantity: data.quantity
-      });
+      await onSubmit(getInput(data, symbol.symbol));
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
     } finally {
@@ -151,29 +147,20 @@ export const CreateOrder: FunctionComponent<{
   );
 };
 
-function getDecimalsFromTick(symbol: API.Symbol): [number, number] {
-  let baseDecimals: number = 0;
-  if (symbol.base_tick < 1) {
-    baseDecimals = (symbol.base_tick + '').split('.')[1].length;
-  }
-  let quoteDecimals: number = 0;
-  if (symbol.quote_tick < 1) {
-    quoteDecimals = (symbol.quote_tick + '').split('.')[1].length;
-  }
-  return [baseDecimals, quoteDecimals];
-}
-
 async function getValidationErrors(
   data: Inputs,
   symbol: string,
   validator: ReturnType<typeof useOrderEntry>['helper']['validator']
 ): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
-  const input = {
-    symbol: symbol,
+  return validator(getInput(data, symbol));
+}
+
+function getInput(data: Inputs, symbol: string): OrderEntity {
+  return {
+    symbol,
     side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
     order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
     order_price: data.price,
     order_quantity: data.quantity
   };
-  return validator(input);
 }

@@ -1,5 +1,5 @@
 import { FixedNumber } from 'ethers';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '~/utils';
@@ -12,7 +12,10 @@ export const TokenInput: FunctionComponent<
     placeholder?: string;
     // eslint-disable-next-line @typescript-eslint/ban-types
     afterInputChange?: Function;
+    value?: string | number;
     onValueChange?: (value: FixedNumber) => void | Promise<void>;
+    min?: FixedNumber;
+    max?: FixedNumber;
     className?: string;
     hasError?: boolean;
   } & Partial<ControllerRenderProps>
@@ -22,12 +25,34 @@ export const TokenInput: FunctionComponent<
   placeholder,
   decimals,
   afterInputChange,
+  value: outerValue,
   onValueChange,
+  min,
+  max,
   className,
   hasError,
   ...props
 }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(outerValue ? String(outerValue) : '');
+
+  useEffect(() => {
+    if (outerValue == null || typeof outerValue === 'string') return;
+    let newValue = filterAllowedCharacters(String(outerValue));
+    const quantity = getFormattedNumber(newValue, decimals);
+    if (getFormattedNumber(value, decimals) !== quantity) {
+      const [res] = getNumberAsUInt128(quantity, decimals);
+      let fixedNumber = FixedNumber.fromValue(res, decimals).toFormat(decimals);
+      if (min && fixedNumber.lt(min)) {
+        fixedNumber = min;
+        newValue = fixedNumber.toString();
+      }
+      if (max && fixedNumber.gt(max)) {
+        fixedNumber = max;
+        newValue = fixedNumber.toString();
+      }
+      setValue(newValue);
+    }
+  }, [decimals, max, min, outerValue, value]);
 
   const onInputChange = () => {
     if (afterInputChange) {
@@ -46,14 +71,23 @@ export const TokenInput: FunctionComponent<
       placeholder={placeholder ?? '0.0'}
       onInput={onInputChange}
       onChange={(event) => {
-        const newValue = filterAllowedCharacters(event.target.value);
+        let newValue = filterAllowedCharacters(event.target.value);
         if (value !== newValue) {
+          const quantity = getFormattedNumber(newValue, decimals);
+          const [res] = getNumberAsUInt128(quantity, decimals);
+          let fixedNumber = FixedNumber.fromValue(res, decimals).toFormat(decimals);
+          if (min && fixedNumber.lt(min)) {
+            fixedNumber = min;
+            newValue = fixedNumber.toString();
+          }
+          if (max && fixedNumber.gt(max)) {
+            fixedNumber = max;
+            newValue = fixedNumber.toString();
+          }
           if (onValueChange) {
-            const quantity = getFormattedNumber(newValue, decimals);
-            const [res] = getNumberAsUInt128(quantity, decimals);
-            const fixedNumber = FixedNumber.fromValue(res, decimals).toFormat(decimals);
             onValueChange(fixedNumber);
           }
+          event.target.value = newValue;
           setValue(newValue);
         }
         if (props.onChange) props.onChange(event);
