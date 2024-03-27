@@ -7,14 +7,14 @@ import { Spinner } from '.';
 import { UpdatePosition } from './UpdatePosition';
 
 export const Positions: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
-  const [positions, _info, { refresh }] = usePositionStream(symbol.symbol);
+  const [positions, _info, { refresh, loading }] = usePositionStream(symbol.symbol);
   const { state } = useAccount();
 
   if (state.status <= AccountStatusEnum.NotSignedIn) {
     return;
   }
 
-  if (!positions.rows) {
+  if (!positions.rows || loading) {
     return <Spinner size="2rem" className="m-3" />;
   }
 
