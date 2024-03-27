@@ -1,4 +1,4 @@
-import { useAccount, useChains, useDeposit } from '@orderly.network/hooks';
+import { useAccount, useChains, useDeposit, useWithdraw } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Tabs } from '@radix-ui/themes';
@@ -13,7 +13,8 @@ import { supportedChains } from '~/utils';
 export const OrderlyDeposit: FunctionComponent<{
   walletBalance: FixedNumber;
   orderlyBalance: FixedNumber;
-}> = ({ walletBalance, orderlyBalance }) => {
+  withdraw: ReturnType<typeof useWithdraw>['withdraw'];
+}> = ({ walletBalance, orderlyBalance, withdraw }) => {
   const [amount, setAmount] = useState<FixedNumber>();
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -70,14 +71,14 @@ export const OrderlyDeposit: FunctionComponent<{
         <div className="flex flex-col gap-1">
           <span>Wallet balance (USDC):</span>
           <div className="flex flex-items-center">
-            <span className="flex-1">{walletBalance.toFormat({ decimals: 2 }).toString()}</span>
+            <span className="flex-1">{walletBalance.toString()}</span>
             {newWalletBalance != null && (
               <>
                 <span>⇒</span>
                 <span
                   className={`flex-1 text-end ${newWalletBalance.toUnsafeFloat() < walletBalance.toUnsafeFloat() ? 'color-red' : 'color-green'}`}
                 >
-                  {newWalletBalance.toFormat({ decimals: 2 }).toString()}
+                  {newWalletBalance.toString()}
                 </span>
               </>
             )}
@@ -86,14 +87,14 @@ export const OrderlyDeposit: FunctionComponent<{
         <div className="flex flex-col gap-1">
           <span>Orderly balance (USDC):</span>
           <div className="flex flex-items-center">
-            <span className="flex-1">{orderlyBalance.toFormat({ decimals: 2 }).toString()}</span>
+            <span className="flex-1">{orderlyBalance.toString()}</span>
             {newOrderlyBalance != null && (
               <>
                 <span>⇒</span>
                 <span
                   className={`flex-1 text-end ${newOrderlyBalance.toUnsafeFloat() < orderlyBalance.toUnsafeFloat() ? 'color-red' : 'color-green'}`}
                 >
-                  {newOrderlyBalance.toFormat({ decimals: 2 }).toString()}
+                  {newOrderlyBalance.toString()}
                 </span>
               </>
             )}
@@ -125,42 +126,76 @@ export const OrderlyDeposit: FunctionComponent<{
           onClick={async () => {
             if (amount == null) return;
 
-            if (Number(deposit.allowance) < amount.toUnsafeFloat()) {
-              const { update } = customNotification({
-                eventCode: 'approval',
-                type: 'pending',
-                message: 'Approving USDC for deposit...'
-              });
-              try {
-                await deposit.approve(amount.toString());
-                update({
-                  eventCode: 'approvalSuccess',
-                  type: 'success',
-                  message: 'Approval complete! You can now do a deposit',
-                  autoDismiss: 8_000
+            if (isDeposit) {
+              if (Number(deposit.allowance) < amount.toUnsafeFloat()) {
+                const { update } = customNotification({
+                  eventCode: 'approval',
+                  type: 'pending',
+                  message: 'Approving USDC for deposit...'
                 });
-              } catch (err) {
-                console.error(err);
-                update({
-                  eventCode: 'approvalError',
-                  type: 'error',
-                  message: 'Approval failed!',
-                  autoDismiss: 5_000
+                try {
+                  await deposit.approve(amount.toString());
+                  update({
+                    eventCode: 'approvalSuccess',
+                    type: 'success',
+                    message: 'Approval complete! You can now do a deposit',
+                    autoDismiss: 8_000
+                  });
+                } catch (err) {
+                  console.error(err);
+                  update({
+                    eventCode: 'approvalError',
+                    type: 'error',
+                    message: 'Approval failed!',
+                    autoDismiss: 5_000
+                  });
+                  throw err;
+                }
+              } else {
+                const { update } = customNotification({
+                  eventCode: 'deposit',
+                  type: 'pending',
+                  message: 'Depositing USDC into your Orderly Account...'
                 });
-                throw err;
+                try {
+                  await deposit.deposit();
+                  update({
+                    eventCode: 'depositSuccess',
+                    type: 'success',
+                    message: 'Deposit complete!',
+                    autoDismiss: 5_000
+                  });
+                  setAmount(undefined);
+                  setNewWalletBalance(undefined);
+                  setNewOrderlyBalance(undefined);
+                } catch (err) {
+                  console.error(err);
+                  update({
+                    eventCode: 'depositError',
+                    type: 'error',
+                    message: 'Deposit failed!',
+                    autoDismiss: 5_000
+                  });
+                  throw err;
+                }
               }
             } else {
               const { update } = customNotification({
-                eventCode: 'deposit',
+                eventCode: 'withdraw',
                 type: 'pending',
-                message: 'Depositing USDC into your Orderly Account...'
+                message: 'Withdrawing USDC from your Orderly Account...'
               });
               try {
-                await deposit.deposit();
+                await withdraw({
+                  chainId: Number(account.chainId),
+                  amount: amount.toString(),
+                  token: 'USDC',
+                  allowCrossChainWithdraw: false
+                });
                 update({
-                  eventCode: 'depositSuccess',
+                  eventCode: 'withdrawSuccess',
                   type: 'success',
-                  message: 'Deposit complete!',
+                  message: 'Withdraw complete!',
                   autoDismiss: 5_000
                 });
                 setAmount(undefined);
@@ -169,9 +204,9 @@ export const OrderlyDeposit: FunctionComponent<{
               } catch (err) {
                 console.error(err);
                 update({
-                  eventCode: 'depositError',
+                  eventCode: 'withdrawError',
                   type: 'error',
-                  message: 'Deposit failed!',
+                  message: 'Withdraw failed!',
                   autoDismiss: 5_000
                 });
                 throw err;
