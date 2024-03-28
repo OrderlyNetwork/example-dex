@@ -14,7 +14,11 @@ export const NavBar: FunctionComponent = () => {
 
   return (
     <nav className="flex flex-self-stretch gap-sm flex-justify-end align-center">
-      <h2 className="flex-auto m0">Orderly DEX</h2>
+      <h2 className="flex-auto m0">
+        <Link to="/" className="color-unset">
+          Orderly DEX
+        </Link>
+      </h2>
       <WalletConnection />
       <DropdownMenu.Root open={open}>
         <DropdownMenu.Trigger>
