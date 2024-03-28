@@ -1,17 +1,14 @@
-import * as RadixTheme from '@radix-ui/themes';
-import radixTheme from '@radix-ui/themes/styles.css';
-import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
+import { Theme } from '@radix-ui/themes';
+import radixTheme from '@radix-ui/themes/styles.css?url';
+import type { LinksFunction } from '@remix-run/cloudflare';
+import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
 import { App } from '~/App';
-import globalCss from '~/global.css';
-import uno from '~/styles/uno.css';
-
-const { Theme } = RadixTheme;
+import globalCss from '~/global.css?url';
+import uno from '~/styles/uno.css?url';
 
 const injected = injectedModule();
 const walletConnect = walletConnectModule({
@@ -63,7 +60,6 @@ const web3Onboard = init({
 });
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   { rel: 'stylesheet', href: globalCss },
   {
     rel: 'stylesheet',
@@ -95,7 +91,6 @@ export default function Root() {
         </Theme>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

@@ -1,38 +1,7 @@
-# Welcome to Remix!
+# Orderly Example DEX
 
-- [Remix Docs](https://remix.run/docs)
+This repository can be used as an example of how to use [Orderly SDKs](https://sdk.orderly.network/) to develop a fully fledged DEX.
 
-## Development
+The example uses [Remix](https://remix.run/) with React and is deployed via Cloudflare Pages.
 
-From your terminal:
-
-```sh
-npm run dev
-```
-
-This starts your app in development mode, rebuilding assets on file changes.
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
+[>> open dapp <<](https://orderly-dex.pages.dev/)

@@ -15,7 +15,7 @@ export const OrderlyConnect: FunctionComponent = () => {
   const [{ wallet }] = useConnectWallet();
   const [isTestnet] = useIsTestnet();
 
-  const { account, createOrderlyKey, state } = useAccount();
+  const { account, state } = useAccount();
 
   const [_, customNotification] = useNotifications();
 
@@ -109,7 +109,7 @@ export const OrderlyConnect: FunctionComponent = () => {
                   message: 'Registering Orderly key...'
                 });
                 try {
-                  await createOrderlyKey(true);
+                  await account.createOrderlyKey(365);
                   update({
                     eventCode: 'orderlyKeySuccess',
                     type: 'success',
