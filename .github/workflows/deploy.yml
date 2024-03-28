@@ -27,4 +27,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 5480ec0d18b939389413f83a2d8cc75e
           projectName: orderly-dex
-          directory: build
+          directory: ./build/client
