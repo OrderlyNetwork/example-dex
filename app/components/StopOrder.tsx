@@ -7,7 +7,7 @@ import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form'
 
 import { Spinner, TokenInput } from '.';
 
-import { getDecimalsFromTick } from '~/helpers/api';
+import { getDecimalsFromTick } from '~/utils';
 
 type Inputs = {
   direction: 'Buy' | 'Sell';

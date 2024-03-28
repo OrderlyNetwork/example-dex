@@ -3,8 +3,9 @@ import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator, Tabs } from '@radix-ui/themes';
 import { FunctionComponent, useState } from 'react';
 
-import { ClosePosition } from './ClosePosition';
-import { StopOrder } from './StopOrder';
+import { ClosePosition, StopOrder } from '.';
+
+import { baseFormatter, usdFormatter } from '~/utils';
 
 export const UpdatePosition: FunctionComponent<{
   symbol: API.Symbol;
@@ -12,9 +13,6 @@ export const UpdatePosition: FunctionComponent<{
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
 }> = ({ symbol, position, refresh }) => {
   const [open, setOpen] = useState(false);
-
-  const baseFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 });
-  const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
   const renderPositionValue = (header: string, value: string) => (
     <div className="flex flex-col gap-1">

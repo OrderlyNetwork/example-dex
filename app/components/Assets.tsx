@@ -7,7 +7,7 @@ import { FunctionComponent, useMemo } from 'react';
 
 import { OrderlyDeposit } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { formatUsd, supportedChains } from '~/utils';
+import { supportedChains, usdFormatter } from '~/utils';
 
 export const Assets: FunctionComponent = () => {
   const [isTestnet] = useIsTestnet();
@@ -34,15 +34,15 @@ export const Assets: FunctionComponent = () => {
         <Table.Body>
           <Table.Row>
             <Table.RowHeaderCell>Wallet Balance:</Table.RowHeaderCell>
-            <Table.Cell>{formatUsd(Number(deposit.balance))}</Table.Cell>
+            <Table.Cell>{usdFormatter.format(Number(deposit.balance))}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Orderly Balance:</Table.RowHeaderCell>
-            <Table.Cell>{formatUsd(collateral.availableBalance)}</Table.Cell>
+            <Table.Cell>{usdFormatter.format(collateral.availableBalance)}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Unsettled PnL:</Table.RowHeaderCell>
-            <Table.Cell>{formatUsd(unsettledPnL)}</Table.Cell>
+            <Table.Cell>{usdFormatter.format(unsettledPnL)}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table.Root>

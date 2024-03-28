@@ -3,8 +3,9 @@ import { API, AccountStatusEnum } from '@orderly.network/types';
 import { Table } from '@radix-ui/themes';
 import { FunctionComponent } from 'react';
 
-import { Spinner } from '.';
-import { UpdatePosition } from './UpdatePosition';
+import { Spinner, UpdatePosition } from '.';
+
+import { baseFormatter, usdFormatter } from '~/utils';
 
 export const Positions: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [positions, _info, { refresh, loading }] = usePositionStream(symbol.symbol);
@@ -17,9 +18,6 @@ export const Positions: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol })
   if (!positions.rows || loading) {
     return <Spinner size="2rem" className="m-3" />;
   }
-
-  const baseFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 });
-  const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
   return (
     <Table.Root>

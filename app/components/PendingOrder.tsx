@@ -5,6 +5,8 @@ import { FunctionComponent, useState } from 'react';
 
 import { Spinner } from '.';
 
+import { baseFormatter, usdFormatter } from '~/utils';
+
 export const PendingOrder: FunctionComponent<{
   order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
   symbol: API.Symbol;
@@ -13,9 +15,6 @@ export const PendingOrder: FunctionComponent<{
 }> = ({ order, symbol, cancelOrder, cancelAlgoOrder }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const baseFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 });
-  const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
   return (
     <Table.Row key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}>

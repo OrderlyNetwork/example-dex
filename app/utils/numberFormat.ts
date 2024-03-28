@@ -1,10 +1,5 @@
-const usdFormatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 2
-});
-
-export function formatUsd(value: number | bigint): string {
-  return usdFormatter.format(value);
-}
+export const baseFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 });
+export const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 export function filterAllowedCharacters(value: string): string {
   const commaPos = value.indexOf('.');

@@ -3,8 +3,7 @@ import { API, AccountStatusEnum, OrderStatus } from '@orderly.network/types';
 import { Table } from '@radix-ui/themes';
 import { FunctionComponent } from 'react';
 
-import { Spinner } from '.';
-import { PendingOrder } from './PendingOrder';
+import { Spinner, PendingOrder } from '.';
 
 export const PendingOrders: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [ordersUntyped, { cancelOrder, cancelAlgoOrder, isLoading }] = useOrderStream({

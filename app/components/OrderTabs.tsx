@@ -2,8 +2,7 @@ import { API } from '@orderly.network/types';
 import { Tabs } from '@radix-ui/themes';
 import { FunctionComponent } from 'react';
 
-import { PendingOrders } from './PendingOrders';
-import { Positions } from './Positions';
+import { PendingOrders, Positions } from '.';
 
 export const OrderTabs: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
   return (

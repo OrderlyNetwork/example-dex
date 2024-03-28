@@ -1,11 +1,12 @@
-import { useOrderEntry } from '@orderly.network/hooks';
+import { useOrderEntry, useWithdraw } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { Separator } from '@radix-ui/themes';
 import { FunctionComponent, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Spinner, TokenInput } from '.';
 
-import { getDecimalsFromTick } from '~/helpers/api';
+import { getDecimalsFromTick, usdFormatter } from '~/utils';
 
 type Inputs = {
   direction: 'Buy' | 'Sell';
@@ -24,11 +25,14 @@ export const CreateOrder: FunctionComponent<{
       type: 'Market'
     }
   });
-  const { onSubmit, helper } = useOrderEntry(
+  const { availableWithdraw } = useWithdraw();
+  const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
       symbol: symbol.symbol,
-      side: OrderSide.BUY,
-      order_type: OrderType.MARKET
+      side: watch('direction', 'Buy') === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
+      order_type: watch('type', 'Market') === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
+      order_quantity: watch('quantity', undefined),
+      order_price: watch('price', undefined)
     },
     { watchOrderbook: true }
   );
@@ -47,8 +51,16 @@ export const CreateOrder: FunctionComponent<{
   const [_, base, quote] = symbol.symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbol);
 
-  const renderError = (error: FieldError) => {
-    return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
+  const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
+
+  const renderError = (error?: FieldError) => {
+    return (
+      <span
+        className={`${error == null ? 'h-0' : 'h-[1.3rem]'} overflow-hidden color-[var(--color-light-red)] transition-duration-300 transition-property-[height] transition-ease-out`}
+      >
+        {error?.message ?? ''}
+      </span>
+    );
   };
 
   return (
@@ -69,6 +81,13 @@ export const CreateOrder: FunctionComponent<{
           <input type="radio" className="hidden" {...register('direction')} value="Sell" />
           Sell
         </label>
+      </div>
+
+      <div className="flex flex-1 justify-between gap-3">
+        <span className="font-bold color-[var(--gray-12)]">Available:</span>
+        <span>
+          {usdFormatter.format(availableWithdraw)} {quote}
+        </span>
       </div>
 
       <select {...register('type')} className="flex flex-1 py-2 text-center font-bold">
@@ -100,7 +119,7 @@ export const CreateOrder: FunctionComponent<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {error && renderError(error)}
+              {renderError(error)}
             </>
           )}
         />
@@ -130,11 +149,30 @@ export const CreateOrder: FunctionComponent<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {error && renderError(error)}
+              {renderError(error)}
+              <div className="flex flex-1 justify-between gap-3">
+                <span className="font-bold color-[var(--gray-12)]">Max:</span>
+                <span>
+                  {formatter.format(maxQty)} {base}
+                </span>
+              </div>
             </>
           )}
         />
       </label>
+
+      <Separator className="min-w-full my--2" />
+
+      <div className="flex flex-1 justify-between gap-3">
+        <span className="font-bold color-[var(--gray-12)]">Est. Liq. price:</span>
+        <span>{estLiqPrice ? `${usdFormatter.format(estLiqPrice)} ${quote}` : '-'}</span>
+      </div>
+      <div className="flex flex-1 justify-between gap-3">
+        <span className="font-bold color-[var(--gray-12)]">Account leverage:</span>
+        <span>{estLeverage != null ? `⇒ ${formatter.format(estLeverage)}` : '-'}</span>
+      </div>
+
+      <Separator className="min-w-full my--2" />
 
       <button
         type="submit"
