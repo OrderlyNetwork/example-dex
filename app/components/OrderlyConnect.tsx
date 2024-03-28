@@ -2,7 +2,7 @@ import { useAccount } from '@orderly.network/hooks';
 import { AccountStatusEnum } from '@orderly.network/types';
 import { CheckCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator } from '@radix-ui/themes';
-import { useConnectWallet, useNotifications } from '@web3-onboard/react';
+import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { WalletConnection, PendingButton } from '~/components';
@@ -16,8 +16,14 @@ export const OrderlyConnect: FunctionComponent = () => {
   const [isTestnet] = useIsTestnet();
 
   const { account, state } = useAccount();
+  const [{ connectedChain }] = useSetChain();
 
   const [_, customNotification] = useNotifications();
+
+  useEffect(() => {
+    if (!connectedChain) return;
+    account.switchChainId(connectedChain.id);
+  }, [connectedChain, account]);
 
   useEffect(() => {
     if (timer != null) {
