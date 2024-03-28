@@ -13,7 +13,7 @@ export const SymbolSelection: FunctionComponent<{
   const [open, setOpen] = useState(false);
   const symbolInfo = useSymbolsInfo();
 
-  if (!symbol) {
+  if (!symbol || symbolInfo.isNil) {
     return <Spinner />;
   }
 
@@ -31,22 +31,26 @@ export const SymbolSelection: FunctionComponent<{
         </Dialog.Title>
 
         <div className="flex flex-col max-h-[30rem]">
-          {Object.values(symbolInfo).map((cur) => {
-            const symbol = cur();
-            return (
-              <Button
-                key={symbol.symbol}
-                variant="ghost"
-                className="border-rd-0 py-3 font-size-4"
-                onClick={() => {
-                  setSymbol(symbol);
-                  setOpen(false);
-                }}
-              >
-                {symbol.symbol}
-              </Button>
-            );
-          })}
+          {Object.values(symbolInfo)
+            .filter((cur) => typeof cur !== 'boolean')
+            .map((cur) => {
+              // type guard
+              if (typeof cur === 'boolean') return;
+              const symbol = cur();
+              return (
+                <Button
+                  key={symbol.symbol}
+                  variant="ghost"
+                  className="border-rd-0 py-3 font-size-4"
+                  onClick={() => {
+                    setSymbol(symbol);
+                    setOpen(false);
+                  }}
+                >
+                  {symbol.symbol}
+                </Button>
+              );
+            })}
         </div>
       </Dialog.Content>
     </Dialog.Root>
