@@ -1,13 +1,13 @@
 import { API } from '@orderly.network/types';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator, Tabs } from '@radix-ui/themes';
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { ClosePosition, StopOrder } from '.';
 
 import { baseFormatter, usdFormatter } from '~/utils';
 
-export const UpdatePosition: FunctionComponent<{
+export const UpdatePosition: FC<{
   symbol: API.Symbol;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;

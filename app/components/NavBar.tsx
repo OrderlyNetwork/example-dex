@@ -1,11 +1,11 @@
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { Link } from '@remix-run/react';
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { OrderlyConnect, WalletConnection } from '~/components';
 
-export const NavBar: FunctionComponent = () => {
+export const NavBar: FC = () => {
   const [open, setOpen] = useState(false);
 
   const closeMenu = () => {

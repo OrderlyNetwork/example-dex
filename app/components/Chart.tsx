@@ -8,7 +8,7 @@ import {
   type Time,
   type UTCTimestamp
 } from 'lightweight-charts';
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
 
 type Klines = {
@@ -30,7 +30,7 @@ type Kline = {
   v: number;
 };
 
-export const Chart: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const Chart: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [chartData, setChartData] = useState<[IChartApi, ISeriesApi<'Candlestick'>]>();
   const chartRef = useRef<HTMLDivElement>(null);
   const { width } = useResizeObserver<HTMLDivElement>({

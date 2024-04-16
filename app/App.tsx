@@ -1,11 +1,11 @@
 import { OrderlyConfigProvider } from '@orderly.network/hooks';
 import { Outlet } from '@remix-run/react';
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import { NavBar } from '~/components';
 import { useIsTestnet } from '~/hooks';
 
-export const App: FunctionComponent = () => {
+export const App: FC = () => {
   const [isTestnet, networkChanged] = useIsTestnet();
 
   if (networkChanged && typeof window !== 'undefined') {

@@ -1,9 +1,9 @@
 import { useAccount } from '@orderly.network/hooks';
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
-import { FunctionComponent, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
-export const WalletConnection: FunctionComponent = () => {
+export const WalletConnection: FC = () => {
   const { account } = useAccount();
   const [{ wallet }, connectWallet, disconnectWallet] = useConnectWallet();
   const [{ connectedChain }, setChain] = useSetChain();

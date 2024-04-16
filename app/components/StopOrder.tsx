@@ -2,7 +2,7 @@ import { useOrderEntry } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Slider } from '@radix-ui/themes';
 import { FixedNumber } from 'ethers';
-import { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Spinner, TokenInput } from '.';
@@ -16,7 +16,7 @@ type Inputs = {
   quantity?: string | number;
 };
 
-export const StopOrder: FunctionComponent<{
+export const StopOrder: FC<{
   symbol: API.Symbol;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;

@@ -1,10 +1,10 @@
 import { useOrderbookStream } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import { Spinner } from '.';
 
-export const Orderbook: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const Orderbook: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [data, { isLoading }] = useOrderbookStream(symbol.symbol, undefined, {
     level: 10
   });

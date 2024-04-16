@@ -1,9 +1,9 @@
 import { Button } from '@radix-ui/themes';
-import { FunctionComponent, MouseEventHandler, PropsWithChildren, useState } from 'react';
+import { FC, MouseEventHandler, PropsWithChildren, useState } from 'react';
 
 import { Spinner } from '.';
 
-export const PendingButton: FunctionComponent<
+export const PendingButton: FC<
   PropsWithChildren<{
     onClick: MouseEventHandler<HTMLButtonElement>;
     className?: string;

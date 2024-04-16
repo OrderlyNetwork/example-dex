@@ -2,11 +2,11 @@ import { useSymbolsInfo } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { Button, Dialog } from '@radix-ui/themes';
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Spinner } from '.';
 
-export const SymbolSelection: FunctionComponent<{
+export const SymbolSelection: FC<{
   symbol?: API.Symbol;
   setSymbol: React.Dispatch<React.SetStateAction<API.Symbol | undefined>>;
 }> = ({ symbol, setSymbol }) => {

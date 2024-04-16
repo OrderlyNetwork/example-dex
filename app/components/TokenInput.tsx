@@ -1,10 +1,10 @@
 import { FixedNumber } from 'ethers';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '~/utils';
 
-export const TokenInput: FunctionComponent<
+export const TokenInput: FC<
   {
     decimals: number;
     id?: string;

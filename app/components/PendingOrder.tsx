@@ -1,13 +1,13 @@
 import { useOrderStream } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { Button, Dialog, Table } from '@radix-ui/themes';
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Spinner } from '.';
 
 import { baseFormatter, usdFormatter } from '~/utils';
 
-export const PendingOrder: FunctionComponent<{
+export const PendingOrder: FC<{
   order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
   symbol: API.Symbol;
   cancelOrder: ReturnType<typeof useOrderStream>[1]['cancelOrder'];

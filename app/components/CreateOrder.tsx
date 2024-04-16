@@ -1,7 +1,7 @@
 import { useOrderEntry, useWithdraw } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Spinner, TokenInput } from '.';
@@ -15,7 +15,7 @@ type Inputs = {
   quantity: string;
 };
 
-export const CreateOrder: FunctionComponent<{
+export const CreateOrder: FC<{
   symbol: API.Symbol;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);

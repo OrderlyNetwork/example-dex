@@ -4,13 +4,13 @@ import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Tabs } from '@radix-ui/themes';
 import { useNotifications, useSetChain } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
-import { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import { PendingButton, TokenInput } from '~/components';
 import { useIsTestnet } from '~/hooks';
 import { supportedChains } from '~/utils';
 
-export const OrderlyDeposit: FunctionComponent<{
+export const OrderlyDeposit: FC<{
   walletBalance: FixedNumber;
   orderlyBalance: FixedNumber;
   withdraw: ReturnType<typeof useWithdraw>['withdraw'];

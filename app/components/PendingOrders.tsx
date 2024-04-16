@@ -1,11 +1,11 @@
 import { useAccount, useOrderStream } from '@orderly.network/hooks';
 import { API, AccountStatusEnum, OrderStatus } from '@orderly.network/types';
 import { Table } from '@radix-ui/themes';
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import { Spinner, PendingOrder } from '.';
 
-export const PendingOrders: FunctionComponent<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const PendingOrders: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [ordersUntyped, { cancelOrder, cancelAlgoOrder, isLoading }] = useOrderStream({
     symbol: symbol.symbol,
     status: OrderStatus.INCOMPLETE

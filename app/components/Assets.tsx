@@ -3,13 +3,13 @@ import { API } from '@orderly.network/types';
 import { Table } from '@radix-ui/themes';
 import { useSetChain } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
-import { FunctionComponent, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 
 import { OrderlyDeposit } from '~/components';
 import { useIsTestnet } from '~/hooks';
 import { supportedChains, usdFormatter } from '~/utils';
 
-export const Assets: FunctionComponent = () => {
+export const Assets: FC = () => {
   const [isTestnet] = useIsTestnet();
   const collateral = useCollateral();
   const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {

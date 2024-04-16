@@ -3,14 +3,14 @@ import { AccountStatusEnum } from '@orderly.network/types';
 import { CheckCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator } from '@radix-ui/themes';
 import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { WalletConnection, PendingButton } from '~/components';
 import { useIsTestnet } from '~/hooks';
 
 let timer: number | undefined;
 
-export const OrderlyConnect: FunctionComponent = () => {
+export const OrderlyConnect: FC = () => {
   const [open, setOpen] = useState(false);
   const [{ wallet }] = useConnectWallet();
   const [isTestnet] = useIsTestnet();

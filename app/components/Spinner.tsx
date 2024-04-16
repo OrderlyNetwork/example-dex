@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
-export const Spinner: FunctionComponent<{
+export const Spinner: FC<{
   size?: string;
   overlay?: boolean;
   className?: string;
