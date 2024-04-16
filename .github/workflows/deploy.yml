@@ -18,6 +18,8 @@ jobs:
 
       - name: Download TradingView
         run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
           git clone --depth 1 git@github.com:OrderlyNetwork/tradingview.git ./public/tradingview
 
       - name: Build
