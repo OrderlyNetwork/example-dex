@@ -15,6 +15,7 @@ import {
 import { OrderTabs } from '~/components/OrderTabs';
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
+  console.log('CONTEXT', context);
   return json({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useAdvancedCharts: (context.env as any).cloudflare.USE_ADVANCED_CHARTS === 'true' ? true : false
