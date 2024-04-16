@@ -1,5 +1,6 @@
+export * from './AdvancedChart';
 export * from './Assets';
-export * from './Chart';
+export * from './LightweightChart';
 export * from './ClosePosition';
 export * from './CreateOrder';
 export * from './NavBar';

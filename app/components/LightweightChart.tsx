@@ -30,13 +30,13 @@ type Kline = {
   v: number;
 };
 
-export const Chart: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const LightweightChart: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
   const [chartData, setChartData] = useState<[IChartApi, ISeriesApi<'Candlestick'>]>();
   const chartRef = useRef<HTMLDivElement>(null);
   const { width } = useResizeObserver<HTMLDivElement>({
     ref: chartRef
   });
-  // const ws = useWS();
+
   const apiBaseUrl = useConfig('apiBaseUrl');
 
   useEffect(() => {

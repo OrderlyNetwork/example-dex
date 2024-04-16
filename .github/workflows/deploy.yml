@@ -16,6 +16,10 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Download TradingView
+        run: |
+          git clone --depth 1 git@github.com:OrderlyNetwork/tradingview.git ./public/tradingview
+
       - name: Build
         run: |
           yarn install

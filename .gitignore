@@ -7,3 +7,5 @@ node_modules
 
 # UnoCSS generated css file
 /app/styles/uno.css
+
+/public/tradingview
