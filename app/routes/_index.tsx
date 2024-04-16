@@ -15,16 +15,10 @@ import {
 import { OrderTabs } from '~/components/OrderTabs';
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const isProd = !!context.env;
-  let useAdvancedCharts;
-  if (isProd) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    useAdvancedCharts = (context.env as any).USE_ADVANCED_CHARTS === 'true' ? true : false;
-  } else {
-    useAdvancedCharts = process.env.USE_ADVANCED_CHARTS === 'true' ? true : false;
-  }
+  console.log('CONTEXT', context);
   return json({
-    useAdvancedCharts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    useAdvancedCharts: (context.env as any).USE_ADVANCED_CHARTS === 'true' ? true : false
   });
 };
 
