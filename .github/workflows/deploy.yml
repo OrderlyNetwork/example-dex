@@ -17,10 +17,11 @@ jobs:
           node-version: '18'
 
       - name: Download TradingView
-        run: |
-          eval `ssh-agent -s`
-          ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
-          git clone --depth 1 git@github.com:OrderlyNetwork/tradingview.git ./public/tradingview
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
+          repository: OrderlyNetwork/tradingview
+          path: public/tradingview
 
       - name: Build
         run: |
