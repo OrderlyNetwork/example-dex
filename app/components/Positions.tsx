@@ -39,7 +39,10 @@ export const Positions: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
             <Table.Cell>{baseFormatter.format(position.position_qty)}</Table.Cell>
             <Table.Cell>{usdFormatter.format(position.average_open_price)}</Table.Cell>
             <Table.Cell>{usdFormatter.format(position.mark_price)}</Table.Cell>
-            <Table.Cell>{usdFormatter.format(position.unrealized_pnl)}</Table.Cell>
+            <Table.Cell>
+              {usdFormatter.format(position.unrealized_pnl)} (
+              {usdFormatter.format(position.unrealized_pnl_ROI * 100)}%)
+            </Table.Cell>
             <Table.Cell>
               {position.est_liq_price ? usdFormatter.format(position.est_liq_price) : '-'}
             </Table.Cell>
