@@ -1872,67 +1872,67 @@
   dependencies:
     which "^3.0.0"
 
-"@orderly.network/core@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.2.0.tgz#383bf795aae914fb35bac9b520d06375eabcceb4"
-  integrity sha512-vjKRdq7eV2P49mYbVlPfaQBFAmk6a0YcX5IQBfh1Zb96FL+cNRZst+8gAqKl3jZoT8b9JWwo8fr2wvE+OT3rUA==
+"@orderly.network/core@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.3.0-alpha.0.tgz#8a37fd895533e41eac32323bae9f2eefaea4215d"
+  integrity sha512-Zj6cfojIo9hAKVwuk+qpfw+tQ+ug3McYHn9Z6iscKFAqVdFHd5H6oeHe04xubgWulAgGh4Der7oCMCOo9O4O+w==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/types" "1.2.0"
+    "@orderly.network/types" "1.3.0-alpha.0"
     bs58 "^5.0.0"
     ethers "^6.7.1"
     eventemitter3 "^5.0.1"
     lodash.merge "^4.6.2"
 
-"@orderly.network/hooks@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.2.0.tgz#f76375dde32495bf9160b0b9319bdf16ec2a0d51"
-  integrity sha512-sUiQ/O1FhH575dMQ/WwEf6Vtc5k+FqeqBtkCj+O85vLdFLwVF1TqrCny1iSzYmqy4VJe+cidlujfm+XI23Y+cg==
+"@orderly.network/hooks@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.3.0-alpha.0.tgz#5fcb42a7860075f45ac35fb4da1e06c8b7bfb458"
+  integrity sha512-1tNmSAvtssH6N0rH9elSR9MweuO+5+StI0nsSPnGI6wnA8AOmdBc8vCbV53bAgAPoc9x/WJcul5nkZdWhg7J4A==
   dependencies:
-    "@orderly.network/core" "1.2.0"
-    "@orderly.network/net" "1.2.0"
-    "@orderly.network/perp" "3.0.0"
-    "@orderly.network/types" "1.2.0"
-    "@orderly.network/utils" "1.2.0"
+    "@orderly.network/core" "1.3.0-alpha.0"
+    "@orderly.network/net" "1.3.0-alpha.0"
+    "@orderly.network/perp" "3.1.0-alpha.0"
+    "@orderly.network/types" "1.3.0-alpha.0"
+    "@orderly.network/utils" "1.3.0-alpha.0"
     ramda "^0.29.0"
     swr "^2.2.4"
     use-constant "^1.1.1"
     use-debounce "^9.0.4"
 
-"@orderly.network/net@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.2.0.tgz#d2372d0cb604ce936b58b348b3088b85681b5e43"
-  integrity sha512-ndFYuMaCGCjgZ/luZkZ22rQtliK7tWTJT1JVSxQFc+RNFf6IDkic4KgiKIra5Dk91L7aFYN0WqFFEsYpiG3+/Q==
+"@orderly.network/net@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.3.0-alpha.0.tgz#aee41665c2048a5dc83741292c03fb3d3457ee4b"
+  integrity sha512-8I8PnbpcXEB715uDVuqig6JkYJJRA8+HBFp4RMWwccy23PHBB/+ZDGHo6pJv0M7ecMbbBn1XfZGfS+Tj2LoWyQ==
 
-"@orderly.network/perp@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.0.0.tgz#501ed05da23a0c0a17b086e956aef145bdbc48d0"
-  integrity sha512-nM0X73zTrN4jDhUSDbdviqiSNgoWYWokwoSMRme3BpzDJg1gcjcf9EYx1ScWGwW1/xBtqK+z8nvujH8fx2qKjg==
+"@orderly.network/perp@3.1.0-alpha.0":
+  version "3.1.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.1.0-alpha.0.tgz#eb3b3d5e0a16c1aa4d3f1056fbb07b6f984f483c"
+  integrity sha512-PO2qjWWmghvBDOVKatrLx2L0cWnqnO2Fsi0Gg0f1j02+FBINMGcO0g8fqNly12eFUXcHo46YM6xQlsmQygvkww==
   dependencies:
-    "@orderly.network/types" "1.2.0"
-    "@orderly.network/utils" "1.2.0"
+    "@orderly.network/types" "1.3.0-alpha.0"
+    "@orderly.network/utils" "1.3.0-alpha.0"
 
-"@orderly.network/trading-view@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.2.0.tgz#0325a005279129fcef6e3428174084ddab9c5177"
-  integrity sha512-n8eTt77I3lNXJVOeMJZ/+on48mzVaLkxy0lrb4hMo62HO/dvhutj00Pm9ewVe4ketgo5Gze9CpBjePM74zMGNg==
+"@orderly.network/trading-view@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.3.0-alpha.0.tgz#dee6e183af2284f16f35a1746babee43868aba47"
+  integrity sha512-YzbPdz5oDEcdmbJCFjmmv52jvFFNEwiZP2jEEJeWjoObb/BxDipvA7P0o5hpvQ80SX8eBPd/8sEZlTJ7dEoOMg==
   dependencies:
-    "@orderly.network/core" "1.2.0"
-    "@orderly.network/hooks" "1.2.0"
-    "@orderly.network/net" "1.2.0"
-    "@orderly.network/types" "1.2.0"
-    "@orderly.network/utils" "1.2.0"
+    "@orderly.network/core" "1.3.0-alpha.0"
+    "@orderly.network/hooks" "1.3.0-alpha.0"
+    "@orderly.network/net" "1.3.0-alpha.0"
+    "@orderly.network/types" "1.3.0-alpha.0"
+    "@orderly.network/utils" "1.3.0-alpha.0"
 
-"@orderly.network/types@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.2.0.tgz#229671239e2d065e0d7c873e89f1608859ce5960"
-  integrity sha512-z7Imba7nZf2XH8WKFrXR3syEH9fVPvw7QSvFHRE19kNyYseQnwahhUySAzEHCOESYRPMWBUEGPYFlCaPxbAxuA==
+"@orderly.network/types@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.3.0-alpha.0.tgz#a81d6e3c9159aee88b9638a9b32dc91c3e33bff3"
+  integrity sha512-cnObFgu8uk86+ymk7XQDQiq4uYVZbKk6M0/9nfZpJBdULd1IIOp9ULNHCvf6QSTY3YcuF35OzR8Zdo6kZh6hWw==
 
-"@orderly.network/utils@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.2.0.tgz#e95937894dbf69db695fa7b8498fcd10bb1a0cf8"
-  integrity sha512-IICjd4ydcgbyudrzb2B/fImBVE8BD+kvIqzt//2NBe+i5C2DhkgPDbY5MQEJf+JNAypqXR+rMIJl5dGye2xBVQ==
+"@orderly.network/utils@1.3.0-alpha.0":
+  version "1.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.3.0-alpha.0.tgz#946077b71965e45b0b47ef0e1dff7eb8c11c8d98"
+  integrity sha512-d05Mk76N6tNqYGwMNKZABOVOx70oiqLc7Q3MpAA/6zTXENHg2tX69uQOASVWbIWc8TnLWgnuoDtSV5rjq6laKw==
   dependencies:
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"
@@ -9704,6 +9704,11 @@ ts-api-utils@^1.0.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.3.0.tgz#4b490e27129f1e8e686b45cc4ab63714dc60eea1"
   integrity sha512-UQMIo7pb8WRomKR1/+MFVLTroIvDVtMX3K6OUir8ynLyzB8Jeriont2bTAtmNPa1ekAgN7YPDyf6V+ygrdU+eQ==
+
+ts-pattern@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/ts-pattern/-/ts-pattern-5.1.1.tgz#600e0a3d23ab1b0eb30b7c897d0898e940504544"
+  integrity sha512-i+owkHr5RYdQxj8olUgRrqpiWH9x27PuWVfXwDmJ/n/CoF/SAa7WW1i2oUpPDMQpJ4U+bGRUcZkVq7i1m3zFCg==
 
 tsconfck@^3.0.3:
   version "3.0.3"

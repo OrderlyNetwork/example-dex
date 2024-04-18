@@ -3,6 +3,7 @@ import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { FC, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { match } from 'ts-pattern';
 
 import { Spinner, TokenInput } from '.';
 
@@ -29,8 +30,14 @@ export const CreateOrder: FC<{
   const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
       symbol: symbol.symbol,
-      side: watch('direction', 'Buy') === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
-      order_type: watch('type', 'Market') === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
+      side: match(watch('direction', 'Buy'))
+        .with('Buy', () => OrderSide.BUY)
+        .with('Sell', () => OrderSide.SELL)
+        .exhaustive(),
+      order_type: match(watch('type', 'Market'))
+        .with('Market', () => OrderType.MARKET)
+        .with('Limit', () => OrderType.LIMIT)
+        .exhaustive(),
       order_quantity: watch('quantity', undefined),
       order_price: watch('price', undefined)
     },
@@ -196,8 +203,14 @@ async function getValidationErrors(
 function getInput(data: Inputs, symbol: string): OrderEntity {
   return {
     symbol,
-    side: data.direction === 'Buy' ? OrderSide.BUY : OrderSide.SELL,
-    order_type: data.type === 'Market' ? OrderType.MARKET : OrderType.LIMIT,
+    side: match(data.direction)
+      .with('Buy', () => OrderSide.BUY)
+      .with('Sell', () => OrderSide.SELL)
+      .exhaustive(),
+    order_type: match(data.type)
+      .with('Market', () => OrderType.MARKET)
+      .with('Limit', () => OrderType.LIMIT)
+      .exhaustive(),
     order_price: data.price,
     order_quantity: data.quantity
   };
