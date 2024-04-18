@@ -1,11 +1,12 @@
 import { useOrderEntry, useWithdraw } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
+import { useConnectWallet } from '@web3-onboard/react';
 import { FC, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 
-import { Spinner, TokenInput } from '.';
+import { ConnectWalletButton, Spinner, TokenInput } from '.';
 
 import { getDecimalsFromTick, usdFormatter } from '~/utils';
 
@@ -26,6 +27,7 @@ export const CreateOrder: FC<{
       type: 'Market'
     }
   });
+  const [{ wallet }] = useConnectWallet();
   const { availableWithdraw } = useWithdraw();
   const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
@@ -184,10 +186,11 @@ export const CreateOrder: FC<{
       <button
         type="submit"
         disabled={loading}
-        className="relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0"
+        className={`relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0 ${wallet == null ? 'hidden' : ''}`}
       >
         {loading && <Spinner overlay={true} />} Create Order
       </button>
+      {wallet == null && <ConnectWalletButton />}
     </form>
   );
 };

@@ -3,9 +3,11 @@ import { Button, DropdownMenu } from '@radix-ui/themes';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
 import { FC, useEffect } from 'react';
 
+import { ConnectWalletButton } from './ConnectWalletButton';
+
 export const WalletConnection: FC = () => {
   const { account } = useAccount();
-  const [{ wallet }, connectWallet, disconnectWallet] = useConnectWallet();
+  const [{ wallet }, _, disconnectWallet] = useConnectWallet();
   const [{ connectedChain }, setChain] = useSetChain();
 
   useEffect(() => {
@@ -132,13 +134,6 @@ export const WalletConnection: FC = () => {
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ) : (
-    <Button
-      onClick={async () => {
-        if (wallet) return;
-        await connectWallet();
-      }}
-    >
-      Connect wallet
-    </Button>
+    <ConnectWalletButton />
   );
 };
