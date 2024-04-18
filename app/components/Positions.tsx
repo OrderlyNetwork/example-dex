@@ -22,7 +22,7 @@ export const Positions: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
   return (
     <Table.Root>
       <Table.Header>
-        <Table.Row>
+        <Table.Row className="[&>*]:align-mid">
           <Table.ColumnHeaderCell>Symbol</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Avg. Open</Table.ColumnHeaderCell>
@@ -34,7 +34,7 @@ export const Positions: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
       </Table.Header>
       <Table.Body>
         {positions.rows.map((position) => (
-          <Table.Row key={position.symbol}>
+          <Table.Row key={position.symbol} className="[&>*]:align-mid">
             <Table.Cell>{position.symbol}</Table.Cell>
             <Table.Cell>{baseFormatter.format(position.position_qty)}</Table.Cell>
             <Table.Cell>{usdFormatter.format(position.average_open_price)}</Table.Cell>
