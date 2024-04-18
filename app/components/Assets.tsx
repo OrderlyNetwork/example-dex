@@ -43,15 +43,19 @@ export const Assets: FC = () => {
         <Table.Body>
           <Table.Row>
             <Table.RowHeaderCell>Wallet Balance:</Table.RowHeaderCell>
-            <Table.Cell>{usdFormatter.format(Number(deposit.balance))}</Table.Cell>
+            <Table.Cell className="text-right">
+              {usdFormatter.format(Number(deposit.balance))} $
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Orderly Balance:</Table.RowHeaderCell>
-            <Table.Cell>{usdFormatter.format(collateral.availableBalance)}</Table.Cell>
+            <Table.Cell className="text-right">
+              {usdFormatter.format(collateral.availableBalance)} $
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Unsettled PnL:</Table.RowHeaderCell>
-            <Table.Cell>{usdFormatter.format(unsettledPnL)}</Table.Cell>
+            <Table.Cell className="text-right">{usdFormatter.format(unsettledPnL)} $</Table.Cell>
           </Table.Row>
         </Table.Body>
         <Table.Row>
@@ -63,7 +67,7 @@ export const Assets: FC = () => {
             </Tooltip>
             :
           </Table.RowHeaderCell>
-          <Table.Cell>{usdFormatter.format(availableWithdraw)}</Table.Cell>
+          <Table.Cell className="text-right">{usdFormatter.format(availableWithdraw)} $</Table.Cell>
         </Table.Row>
       </Table.Root>
       <OrderlyDeposit
