@@ -1,7 +1,7 @@
 import { useOrderEntry, useWithdraw } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
-import { useConnectWallet } from '@web3-onboard/react';
+import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
@@ -22,7 +22,7 @@ export const CreateOrder: FC<{
   symbol: API.Symbol;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, watch, control } = useForm<Inputs>({
+  const { register, handleSubmit, watch, control, reset } = useForm<Inputs>({
     defaultValues: {
       direction: 'Buy',
       type: 'Market'
@@ -47,15 +47,34 @@ export const CreateOrder: FC<{
     },
     { watchOrderbook: true }
   );
+  const [_0, customNotification] = useNotifications();
 
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
+    const { update } = customNotification({
+      eventCode: 'createOrder',
+      type: 'pending',
+      message: 'Creating order...'
+    });
     try {
       await onSubmit(getInput(data, symbol.symbol));
+      update({
+        eventCode: 'createOrderSuccess',
+        type: 'success',
+        message: 'Order successfully created!',
+        autoDismiss: 5_000
+      });
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
+      update({
+        eventCode: 'createOrderError',
+        type: 'error',
+        message: 'Order creation failed!',
+        autoDismiss: 5_000
+      });
     } finally {
       setLoading(false);
+      reset();
     }
   };
 
