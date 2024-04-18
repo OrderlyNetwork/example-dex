@@ -30,6 +30,7 @@ export const PendingOrders: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
           <Table.ColumnHeaderCell>Side</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Price</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Trigger Price</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>

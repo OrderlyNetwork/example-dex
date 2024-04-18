@@ -17,17 +17,19 @@ export const PendingOrder: FC<{
   const [open, setOpen] = useState(false);
 
   return (
-    <Table.Row key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}>
+    <Table.Row
+      key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
+      className="[&>*]:align-mid"
+    >
       <Table.Cell>{order.order.symbol}</Table.Cell>
       <Table.Cell>
         {order.isAlgoOrder ? order.order.algo_type : ''} {order.order.type}
       </Table.Cell>
       <Table.Cell>{order.order.side}</Table.Cell>
       <Table.Cell>{baseFormatter.format(order.order.quantity)}</Table.Cell>
+      <Table.Cell>{order.order.price ? usdFormatter.format(order.order.price) : '-'}</Table.Cell>
       <Table.Cell>
-        {usdFormatter.format(
-          (order.isAlgoOrder ? order.order.trigger_price : order.order.price) ?? 0
-        )}
+        {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}
       </Table.Cell>
       <Table.Cell>
         <Dialog.Root open={open} onOpenChange={setOpen}>
