@@ -5,10 +5,11 @@ import { FC } from 'react';
 import { Spinner } from './Spinner';
 
 export const AdvancedChart: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
+  const [_, base, quote] = symbol.symbol.split('_');
   return (
     <div className="w-full min-h-[35rem] [&_iframe]:min-h-[35rem]">
       <TradingView
-        symbol={symbol.symbol}
+        symbol={`${base}/${quote}`}
         libraryPath="/tradingview/charting_library/bundles"
         tradingViewScriptSrc="/tradingview/charting_library/charting_library.js"
         tradingViewCustomCssUrl="/tradingview/chart.css"
