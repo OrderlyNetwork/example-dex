@@ -12,7 +12,8 @@ import { getDecimalsFromTick, usdFormatter } from '~/utils';
 
 type Inputs = {
   direction: 'Buy' | 'Sell';
-  type: 'Market' | 'Limit';
+  type: 'Market' | 'Limit' | 'StopLimit';
+  triggerPrice?: string;
   price: string;
   quantity: string;
 };
@@ -39,6 +40,7 @@ export const CreateOrder: FC<{
       order_type: match(watch('type', 'Market'))
         .with('Market', () => OrderType.MARKET)
         .with('Limit', () => OrderType.LIMIT)
+        .with('StopLimit', () => OrderType.STOP_LIMIT)
         .exhaustive(),
       order_quantity: watch('quantity', undefined),
       order_price: watch('price', undefined)
@@ -102,7 +104,42 @@ export const CreateOrder: FC<{
       <select {...register('type')} className="flex flex-1 py-2 text-center font-bold">
         <option value="Market">Market</option>
         <option value="Limit">Limit</option>
+        <option value="StopLimit">Stop Limit</option>
       </select>
+
+      <label
+        className={`flex-col ${match(watch('type', 'Market'))
+          .with('StopLimit', () => 'flex')
+          .otherwise(() => 'hidden')}`}
+      >
+        <span className="font-bold font-size-5">Trigger Price ({quote})</span>
+        <Controller
+          name="triggerPrice"
+          control={control}
+          rules={{
+            validate: {
+              custom: async (_, data) => {
+                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                return errors?.trigger_price != null ? errors.trigger_price.message : true;
+              }
+            }
+          }}
+          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
+            <>
+              <TokenInput
+                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
+                decimals={quoteDecimals}
+                placeholder="Price"
+                name={name}
+                onBlur={onBlur}
+                onChange={onChange}
+                hasError={error != null}
+              />
+              {renderError(error)}
+            </>
+          )}
+        />
+      </label>
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Price ({quote})</span>
@@ -213,8 +250,10 @@ function getInput(data: Inputs, symbol: string): OrderEntity {
     order_type: match(data.type)
       .with('Market', () => OrderType.MARKET)
       .with('Limit', () => OrderType.LIMIT)
+      .with('StopLimit', () => OrderType.STOP_LIMIT)
       .exhaustive(),
     order_price: data.price,
-    order_quantity: data.quantity
+    order_quantity: data.quantity,
+    trigger_price: data.triggerPrice
   };
 }
