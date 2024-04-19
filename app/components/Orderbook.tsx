@@ -1,15 +1,14 @@
 import { useOrderbookStream } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
 import { FC } from 'react';
 
 import { Spinner } from '.';
 
-export const Orderbook: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
-  const [data, { isLoading }] = useOrderbookStream(symbol.symbol, undefined, {
+export const Orderbook: FC<{ symbol: string }> = ({ symbol }) => {
+  const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
     level: 10
   });
 
-  const [_, base, quote] = symbol.symbol.split('_');
+  const [_, base, quote] = symbol.split('_');
 
   if (isLoading) {
     return (

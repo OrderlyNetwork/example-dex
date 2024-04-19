@@ -1,5 +1,4 @@
-import { useSymbolsInfo } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
+import { MarketsType, useMarkets } from '@orderly.network/hooks';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { Button, Dialog } from '@radix-ui/themes';
 import { FC, useState } from 'react';
@@ -7,21 +6,24 @@ import { FC, useState } from 'react';
 import { Spinner } from '.';
 
 export const SymbolSelection: FC<{
-  symbol?: API.Symbol;
-  setSymbol: React.Dispatch<React.SetStateAction<API.Symbol | undefined>>;
+  symbol?: string;
+  setSymbol: React.Dispatch<React.SetStateAction<string | undefined>>;
 }> = ({ symbol, setSymbol }) => {
   const [open, setOpen] = useState(false);
-  const symbolInfo = useSymbolsInfo();
 
-  if (!symbol || symbolInfo.isNil) {
+  const [markets] = useMarkets(MarketsType.ALL);
+  if (!symbol) {
     return <Spinner />;
   }
+  const [_, base] = symbol.split('_');
+
+  console.log('markets', markets);
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
         <button className="py-3 font-size-4 bg-transparent hover:bg-[var(--accent-3)] cursor-pointer flex flex-items-center gap-2">
-          {symbol.symbol}
+          PERP-{base}
           <CaretDownIcon />
         </button>
       </Dialog.Trigger>
@@ -31,26 +33,22 @@ export const SymbolSelection: FC<{
         </Dialog.Title>
 
         <div className="flex flex-col max-h-[30rem]">
-          {Object.values(symbolInfo)
-            .filter((cur) => typeof cur !== 'boolean')
-            .map((cur) => {
-              // type guard
-              if (typeof cur === 'boolean') return;
-              const symbol = cur();
-              return (
-                <Button
-                  key={symbol.symbol}
-                  variant="ghost"
-                  className="border-rd-0 py-3 font-size-4"
-                  onClick={() => {
-                    setSymbol(symbol);
-                    setOpen(false);
-                  }}
-                >
-                  {symbol.symbol}
-                </Button>
-              );
-            })}
+          {Object.values(markets).map((market) => {
+            const [_, base] = market.symbol.split('_');
+            return (
+              <Button
+                key={market.symbol}
+                variant="ghost"
+                className="border-rd-0 py-3 font-size-4"
+                onClick={() => {
+                  setSymbol(market.symbol);
+                  setOpen(false);
+                }}
+              >
+                PERP-{base}
+              </Button>
+            );
+          })}
         </div>
       </Dialog.Content>
     </Dialog.Root>

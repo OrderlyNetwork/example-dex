@@ -1,14 +1,13 @@
 import { useTickerStream } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
 import { FC } from 'react';
 
 import { Spinner, SymbolSelection } from '.';
 
 export const SymbolHeader: FC<{
-  symbol: API.Symbol;
-  setSymbol: React.Dispatch<React.SetStateAction<API.Symbol | undefined>>;
+  symbol: string;
+  setSymbol: React.Dispatch<React.SetStateAction<string | undefined>>;
 }> = ({ symbol, setSymbol }) => {
-  const stream = useTickerStream(symbol.symbol);
+  const stream = useTickerStream(symbol);
 
   let content;
   if (!stream) {

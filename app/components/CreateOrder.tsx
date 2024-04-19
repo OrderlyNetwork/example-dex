@@ -1,5 +1,5 @@
-import { useOrderEntry, useWithdraw } from '@orderly.network/hooks';
-import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
+import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
@@ -19,7 +19,7 @@ type Inputs = {
 };
 
 export const CreateOrder: FC<{
-  symbol: API.Symbol;
+  symbol: string;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, watch, control, reset } = useForm<Inputs>({
@@ -28,11 +28,12 @@ export const CreateOrder: FC<{
       type: 'Market'
     }
   });
+  const symbolsInfo = useSymbolsInfo();
   const [{ wallet }] = useConnectWallet();
   const { availableWithdraw } = useWithdraw();
   const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
-      symbol: symbol.symbol,
+      symbol,
       side: match(watch('direction', 'Buy'))
         .with('Buy', () => OrderSide.BUY)
         .with('Sell', () => OrderSide.SELL)
@@ -49,6 +50,10 @@ export const CreateOrder: FC<{
   );
   const [_0, customNotification] = useNotifications();
 
+  if (symbolsInfo.isNil) {
+    return <Spinner />;
+  }
+
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     const { update } = customNotification({
@@ -57,7 +62,7 @@ export const CreateOrder: FC<{
       message: 'Creating order...'
     });
     try {
-      await onSubmit(getInput(data, symbol.symbol));
+      await onSubmit(getInput(data, symbol));
       update({
         eventCode: 'createOrderSuccess',
         type: 'success',
@@ -78,8 +83,9 @@ export const CreateOrder: FC<{
     }
   };
 
-  const [_, base, quote] = symbol.symbol.split('_');
-  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbol);
+  const symbolInfo = symbolsInfo[symbol]();
+  const [_, base, quote] = symbol.split('_');
+  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
@@ -138,7 +144,7 @@ export const CreateOrder: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                const errors = await getValidationErrors(data, symbol, helper.validator);
                 return errors?.trigger_price != null ? errors.trigger_price.message : true;
               }
             }
@@ -168,7 +174,7 @@ export const CreateOrder: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                const errors = await getValidationErrors(data, symbol, helper.validator);
                 return errors?.order_price != null ? errors.order_price.message : true;
               }
             }
@@ -198,7 +204,7 @@ export const CreateOrder: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                const errors = await getValidationErrors(data, symbol, helper.validator);
                 return errors?.order_quantity != null ? errors.order_quantity.message : true;
               }
             }

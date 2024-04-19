@@ -1,4 +1,4 @@
-import { useOrderEntry } from '@orderly.network/hooks';
+import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Slider } from '@radix-ui/themes';
 import { FixedNumber } from 'ethers';
@@ -17,12 +17,14 @@ type Inputs = {
 };
 
 export const ClosePosition: FC<{
-  symbol: API.Symbol;
+  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({ symbol, position, refresh, setOpen }) => {
   const [loading, setLoading] = useState(false);
+
+  const symbolsInfo = useSymbolsInfo();
 
   const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
@@ -32,17 +34,21 @@ export const ClosePosition: FC<{
   });
   const { onSubmit, helper } = useOrderEntry(
     {
-      symbol: symbol.symbol,
+      symbol,
       side: OrderSide.BUY,
       order_type: OrderType.MARKET
     },
     { watchOrderbook: true }
   );
 
+  if (symbolsInfo.isNil) {
+    return <Spinner />;
+  }
+
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
-      await onSubmit(getInput(data, symbol.symbol));
+      await onSubmit(getInput(data, symbol));
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
     } finally {
@@ -52,8 +58,9 @@ export const ClosePosition: FC<{
     }
   };
 
-  const [_, base, quote] = symbol.symbol.split('_');
-  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbol);
+  const symbolInfo = symbolsInfo[symbol]();
+  const [_, base, quote] = symbol.split('_');
+  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   const renderError = (error: FieldError) => {
     return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
@@ -72,7 +79,7 @@ export const ClosePosition: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                const errors = await getValidationErrors(data, symbol, helper.validator);
                 return errors?.order_price != null ? errors.order_price.message : true;
               }
             }
@@ -102,7 +109,7 @@ export const ClosePosition: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol.symbol, helper.validator);
+                const errors = await getValidationErrors(data, symbol, helper.validator);
                 return errors?.order_quantity != null ? errors.order_quantity.message : true;
               }
             }
@@ -135,7 +142,7 @@ export const ClosePosition: FC<{
                 onValueCommit={onBlur}
                 min={0}
                 max={position.position_qty}
-                step={symbol.base_tick}
+                step={symbolInfo.base_tick}
               />
               <div className="font-size-[1.1rem] flex w-full justify-center my-1">
                 {value} {base}

@@ -9,19 +9,22 @@ import { baseFormatter, usdFormatter } from '~/utils';
 
 export const PendingOrder: FC<{
   order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
-  symbol: API.Symbol;
+  symbol: string;
   cancelOrder: ReturnType<typeof useOrderStream>[1]['cancelOrder'];
   cancelAlgoOrder: ReturnType<typeof useOrderStream>[1]['cancelAlgoOrder'];
 }> = ({ order, symbol, cancelOrder, cancelAlgoOrder }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [_, base, quote] = order.order.symbol.split('_');
   return (
     <Table.Row
       key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
       className="[&>*]:align-mid"
     >
-      <Table.Cell>{order.order.symbol}</Table.Cell>
+      <Table.Cell>
+        {base} / {quote}
+      </Table.Cell>
       <Table.Cell>
         {order.isAlgoOrder ? order.order.algo_type : ''} {order.order.type}
       </Table.Cell>
@@ -62,9 +65,9 @@ export const PendingOrder: FC<{
                     setLoading(true);
                     try {
                       if (order.isAlgoOrder) {
-                        await cancelAlgoOrder(order.order.algo_order_id, symbol.symbol);
+                        await cancelAlgoOrder(order.order.algo_order_id, symbol);
                       } else {
-                        await cancelOrder(order.order.order_id, symbol.symbol);
+                        await cancelOrder(order.order.order_id, symbol);
                       }
                     } catch (err) {
                       console.error(err);

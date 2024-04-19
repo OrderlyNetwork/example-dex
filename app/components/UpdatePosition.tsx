@@ -8,7 +8,7 @@ import { ClosePosition, StopOrder } from '.';
 import { baseFormatter, usdFormatter } from '~/utils';
 
 export const UpdatePosition: FC<{
-  symbol: API.Symbol;
+  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
 }> = ({ symbol, position, refresh }) => {
@@ -47,7 +47,7 @@ export const UpdatePosition: FC<{
         </Dialog.Title>
 
         <div className="flex w-full flex-wrap gap-4 pt-4 [&>*]:flex-1 [&>*]-min-w-[10rem]">
-          {renderPositionValue('Symbol', symbol.symbol)}
+          {renderPositionValue('Symbol', symbol)}
           {renderPositionValue('Quantity', baseFormatter.format(position.position_qty))}
           {renderPositionValue('Avg. Open', usdFormatter.format(position.average_open_price))}
           {renderPositionValue('Mark Price', usdFormatter.format(position.mark_price))}

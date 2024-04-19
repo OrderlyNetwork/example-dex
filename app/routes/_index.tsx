@@ -1,5 +1,3 @@
-import { useSymbolsInfo } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
 import { LoaderFunctionArgs, json } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
@@ -22,15 +20,13 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const [symbol, setSymbol] = useState<API.Symbol>();
+  const [symbol, setSymbol] = useState<string>();
   const { useAdvancedCharts } = useLoaderData<typeof loader>();
-
-  const symbolInfo = useSymbolsInfo();
 
   useEffect(() => {
     if (symbol) return;
-    setSymbol(symbolInfo['PERP_BTC_USDC']());
-  }, [symbolInfo, symbol, setSymbol]);
+    setSymbol('PERP_BTC_USDC');
+  }, [symbol, setSymbol]);
 
   if (!symbol) {
     return <Spinner />;

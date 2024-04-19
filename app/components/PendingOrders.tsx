@@ -5,9 +5,9 @@ import { FC } from 'react';
 
 import { Spinner, PendingOrder } from '.';
 
-export const PendingOrders: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const PendingOrders: FC<{ symbol: string }> = ({ symbol }) => {
   const [ordersUntyped, { cancelOrder, cancelAlgoOrder, isLoading }] = useOrderStream({
-    symbol: symbol.symbol,
+    symbol,
     status: OrderStatus.INCOMPLETE
   });
   const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];

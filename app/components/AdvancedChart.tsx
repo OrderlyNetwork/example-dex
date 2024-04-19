@@ -1,14 +1,13 @@
 import { TradingView } from '@orderly.network/trading-view';
-import { API } from '@orderly.network/types';
 import { FC } from 'react';
 
 import { Spinner } from './Spinner';
 
-export const AdvancedChart: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const AdvancedChart: FC<{ symbol: string }> = ({ symbol }) => {
   return (
     <div className="w-full min-h-[35rem] [&_iframe]:min-h-[35rem]">
       <TradingView
-        symbol={symbol.symbol}
+        symbol={symbol}
         libraryPath="/tradingview/charting_library/bundles"
         tradingViewScriptSrc="/tradingview/charting_library/charting_library.js"
         tradingViewCustomCssUrl="/tradingview/chart.css"

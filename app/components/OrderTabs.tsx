@@ -1,10 +1,9 @@
-import { API } from '@orderly.network/types';
 import { Tabs } from '@radix-ui/themes';
 import { FC } from 'react';
 
 import { PendingOrders, Positions } from '.';
 
-export const OrderTabs: FC<{ symbol: API.Symbol }> = ({ symbol }) => {
+export const OrderTabs: FC<{ symbol: string }> = ({ symbol }) => {
   return (
     <Tabs.Root defaultValue="positions" className="flex-1">
       <Tabs.List>
