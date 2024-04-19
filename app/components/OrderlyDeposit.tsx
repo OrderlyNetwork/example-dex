@@ -231,17 +231,25 @@ export const OrderlyDeposit: FC<{
                 message: 'Minting 1k USDC on testnet...'
               });
               try {
-                await fetch('https://testnet-operator-evm.orderly.org/v1/faucet/usdc', {
+                const res = await fetch('https://testnet-operator-evm.orderly.org/v1/faucet/usdc', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
                     broker_id: 'orderly',
-                    chain_id: connectedChain?.id,
+                    chain_id: String(Number(connectedChain?.id)),
                     user_address: account.address
                   })
                 });
+                if (!res.ok) {
+                  throw new Error(res.status === 429 ? 'Too many requests' : res.statusText);
+                }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const { success, message } = (await res.json()) as any;
+                if (!success) {
+                  throw new Error(message);
+                }
                 update({
                   eventCode: 'mintSuccess',
                   type: 'success',
@@ -253,10 +261,16 @@ export const OrderlyDeposit: FC<{
               } catch (err) {
                 console.error(err);
                 if (update) {
+                  let message: string;
+                  if (err instanceof Error) {
+                    message = err.message;
+                  } else {
+                    message = 'Mint failed!';
+                  }
                   update({
                     eventCode: 'mintError',
                     type: 'error',
-                    message: 'Mint failed!',
+                    message,
                     autoDismiss: 5_000
                   });
                 }
