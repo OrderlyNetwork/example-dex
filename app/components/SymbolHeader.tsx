@@ -3,6 +3,8 @@ import { FC } from 'react';
 
 import { Spinner, SymbolSelection } from '.';
 
+import { usdFormatter } from '~/utils';
+
 export const SymbolHeader: FC<{
   symbol: string;
   setSymbol: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -30,23 +32,26 @@ export const SymbolHeader: FC<{
       <>
         <SymbolSelection symbol={symbol} setSymbol={setSymbol} />
         <div className="flex flex-col font-size-[0.9rem]">
-          <div className="font-size-[0.8rem] color-gray">Mark</div>
-          <div>{stream.mark_price}</div>
+          <div className="font-size-[0.8rem] color-gray">Mark (USD)</div>
+          <div>{usdFormatter.format(stream.mark_price)}</div>
         </div>
         <div className="flex flex-col font-size-[0.9rem]">
-          <div className="font-size-[0.8rem] color-gray">Index</div>
-          <div>{stream.index_price}</div>
+          <div className="font-size-[0.8rem] color-gray">Index (USD)</div>
+          <div>{usdFormatter.format(stream.index_price)}</div>
         </div>
         <div className="flex flex-col font-size-[0.9rem]">
-          <div className="font-size-[0.8rem] color-gray">24h volume</div>
-          <div>{stream['24h_amount']}</div>
+          <div className="font-size-[0.8rem] color-gray">24h volume (USD)</div>
+          <div>{usdFormatter.format(stream['24h_amount'])}</div>
         </div>
         <div className="flex flex-col font-size-[0.9rem]">
-          <div className="font-size-[0.8rem] color-gray">24h change</div>
+          <div className="font-size-[0.8rem] color-gray">24h change (USD)</div>
           <div>
             {dailyChange && dailyChangePercentage ? (
               <>
-                {dailyChange} / {dailyChangePercentage}%
+                {!dailyChange.startsWith('-') ? '+' : ''}
+                {usdFormatter.format(Number(dailyChange))} /{' '}
+                {!dailyChange.startsWith('-') ? '+' : ''}
+                {dailyChangePercentage}%
               </>
             ) : (
               '-'
