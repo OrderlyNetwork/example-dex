@@ -109,13 +109,13 @@ export const CreateOrder: FC<{
           className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${watch('direction') === 'Buy' ? 'border-solid border-3 border-[var(--color-light-green)]' : ''}`}
         >
           <input type="radio" className="hidden" {...register('direction')} value="Buy" />
-          Buy
+          Long
         </label>
         <label
           className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-red)] hover:bg-[var(--color-bg-red-hover)] font-bold border-rd-r-1 border-rd-l-0 w-[50%] ${watch('direction') === 'Sell' ? 'border-solid border-3 border-[var(--color-light-red)]' : ''}`}
         >
           <input type="radio" className="hidden" {...register('direction')} value="Sell" />
-          Sell
+          Short
         </label>
       </div>
 

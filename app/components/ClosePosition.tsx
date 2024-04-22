@@ -1,6 +1,7 @@
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Slider } from '@radix-ui/themes';
+import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
@@ -12,7 +13,6 @@ import { getDecimalsFromTick } from '~/utils';
 type Inputs = {
   direction: OrderSide;
   type: OrderType;
-  price?: string;
   quantity?: string | number;
 };
 
@@ -40,6 +40,7 @@ export const ClosePosition: FC<{
     },
     { watchOrderbook: true }
   );
+  const [_0, customNotification] = useNotifications();
 
   if (symbolsInfo.isNil) {
     return <Spinner />;
@@ -47,10 +48,27 @@ export const ClosePosition: FC<{
 
   const submitForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
+    const { update } = customNotification({
+      eventCode: 'closePosition',
+      type: 'pending',
+      message: 'Closing position...'
+    });
     try {
       await onSubmit(getInput(data, symbol));
+      update({
+        eventCode: 'closePositionSuccess',
+        type: 'success',
+        message: 'Successfully closed position!',
+        autoDismiss: 5_000
+      });
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
+      update({
+        eventCode: 'closePositionError',
+        type: 'error',
+        message: 'Closing position failed!',
+        autoDismiss: 5_000
+      });
     } finally {
       setLoading(false);
       refresh();
@@ -59,8 +77,8 @@ export const ClosePosition: FC<{
   };
 
   const symbolInfo = symbolsInfo[symbol]();
-  const [_, base, quote] = symbol.split('_');
-  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
+  const [_, base] = symbol.split('_');
+  const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
   const renderError = (error: FieldError) => {
     return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
@@ -70,36 +88,6 @@ export const ClosePosition: FC<{
     <form className="flex flex-1 flex-col gap-6 w-full" onSubmit={handleSubmit(submitForm)}>
       <input className="hidden" {...register('direction')} />
       <input className="hidden" {...register('type')} />
-
-      <label className="flex flex-col">
-        <span className="font-bold font-size-5">Price ({quote})</span>
-        <Controller
-          name="price"
-          control={control}
-          rules={{
-            validate: {
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol, helper.validator);
-                return errors?.order_price != null ? errors.order_price.message : true;
-              }
-            }
-          }}
-          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={quoteDecimals}
-                placeholder="Price"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                hasError={error != null}
-              />
-              {error && renderError(error)}
-            </>
-          )}
-        />
-      </label>
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Quantity ({base})</span>
@@ -177,7 +165,6 @@ function getInput(data: Inputs, symbol: string): OrderEntity {
     symbol,
     side: data.direction,
     order_type: data.type,
-    order_price: data.price,
     order_quantity: String(data.quantity),
     reduce_only: true
   };

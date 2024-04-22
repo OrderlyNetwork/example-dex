@@ -1,6 +1,7 @@
 import { useOrderStream } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { Button, Dialog, Table } from '@radix-ui/themes';
+import { useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
 
 import { Spinner } from '.';
@@ -15,6 +16,7 @@ export const PendingOrder: FC<{
 }> = ({ order, symbol, cancelOrder, cancelAlgoOrder }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [_0, customNotification] = useNotifications();
 
   const [_, base, quote] = order.order.symbol.split('_');
   return (
@@ -63,14 +65,31 @@ export const PendingOrder: FC<{
                   disabled={loading}
                   onClick={async () => {
                     setLoading(true);
+                    const { update } = customNotification({
+                      eventCode: 'cancelOrder',
+                      type: 'pending',
+                      message: 'Cancelling order...'
+                    });
                     try {
                       if (order.isAlgoOrder) {
                         await cancelAlgoOrder(order.order.algo_order_id, symbol);
                       } else {
                         await cancelOrder(order.order.order_id, symbol);
                       }
+                      update({
+                        eventCode: 'cancelOrderSuccess',
+                        type: 'success',
+                        message: 'Successfully cancelled order!',
+                        autoDismiss: 5_000
+                      });
                     } catch (err) {
                       console.error(err);
+                      update({
+                        eventCode: 'cancelOrderError',
+                        type: 'error',
+                        message: 'Cancelling order failed!',
+                        autoDismiss: 5_000
+                      });
                     } finally {
                       setLoading(false);
                     }

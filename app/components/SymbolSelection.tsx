@@ -17,8 +17,6 @@ export const SymbolSelection: FC<{
   }
   const [_, base] = symbol.split('_');
 
-  console.log('markets', markets);
-
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
