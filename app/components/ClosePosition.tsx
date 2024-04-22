@@ -4,16 +4,17 @@ import { Slider } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { Spinner, TokenInput } from '.';
 
 import { getDecimalsFromTick } from '~/utils';
+import { renderFormError } from '~/utils/form';
 
 type Inputs = {
   direction: OrderSide;
   type: OrderType;
-  quantity?: string | number;
+  quantity: string | number;
 };
 
 export const ClosePosition: FC<{
@@ -29,7 +30,8 @@ export const ClosePosition: FC<{
   const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
       direction: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
-      type: OrderType.MARKET
+      type: OrderType.MARKET,
+      quantity: position.position_qty
     }
   });
   const { onSubmit, helper } = useOrderEntry(
@@ -80,12 +82,10 @@ export const ClosePosition: FC<{
   const [_, base] = symbol.split('_');
   const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
-  const renderError = (error: FieldError) => {
-    return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
-  };
-
   return (
     <form className="flex flex-1 flex-col gap-6 w-full" onSubmit={handleSubmit(submitForm)}>
+      <div>Partially or fully close your open position at mark price.</div>
+
       <input className="hidden" {...register('direction')} />
       <input className="hidden" {...register('type')} />
 
@@ -135,7 +135,7 @@ export const ClosePosition: FC<{
               <div className="font-size-[1.1rem] flex w-full justify-center my-1">
                 {value} {base}
               </div>
-              {error && renderError(error)}
+              {renderFormError(error)}
             </>
           )}
         />

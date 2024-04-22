@@ -4,12 +4,12 @@ import { Slider } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { P, match } from 'ts-pattern';
 
 import { Spinner, TokenInput } from '.';
 
-import { getDecimalsFromTick } from '~/utils';
+import { getDecimalsFromTick, renderFormError } from '~/utils';
 
 type Inputs = {
   direction: 'TakeProfit' | 'StopLoss';
@@ -32,7 +32,7 @@ export const StopOrder: FC<{
     defaultValues: {
       direction: 'TakeProfit',
       type: OrderType.STOP_MARKET,
-      trigger_price: String(position.average_open_price),
+      trigger_price: undefined,
       quantity: String(Math.abs(position.position_qty))
     }
   });
@@ -58,6 +58,7 @@ export const StopOrder: FC<{
       message: 'Creating order...'
     });
     try {
+      console.log('getInput(data, position)', getInput(data, position));
       await onSubmit(getInput(data, position));
       update({
         eventCode: 'createStopOrderSuccess',
@@ -84,12 +85,13 @@ export const StopOrder: FC<{
   const [_, base, quote] = symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
-  const renderError = (error: FieldError) => {
-    return <span className="h-2 color-[var(--color-light-red)]">{error.message}</span>;
-  };
-
   return (
     <form className="flex flex-1 flex-col gap-6 w-full" onSubmit={handleSubmit(submitForm)}>
+      <div>
+        Create an algorithmic order to (partially) close a position when a specific mark price is
+        reached.
+      </div>
+
       <div className="flex flex-1">
         <label
           className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${watch('direction') === 'TakeProfit' ? 'border-solid border-3 border-[var(--color-light-green)]' : ''}`}
@@ -140,7 +142,7 @@ export const StopOrder: FC<{
               },
               custom: async (_, data) => {
                 const errors = await getValidationErrors(data, position, helper.validator);
-                return errors?.order_price != null ? errors.order_price.message : true;
+                return errors?.trigger_price != null ? errors.trigger_price.message : true;
               }
             }
           }}
@@ -155,7 +157,7 @@ export const StopOrder: FC<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {error && renderError(error)}
+              {renderFormError(error)}
             </>
           )}
         />
@@ -207,7 +209,7 @@ export const StopOrder: FC<{
               <div className="font-size-[1.1rem] flex w-full justify-center my-1">
                 {value} {base}
               </div>
-              {error && renderError(error)}
+              {renderFormError(error)}
             </>
           )}
         />
@@ -243,10 +245,7 @@ function getInput(data: Inputs, position: API.PositionExt): OrderEntity {
     isStopOrder: true,
     order_quantity: data.quantity,
     trigger_price: data.trigger_price,
-    side: match(isLong)
-      .with(true, () => OrderSide.SELL)
-      .with(false, () => OrderSide.BUY)
-      .exhaustive(),
+    side: isLong ? OrderSide.SELL : OrderSide.BUY,
     order_type: OrderType.STOP_MARKET
   };
 }

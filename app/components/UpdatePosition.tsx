@@ -20,6 +20,7 @@ export const UpdatePosition: FC<{
       <div>{value}</div>
     </div>
   );
+  const [_, base, quote] = position.symbol.split('_');
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -47,7 +48,7 @@ export const UpdatePosition: FC<{
         </Dialog.Title>
 
         <div className="flex w-full flex-wrap gap-4 pt-4 [&>*]:flex-1 [&>*]-min-w-[10rem]">
-          {renderPositionValue('Symbol', symbol)}
+          {renderPositionValue('Symbol', `${base} / ${quote}`)}
           {renderPositionValue('Quantity', baseFormatter.format(position.position_qty))}
           {renderPositionValue('Avg. Open', usdFormatter.format(position.average_open_price))}
           {renderPositionValue('Mark Price', usdFormatter.format(position.mark_price))}

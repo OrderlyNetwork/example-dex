@@ -3,12 +3,12 @@ import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
-import { Controller, FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 
 import { ConnectWalletButton, Spinner, TokenInput } from '.';
 
-import { getDecimalsFromTick, usdFormatter } from '~/utils';
+import { getDecimalsFromTick, usdFormatter, renderFormError } from '~/utils';
 
 type Inputs = {
   direction: 'Buy' | 'Sell';
@@ -89,16 +89,6 @@ export const CreateOrder: FC<{
 
   const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
-  const renderError = (error?: FieldError) => {
-    return (
-      <span
-        className={`${error == null ? 'h-0' : 'h-[1.3rem]'} overflow-hidden color-[var(--color-light-red)] transition-duration-300 transition-property-[height] transition-ease-out`}
-      >
-        {error?.message ?? ''}
-      </span>
-    );
-  };
-
   return (
     <form
       className="flex flex-1 flex-col gap-6 min-w-[16rem] max-w-[24rem]"
@@ -160,7 +150,7 @@ export const CreateOrder: FC<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {renderError(error)}
+              {renderFormError(error)}
             </>
           )}
         />
@@ -190,7 +180,7 @@ export const CreateOrder: FC<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {renderError(error)}
+              {renderFormError(error)}
             </>
           )}
         />
@@ -220,7 +210,7 @@ export const CreateOrder: FC<{
                 onChange={onChange}
                 hasError={error != null}
               />
-              {renderError(error)}
+              {renderFormError(error)}
               <div className="flex flex-1 justify-between gap-3">
                 <span className="font-bold color-[var(--gray-12)]">Max:</span>
                 <span>
