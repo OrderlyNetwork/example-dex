@@ -3,6 +3,8 @@ import { FC } from 'react';
 
 import { Spinner } from '.';
 
+import { usdFormatter } from '~/utils';
+
 export const Orderbook: FC<{ symbol: string }> = ({ symbol }) => {
   const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
     level: 10
@@ -37,7 +39,7 @@ export const Orderbook: FC<{ symbol: string }> = ({ symbol }) => {
               className="contents [&>*:nth-child(3n)]:text-end [&>*]:border-[rgba(255,255,255,0.5)] [&>*]:border-solid [&>*]:border-0 [&>*]:border-b-1"
               key={index}
             >
-              <div className="color-[var(--color-light-red)]">{price}</div>
+              <div className="color-[var(--color-light-red)]">{usdFormatter.format(price)}</div>
               <div>{quantity}</div>
               <div
                 style={{
@@ -62,7 +64,7 @@ export const Orderbook: FC<{ symbol: string }> = ({ symbol }) => {
               className="contents [&>*:nth-child(3n)]:text-end [&>*]:border-[rgba(255,255,255,0.5)] [&>*]:border-solid [&>*]:border-0 [&>*]:border-b-1"
               key={index}
             >
-              <div className="color-[var(--color-light-green)]">{price}</div>
+              <div className="color-[var(--color-light-green)]">{usdFormatter.format(price)}</div>
               <div>{quantity}</div>
               <div
                 style={{
