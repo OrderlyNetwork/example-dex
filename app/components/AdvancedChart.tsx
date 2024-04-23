@@ -28,7 +28,7 @@ export const AdvancedChart: FC<{ symbol: string }> = ({ symbol }) => {
 
           'paneProperties.horzGridProperties.color': '#161B22',
           'paneProperties.vertGridProperties.color': '#161B22',
-          'paneProperties.legendProperties.showSeriesTitle': false
+          'paneProperties.legendProperties.showSeriesTitle': 'false'
         }}
       />
     </div>
