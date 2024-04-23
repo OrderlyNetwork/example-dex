@@ -14,19 +14,24 @@ type Inputs = {
   direction: 'Buy' | 'Sell';
   type: 'Market' | 'Limit' | 'StopLimit';
   triggerPrice?: string;
-  price: string;
-  quantity: string;
+  price?: string;
+  quantity?: string;
+};
+
+const defaultValues: Inputs = {
+  direction: 'Buy',
+  type: 'Market',
+  triggerPrice: undefined,
+  price: undefined,
+  quantity: undefined
 };
 
 export const CreateOrder: FC<{
   symbol: string;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, watch, control, reset } = useForm<Inputs>({
-    defaultValues: {
-      direction: 'Buy',
-      type: 'Market'
-    }
+  const { register, handleSubmit, watch, control } = useForm<Inputs>({
+    defaultValues
   });
   const symbolsInfo = useSymbolsInfo();
   const [{ wallet }] = useConnectWallet();
@@ -49,6 +54,13 @@ export const CreateOrder: FC<{
     { watchOrderbook: true }
   );
   const [_0, customNotification] = useNotifications();
+
+  // TODO reset doesn't work on controlled `TokenInput`
+  // useEffect(() => {
+  //   if (formState.isSubmitSuccessful) {
+  //     reset(defaultValues);
+  //   }
+  // }, [formState, reset]);
 
   if (symbolsInfo.isNil) {
     return <Spinner />;
@@ -79,7 +91,7 @@ export const CreateOrder: FC<{
       });
     } finally {
       setLoading(false);
-      reset();
+      // reset(defaultValues);
     }
   };
 
@@ -131,6 +143,7 @@ export const CreateOrder: FC<{
         <Controller
           name="triggerPrice"
           control={control}
+          defaultValue={undefined}
           rules={{
             validate: {
               custom: async (_, data) => {
@@ -161,6 +174,7 @@ export const CreateOrder: FC<{
         <Controller
           name="price"
           control={control}
+          defaultValue={undefined}
           rules={{
             validate: {
               custom: async (_, data) => {
@@ -191,6 +205,7 @@ export const CreateOrder: FC<{
         <Controller
           name="quantity"
           control={control}
+          defaultValue={undefined}
           rules={{
             validate: {
               custom: async (_, data) => {
