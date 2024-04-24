@@ -1,4 +1,5 @@
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
+import { positions } from '@orderly.network/perp';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Slider } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
@@ -9,7 +10,7 @@ import { P, match } from 'ts-pattern';
 
 import { Spinner, TokenInput } from '.';
 
-import { getDecimalsFromTick, renderFormError } from '~/utils';
+import { getDecimalsFromTick, renderFormError, usdFormatter } from '~/utils';
 
 type Inputs = {
   direction: 'TakeProfit' | 'StopLoss';
@@ -81,12 +82,18 @@ export const StopOrder: FC<{
     }
   };
 
+  const estimatedPnl = positions.unrealizedPnL({
+    qty: Number(watch('quantity') ?? 0),
+    openPrice: position.average_open_price,
+    markPrice: Number(watch('trigger_price') ?? 0)
+  });
+
   const symbolInfo = symbolsInfo[symbol]();
   const [_, base, quote] = symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   return (
-    <form className="flex flex-1 flex-col gap-6 w-full" onSubmit={handleSubmit(submitForm)}>
+    <form className="flex flex-1 flex-col gap-3 w-full" onSubmit={handleSubmit(submitForm)}>
       <div>
         Create an algorithmic order to (partially) close a position when a specific mark price is
         reached.
@@ -214,6 +221,15 @@ export const StopOrder: FC<{
           )}
         />
       </label>
+
+      <div className="flex flex-1 justify-between gap-3">
+        <span className="font-bold color-[var(--gray-12)]">Est. PnL:</span>
+        <span>
+          {watch('quantity') && watch('trigger_price')
+            ? `${usdFormatter.format(estimatedPnl)} ${quote}`
+            : '-'}
+        </span>
+      </div>
 
       <button
         type="submit"
