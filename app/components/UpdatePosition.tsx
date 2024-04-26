@@ -4,6 +4,7 @@ import { Button, Dialog, Separator, Tabs } from '@radix-ui/themes';
 import { FC, useState } from 'react';
 
 import { ClosePosition, StopOrder } from '.';
+import { TpSlOrder } from './TpSlOrder';
 
 import { baseFormatter, usdFormatter } from '~/utils';
 
@@ -63,6 +64,7 @@ export const UpdatePosition: FC<{
         <Tabs.Root defaultValue="close" className="flex-1">
           <Tabs.List>
             <Tabs.Trigger value="close">Close Position</Tabs.Trigger>
+            <Tabs.Trigger value="stop">Stop Market</Tabs.Trigger>
             <Tabs.Trigger value="tp_sl">TP / SL</Tabs.Trigger>
           </Tabs.List>
 
@@ -74,8 +76,11 @@ export const UpdatePosition: FC<{
               setOpen={setOpen}
             />
           </Tabs.Content>
-          <Tabs.Content value="tp_sl" className="mt-3">
+          <Tabs.Content value="stop" className="mt-3">
             <StopOrder symbol={symbol} position={position} refresh={refresh} setOpen={setOpen} />
+          </Tabs.Content>
+          <Tabs.Content value="tp_sl" className="mt-3">
+            <TpSlOrder symbol={symbol} position={position} refresh={refresh} setOpen={setOpen} />
           </Tabs.Content>
         </Tabs.Root>
       </Dialog.Content>
