@@ -16,8 +16,10 @@ export default defineConfig({
       ignoredRouteFiles: ['**/*.css']
     }),
     tsconfigPaths(),
-    cjsInterop({
-      dependencies: ['@orderly.network/*']
-    })
+    process.env.NODE_ENV === 'development'
+      ? cjsInterop({
+          dependencies: ['@orderly.network/*']
+        })
+      : undefined
   ]
 });
