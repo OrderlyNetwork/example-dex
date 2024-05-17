@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
+"@akamfoad/qr@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@akamfoad/qr/-/qr-0.4.0.tgz#87a7420969ee654e116e1ab02be89b70a3b7ef7a"
+  integrity sha512-kkuVMHLZIXdJbno48tcZIIFHwmc8QPbq0872sPxPMXQxpOBN007viBesAoME3es5yQg9KPXMPROYGe+piqeTTA==
+
 "@ampproject/remapping@^2.2.0", "@ampproject/remapping@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
@@ -1872,40 +1877,49 @@
   dependencies:
     which "^3.0.0"
 
-"@orderly.network/core@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.4.0.tgz#406b55cbdf1cd612143b9daec224a33b7211c4e0"
-  integrity sha512-/S3hDPVhS7Ff2LkNthb4421b0uGpkw0PXweER5vd07ITOIZirva7UEhEcgmuaaTg9LD0RNCg8Z3qxjNcm/es+A==
+"@orderly.network/core@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.5.3.tgz#d4339f12f0701750c60c00c8d0479ee9e7e0954f"
+  integrity sha512-wvL0Svv55u76zFqGlxO25WQKf/XOihihZRgnVRkb3/4Bfkksa5yg0fW4cSoYhg9T0NJKWsWRXkJbkjxXHO9SzQ==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/types" "1.4.0"
+    "@orderly.network/types" "1.5.3"
     bs58 "^5.0.0"
     ethers "^6.7.1"
     eventemitter3 "^5.0.1"
     lodash.merge "^4.6.2"
 
-"@orderly.network/hooks@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.4.0.tgz#396344a3e07a96d7507a9a87901b86b6cd866be8"
-  integrity sha512-+dMz2e2g/9qEI0IFQSt8jD4/qrGy8aJF3JuBPN2PRilPiCO7U1glNG/M0SspZXASYKnLxWKfoEYONblg5DcO1Q==
+"@orderly.network/hooks@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.5.3.tgz#8c14d6ac5fbec45ad770cd3fe4f25aac38c3ba56"
+  integrity sha512-ZZNmoQ4fhwlHWpeQ1L9QZNdTXWHbOqmnvbpUubcRtpIViJh6iPf2NDZhaLVHUWWwXqsBrh305A3jUoPn1loZmg==
   dependencies:
-    "@orderly.network/core" "1.4.0"
-    "@orderly.network/net" "1.4.0"
-    "@orderly.network/perp" "3.2.0"
-    "@orderly.network/types" "1.4.0"
-    "@orderly.network/utils" "1.4.0"
+    "@akamfoad/qr" "^0.4.0"
+    "@orderly.network/core" "1.5.3"
+    "@orderly.network/net" "1.5.3"
+    "@orderly.network/perp" "3.3.3"
+    "@orderly.network/types" "1.5.3"
+    "@orderly.network/utils" "1.5.3"
     ramda "^0.29.0"
-    swr "^2.2.4"
+    swr "2.2.4"
     use-constant "^1.1.1"
     use-debounce "^9.0.4"
 
-"@orderly.network/net@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.4.0.tgz#a06a5c6462a47fe81e9239dd0cdd2250e56e379c"
-  integrity sha512-7hwUGM4PGyyZ5+5F5PEAhl8AQgB/usARtp5xRpJrMmq5Zvn1NNMcZUMj0c2jdQUsCQvHT0qATZAWY05esd5WIA==
+"@orderly.network/net@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.5.3.tgz#7fa8c32886837ee20d1b29ec45ad019a751978f1"
+  integrity sha512-uGbwbIoOx1du7HAl4CYbAdD2vQBfyaWU3OU5DqSZg3tsVdOcZjHz1d1OPpf9yL/7cYWoe1c+TlkA+jPwlLfB2g==
 
-"@orderly.network/perp@3.2.0", "@orderly.network/perp@^3.2.0":
+"@orderly.network/perp@3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.3.3.tgz#8ced84fcd92a7f363423ea67764c62231fc1ad1d"
+  integrity sha512-YyTcMBK2PtTQn0vknQM3foQrJMizAKI3V5tUBEUs8NXJsIDNMhlnGsmQVbqBLkBMr7Gg/fXkUPgAM0mV7V1DvQ==
+  dependencies:
+    "@orderly.network/types" "1.5.3"
+    "@orderly.network/utils" "1.5.3"
+
+"@orderly.network/perp@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.2.0.tgz#aeb72373ba662b279056823a0067de1adc1f8010"
   integrity sha512-RBVzU33clWahk8IFlyaaENoZo0esdFbrvWC8zRbMKI8vap54JGRE8WlVmp0aKS3VTz+Ehl3lTAFLKmqUz0wNqw==
@@ -1913,26 +1927,39 @@
     "@orderly.network/types" "1.4.0"
     "@orderly.network/utils" "1.4.0"
 
-"@orderly.network/trading-view@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.4.0.tgz#32a3247f8b03c3c81f556784734e7ade3539d519"
-  integrity sha512-IiEo5f4VLszk4Twmt6Hx0dxo9kchBc/4HlZyE34993g6cBE5zOUWy9IBL+Lozy/tzzvywDq94fNYT5TDc2rp/Q==
+"@orderly.network/trading-view@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.5.3.tgz#db6081a1b89fcdaa579980eb2198178581c8cdea"
+  integrity sha512-HFHJbk0WlqBslFZmhqwY+sqOmqdM8gwu7rwEFrPe7ocC5nc3CjMrA3LIJn33icQj8SDjfXRDjqmSTGZCehuzww==
   dependencies:
-    "@orderly.network/core" "1.4.0"
-    "@orderly.network/hooks" "1.4.0"
-    "@orderly.network/net" "1.4.0"
-    "@orderly.network/types" "1.4.0"
-    "@orderly.network/utils" "1.4.0"
+    "@orderly.network/core" "1.5.3"
+    "@orderly.network/hooks" "1.5.3"
+    "@orderly.network/net" "1.5.3"
+    "@orderly.network/types" "1.5.3"
+    "@orderly.network/utils" "1.5.3"
 
 "@orderly.network/types@1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.4.0.tgz#b441e864f518ef95a6dc680a6ea9113ca67c6121"
   integrity sha512-9Z6T+KVYxWvwlZhjNF3TcKB0lk76Hx7Idhl7b6QG7yRl/3VolnCwtEuwSYICOQUHHEDwPldjvZulKuL25THwPA==
 
+"@orderly.network/types@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.5.3.tgz#742e02e5b68003068ef1233b7cb1a09bacaccc10"
+  integrity sha512-tsW8FKEfKcLVIgKh5EJ9jnw2Xd0x+mglicSEWVXqGzkjjc9mtaRWB09SNLxkojXE++h22m0/VK4rPxiceg6u6A==
+
 "@orderly.network/utils@1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.4.0.tgz#b3b429237efaba53114d3ff7aa59d187d88b7e02"
   integrity sha512-NQlJ000eW/jhVG7JVzhskJo6UhPCdmySBSXOtzPMw4CxPBKEpPz1jmQQAZRp8K0RXCTpCTkgkUHPBd0k5o/Nig==
+  dependencies:
+    dayjs "^1.11.9"
+    decimal.js-light "^2.5.1"
+
+"@orderly.network/utils@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.5.3.tgz#93af471e20bd6aa2daba72afd252cc42bdfc7073"
+  integrity sha512-IWhH99oB7Y+0ltkIbgQnb6GTCf7mTQUpU8rSVb9AjfGTjVcbBbOG3bf9zner0hUNKFfVqIlHRq73FYwpP3R35g==
   dependencies:
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"
@@ -9575,10 +9602,10 @@ svelte@^3.49.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.59.2.tgz#a137b28e025a181292b2ae2e3dca90bf8ec73aec"
   integrity sha512-vzSyuGr3eEoAtT/A6bmajosJZIUWySzY2CzB3w2pgPvnkUjGqlDnsNnA0PMO+mMAhuyMul6C2uuZzY6ELSkzyA==
 
-swr@^2.2.4:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-2.2.5.tgz#063eea0e9939f947227d5ca760cc53696f46446b"
-  integrity sha512-QtxqyclFeAsxEUeZIYmsaQ0UjimSq1RZ9Un7I68/0ClKK/U3LoyQunwkQfJZr2fc22DfIXLNDc2wFyTEikCUpg==
+swr@2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-2.2.4.tgz#03ec4c56019902fbdc904d78544bd7a9a6fa3f07"
+  integrity sha512-njiZ/4RiIhoOlAaLYDqwz5qH/KZXVilRLvomrx83HjzCWTfa+InyfAjv05PSFxnmLzZkNO9ZfvgoqzAaEI4sGQ==
   dependencies:
     client-only "^0.0.1"
     use-sync-external-store "^1.2.0"
