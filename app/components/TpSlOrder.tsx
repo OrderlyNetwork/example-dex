@@ -131,9 +131,7 @@ export const TpSlOrder: FC<{
       <div className="flex flex-1 justify-between gap-3 mt--3">
         <span className="font-bold color-[var(--gray-12)]">Est. PnL:</span>
         <span>
-          {(algoOrder as any).tp_pnl != null
-            ? `${usdFormatter.format((algoOrder as any).tp_pnl)} ${quote}`
-            : '-'}
+          {algoOrder.tp_pnl != null ? `${usdFormatter.format(algoOrder.tp_pnl)} ${quote}` : '-'}
         </span>
       </div>
 
@@ -162,9 +160,7 @@ export const TpSlOrder: FC<{
       <div className="flex flex-1 justify-between gap-3 mt--3">
         <span className="font-bold color-[var(--gray-12)]">Est. PnL:</span>
         <span>
-          {(algoOrder as any).sl_pnl != null
-            ? `${usdFormatter.format((algoOrder as any).sl_pnl)} ${quote}`
-            : '-'}
+          {algoOrder.sl_pnl != null ? `${usdFormatter.format(algoOrder.sl_pnl)} ${quote}` : '-'}
         </span>
       </div>
 

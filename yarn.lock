@@ -1877,47 +1877,47 @@
   dependencies:
     which "^3.0.0"
 
-"@orderly.network/core@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.5.3.tgz#d4339f12f0701750c60c00c8d0479ee9e7e0954f"
-  integrity sha512-wvL0Svv55u76zFqGlxO25WQKf/XOihihZRgnVRkb3/4Bfkksa5yg0fW4cSoYhg9T0NJKWsWRXkJbkjxXHO9SzQ==
+"@orderly.network/core@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.5.4.tgz#a4dfac3427fcd9d38991d6c48274dbf9fdf1989f"
+  integrity sha512-j6Jos2JfQYIBzgV/X6ZsBCogjlW0NEudA8Wzo/+l2aaq6FNUM03nKGhvE22jFUtrnr2BqPqs6iF4cCnVsLxG/g==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/types" "1.5.3"
+    "@orderly.network/types" "1.5.4"
     bs58 "^5.0.0"
     ethers "^6.7.1"
     eventemitter3 "^5.0.1"
     lodash.merge "^4.6.2"
 
-"@orderly.network/hooks@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.5.3.tgz#8c14d6ac5fbec45ad770cd3fe4f25aac38c3ba56"
-  integrity sha512-ZZNmoQ4fhwlHWpeQ1L9QZNdTXWHbOqmnvbpUubcRtpIViJh6iPf2NDZhaLVHUWWwXqsBrh305A3jUoPn1loZmg==
+"@orderly.network/hooks@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-1.5.4.tgz#127be62d13fe286f10f0a1be2283c4f204c326f5"
+  integrity sha512-Udd/IfYHYTbFMBAajppDrZqjEuzZksRIRg2uNX3tht7AeVbL1Q9lavaSeza+I7nbHlChzpY3aX70hKMcestVtg==
   dependencies:
     "@akamfoad/qr" "^0.4.0"
-    "@orderly.network/core" "1.5.3"
-    "@orderly.network/net" "1.5.3"
-    "@orderly.network/perp" "3.3.3"
-    "@orderly.network/types" "1.5.3"
-    "@orderly.network/utils" "1.5.3"
+    "@orderly.network/core" "1.5.4"
+    "@orderly.network/net" "1.5.4"
+    "@orderly.network/perp" "3.3.4"
+    "@orderly.network/types" "1.5.4"
+    "@orderly.network/utils" "1.5.4"
     ramda "^0.29.0"
     swr "2.2.4"
     use-constant "^1.1.1"
     use-debounce "^9.0.4"
 
-"@orderly.network/net@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.5.3.tgz#7fa8c32886837ee20d1b29ec45ad019a751978f1"
-  integrity sha512-uGbwbIoOx1du7HAl4CYbAdD2vQBfyaWU3OU5DqSZg3tsVdOcZjHz1d1OPpf9yL/7cYWoe1c+TlkA+jPwlLfB2g==
+"@orderly.network/net@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-1.5.4.tgz#a1a31d7994244f5288f634c40e0ecd472d352cc4"
+  integrity sha512-LspmSmRUrQAYDXQwBkeGf3QpObp7o/GkK0Vk2Ihs1xPp5C+VKp3dWuFKKWoJbRmyw9I213pWa90mmeaPKYdE3g==
 
-"@orderly.network/perp@3.3.3":
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.3.3.tgz#8ced84fcd92a7f363423ea67764c62231fc1ad1d"
-  integrity sha512-YyTcMBK2PtTQn0vknQM3foQrJMizAKI3V5tUBEUs8NXJsIDNMhlnGsmQVbqBLkBMr7Gg/fXkUPgAM0mV7V1DvQ==
+"@orderly.network/perp@3.3.4":
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-3.3.4.tgz#77eafe70551d649625045b321608cadbc3b1982e"
+  integrity sha512-J68TkqRz3Aayun+K+3gxnKJXuy4IMx8ZzRwzQdzOmbUiIJNRZnzUn6xSwGV2kltpjbPvCQtjPi2+hnHYSpI+JQ==
   dependencies:
-    "@orderly.network/types" "1.5.3"
-    "@orderly.network/utils" "1.5.3"
+    "@orderly.network/types" "1.5.4"
+    "@orderly.network/utils" "1.5.4"
 
 "@orderly.network/perp@^3.2.0":
   version "3.2.0"
@@ -1927,26 +1927,26 @@
     "@orderly.network/types" "1.4.0"
     "@orderly.network/utils" "1.4.0"
 
-"@orderly.network/trading-view@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.5.3.tgz#db6081a1b89fcdaa579980eb2198178581c8cdea"
-  integrity sha512-HFHJbk0WlqBslFZmhqwY+sqOmqdM8gwu7rwEFrPe7ocC5nc3CjMrA3LIJn33icQj8SDjfXRDjqmSTGZCehuzww==
+"@orderly.network/trading-view@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-1.5.4.tgz#9ab2fcec0c6c690892f5d3ca792396c15bff26e6"
+  integrity sha512-A6qE92WdDhi/Mp0OEOuVxGzwLrIJ5NSdwvMstRm5IGcG9nwtdxVeS9QSjdZpfKXV/0aSugXPnz9zdXPAxMLw5g==
   dependencies:
-    "@orderly.network/core" "1.5.3"
-    "@orderly.network/hooks" "1.5.3"
-    "@orderly.network/net" "1.5.3"
-    "@orderly.network/types" "1.5.3"
-    "@orderly.network/utils" "1.5.3"
+    "@orderly.network/core" "1.5.4"
+    "@orderly.network/hooks" "1.5.4"
+    "@orderly.network/net" "1.5.4"
+    "@orderly.network/types" "1.5.4"
+    "@orderly.network/utils" "1.5.4"
 
 "@orderly.network/types@1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.4.0.tgz#b441e864f518ef95a6dc680a6ea9113ca67c6121"
   integrity sha512-9Z6T+KVYxWvwlZhjNF3TcKB0lk76Hx7Idhl7b6QG7yRl/3VolnCwtEuwSYICOQUHHEDwPldjvZulKuL25THwPA==
 
-"@orderly.network/types@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.5.3.tgz#742e02e5b68003068ef1233b7cb1a09bacaccc10"
-  integrity sha512-tsW8FKEfKcLVIgKh5EJ9jnw2Xd0x+mglicSEWVXqGzkjjc9mtaRWB09SNLxkojXE++h22m0/VK4rPxiceg6u6A==
+"@orderly.network/types@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.5.4.tgz#21cb232e39477f0d3b408770765b8d6307c80049"
+  integrity sha512-me8V5d/67GtU/Mkadj6sSWHBJA9mqsOyQwo/iYnngIP43JwVfwtRvHhHc43Nr1/oEvzJL6sNZx/TtkN52Zbx7g==
 
 "@orderly.network/utils@1.4.0":
   version "1.4.0"
@@ -1956,10 +1956,10 @@
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"
 
-"@orderly.network/utils@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.5.3.tgz#93af471e20bd6aa2daba72afd252cc42bdfc7073"
-  integrity sha512-IWhH99oB7Y+0ltkIbgQnb6GTCf7mTQUpU8rSVb9AjfGTjVcbBbOG3bf9zner0hUNKFfVqIlHRq73FYwpP3R35g==
+"@orderly.network/utils@1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-1.5.4.tgz#2762ed961d85f5fc9357a03bc3479b15f3ced804"
+  integrity sha512-rc25L1KuxxbpGVKsVoGWjIlDqye1UzjDxmzm6DgA8htABrI1M5swW+8aIEdMkmREHCN5P8kmiQ8Ui+cN7tInOQ==
   dependencies:
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"
