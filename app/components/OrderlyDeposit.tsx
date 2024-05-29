@@ -8,7 +8,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 
 import { PendingButton, TokenInput } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { supportedChains } from '~/utils';
+import { supportedChainIds } from '~/utils';
 
 export const OrderlyDeposit: FC<{
   walletBalance: FixedNumber;
@@ -27,7 +27,7 @@ export const OrderlyDeposit: FC<{
   const [isTestnet] = useIsTestnet();
   const { account } = useAccount();
   const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
-    filter: (item: API.Chain) => supportedChains.includes(item.network_infos?.chain_id)
+    filter: (item: API.Chain) => supportedChainIds.includes(item.network_infos?.chain_id)
   });
   const [{ connectedChain }] = useSetChain();
   const token = useMemo(() => {

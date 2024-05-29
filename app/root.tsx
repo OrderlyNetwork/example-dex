@@ -6,6 +6,8 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
+import { supportedChains } from './utils';
+
 import { App } from '~/App';
 import globalCss from '~/global.css?url';
 import uno from '~/styles/uno.css?url';
@@ -20,32 +22,12 @@ const walletConnect = walletConnectModule({
 
 const web3Onboard = init({
   wallets: [injected, walletConnect],
-  chains: [
-    {
-      id: '0xa4b1',
-      token: 'ETH',
-      label: 'Arbitrum One',
-      rpcUrl: 'https://arbitrum-one.publicnode.com'
-    },
-    {
-      id: '0xa',
-      token: 'ETH',
-      label: 'OP Mainnet',
-      rpcUrl: 'https://mainnet.optimism.io'
-    },
-    {
-      id: '0x66eee',
-      token: 'ETH',
-      label: 'Arbitrum Sepolia',
-      rpcUrl: 'https://arbitrum-sepolia.publicnode.com'
-    },
-    {
-      id: '0xaa37dc',
-      token: 'ETH',
-      label: 'OP Sepolia',
-      rpcUrl: 'https://optimism-sepolia.publicnode.com'
-    }
-  ],
+  chains: supportedChains.map(({ id, token, label, rpcUrl }) => ({
+    id,
+    token,
+    label,
+    rpcUrl
+  })),
   appMetadata: {
     name: 'Orderly DEX',
     description: 'Fully fledged example DEX using Orderly Network'

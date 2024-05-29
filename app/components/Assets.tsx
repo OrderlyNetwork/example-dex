@@ -14,13 +14,13 @@ import { FC, useMemo } from 'react';
 
 import { OrderlyDeposit, PendingButton } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { supportedChains, usdFormatter } from '~/utils';
+import { supportedChainIds, usdFormatter } from '~/utils';
 
 export const Assets: FC = () => {
   const [isTestnet] = useIsTestnet();
   const collateral = useCollateral();
   const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
-    filter: (item: API.Chain) => supportedChains.includes(item.network_infos?.chain_id)
+    filter: (item: API.Chain) => supportedChainIds.includes(item.network_infos?.chain_id)
   });
   const account = useAccountInstance();
   const [_, customNotification] = useNotifications();
