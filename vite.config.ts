@@ -4,12 +4,6 @@ import { cjsInterop } from 'vite-plugin-cjs-interop';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-declare module '@remix-run/node' {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
-
 export default defineConfig({
   server: {
     port: 3000
@@ -19,7 +13,7 @@ export default defineConfig({
   },
   plugins: [
     remix({
-      ssr: process.env.NODE_ENV === 'production',
+      ssr: false,
       ignoredRouteFiles: ['**/*.css'],
       future: {
         v3_fetcherPersist: true,

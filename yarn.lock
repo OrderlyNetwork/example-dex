@@ -4214,7 +4214,7 @@
     svelte-i18n "^3.3.13"
     viem "2.12.0"
 
-"@web3-onboard/injected-wallets@^2.10.13":
+"@web3-onboard/injected-wallets@^2.11.2":
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/@web3-onboard/injected-wallets/-/injected-wallets-2.11.2.tgz#f39c937f903875cfaad6373e1975dde2660d9e17"
   integrity sha512-VeI0LTFKAcikBLBOub/avzdvc2SWOh3qLjqw/Yh34YS7ArGG5jrQXSbOuVXLqQoW07TyY4SDHXTI1Yft9MiF4Q==
@@ -4223,7 +4223,7 @@
     joi "17.9.1"
     lodash.uniqby "^4.7.0"
 
-"@web3-onboard/react@^2.8.14":
+"@web3-onboard/react@^2.10.0":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@web3-onboard/react/-/react-2.10.0.tgz#f9407653407eb394e9769e416f8356e7ba01ecdd"
   integrity sha512-4qwoB22uNe7xrcSni7t8Lm/5yQ8HjbD6t+EoCG4K8EWlNzPAMHNXVbOX+EeQgB6afE/dmF1Cf9cLyE/E2MY4fA==
@@ -4232,7 +4232,7 @@
     "@web3-onboard/core" "2.23.0"
     use-sync-external-store "1.0.0"
 
-"@web3-onboard/walletconnect@^2.5.4":
+"@web3-onboard/walletconnect@^2.6.1":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@web3-onboard/walletconnect/-/walletconnect-2.6.1.tgz#30c04ff2f912afafadd28024152044133ba26643"
   integrity sha512-GNpsOwnZ+fN62JqZq+KIRR7lR1/ZsPXPjaF4r2lcw8sfbYpalR+Vi25DHQSklwzGqNFHrP5oNkroTS7ICoI1cw==
@@ -6639,7 +6639,7 @@ exit-hook@2.2.1, exit-hook@^2.2.1:
   resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-2.2.1.tgz#007b2d92c6428eda2b76e7016a34351586934593"
   integrity sha512-eNTPlAD67BmP31LDINZ3U7HSF8l57TxOY2PmBJ1shpCvpnxBF93mWCE8YHBnXs8qiUZJc9WDcWIeC3a2HIAMfw==
 
-express@^4.20.0, express@^4.21.1:
+express@^4.20.0:
   version "4.21.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.21.1.tgz#9dae5dda832f16b4eec941a4e44aa89ec481b281"
   integrity sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==

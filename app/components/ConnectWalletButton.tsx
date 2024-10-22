@@ -3,7 +3,7 @@ import { useConnectWallet } from '@web3-onboard/react';
 import { FC } from 'react';
 
 export const ConnectWalletButton: FC = () => {
-  const [{ wallet }, connectWallet, _] = useConnectWallet();
+  const [{ wallet }, connectWallet] = useConnectWallet();
 
   return (
     <Button
