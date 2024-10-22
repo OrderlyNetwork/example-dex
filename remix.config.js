@@ -2,9 +2,8 @@
 export default {
   ignoredRouteFiles: ['**/*.css'],
   browserNodeBuiltinsPolyfill: { modules: { events: true } },
-  serverDependenciesToBundle: ['@radix-ui/themes']
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
+  serverDependenciesToBundle: 'all',
+  serverMainFields: ['browser', 'module', 'main'],
+  serverMinify: true,
+  serverPlatform: 'node'
 };

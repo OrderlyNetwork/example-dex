@@ -1,4 +1,6 @@
+import { DefaultEVMAdapterWalletAdapter } from '@orderly.network/default-evm-adapter';
 import { OrderlyConfigProvider } from '@orderly.network/hooks';
+import { EthersProvider } from '@orderly.network/web3-provider-ethers';
 import { Outlet } from '@remix-run/react';
 import { FC } from 'react';
 
@@ -14,7 +16,12 @@ export const App: FC = () => {
   }
 
   return (
-    <OrderlyConfigProvider networkId={isTestnet ? 'testnet' : 'mainnet'} brokerId="orderly">
+    <OrderlyConfigProvider
+      networkId={isTestnet ? 'testnet' : 'mainnet'}
+      brokerId="orderly"
+      brokerName="Orderly Network"
+      walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
+    >
       <NavBar />
       <Outlet />
     </OrderlyConfigProvider>

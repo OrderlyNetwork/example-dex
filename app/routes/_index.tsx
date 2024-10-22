@@ -1,5 +1,3 @@
-import { LoaderFunctionArgs, json } from '@remix-run/cloudflare';
-import { useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -12,16 +10,10 @@ import {
 } from '~/components';
 import { OrderTabs } from '~/components/OrderTabs';
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
-  return json({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    useAdvancedCharts: (context.cloudflare as any).env.USE_ADVANCED_CHARTS === 'true' ? true : false
-  });
-};
+const useAdvancedCharts = import.meta.env.VITE_USE_ADVANCED_CHARTS === 'true';
 
 export default function Index() {
   const [symbol, setSymbol] = useState<string>();
-  const { useAdvancedCharts } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (symbol) return;

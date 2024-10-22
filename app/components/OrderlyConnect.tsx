@@ -1,5 +1,5 @@
 import { useAccount } from '@orderly.network/hooks';
-import { AccountStatusEnum } from '@orderly.network/types';
+import { AccountStatusEnum, ChainNamespace } from '@orderly.network/types';
 import { CheckCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator } from '@radix-ui/themes';
 import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
@@ -37,6 +37,20 @@ export const OrderlyConnect: FC = () => {
     }, 3_000) as unknown as number;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, setOpen, wallet]);
+
+  useEffect(() => {
+    if (!wallet || !connectedChain) return;
+    account.setAddress(wallet.accounts[0].address, {
+      chain: {
+        id: connectedChain?.id,
+        namespace: ChainNamespace.evm
+      },
+      provider: wallet.provider,
+      wallet: {
+        name: wallet.label
+      }
+    });
+  }, [wallet, account, connectedChain]);
 
   const isRegistered = state.status >= AccountStatusEnum.SignedIn;
   const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;

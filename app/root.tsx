@@ -1,6 +1,6 @@
 import { Theme } from '@radix-ui/themes';
 import radixTheme from '@radix-ui/themes/styles.css?url';
-import type { LinksFunction } from '@remix-run/cloudflare';
+import type { LinksFunction } from '@remix-run/node';
 import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
