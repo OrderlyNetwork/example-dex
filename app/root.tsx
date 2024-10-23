@@ -6,6 +6,7 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import { Web3OnboardProvider, init } from '@web3-onboard/react';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
+import { Spinner } from './components';
 import { supportedChains } from './utils';
 
 import { App } from '~/App';
@@ -50,7 +51,7 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: uno }
 ];
 
-export default function Root() {
+export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -67,13 +68,19 @@ export default function Root() {
           radius="small"
           className="flex flex-col flex-items-center"
         >
-          <Web3OnboardProvider web3Onboard={web3Onboard}>
-            <App />
-          </Web3OnboardProvider>
+          <Web3OnboardProvider web3Onboard={web3Onboard}>{children}</Web3OnboardProvider>
         </Theme>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
+}
+
+export default function Root() {
+  return <App />;
+}
+
+export function HydrateFallback() {
+  return <Spinner size="4rem" />;
 }

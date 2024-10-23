@@ -13,6 +13,7 @@ export default defineConfig({
   },
   plugins: [
     remix({
+      ssr: false,
       ignoredRouteFiles: ['**/*.css'],
       future: {
         v3_fetcherPersist: true,
@@ -20,7 +21,8 @@ export default defineConfig({
         v3_throwAbortReason: true,
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true
-      }
+      },
+      basename: '/example-dex'
     }),
     tsconfigPaths(),
     nodePolyfills({
