@@ -8,9 +8,9 @@ export const AdvancedChart: FC<{ symbol: string }> = ({ symbol }) => {
     <div className="w-full min-h-[35rem] [&_iframe]:min-h-[35rem]">
       <TradingView
         symbol={symbol}
-        libraryPath="/tradingview/charting_library/bundles"
-        tradingViewScriptSrc="/tradingview/charting_library/charting_library.js"
-        tradingViewCustomCssUrl="/tradingview/chart.css"
+        libraryPath={`${import.meta.env.VITE_BASE}/tradingview/charting_library/bundles`}
+        tradingViewScriptSrc={`${import.meta.env.VITE_BASE}/tradingview/charting_library/charting_library.js`}
+        tradingViewCustomCssUrl={`${import.meta.env.VITE_BASE}/tradingview/chart.css`}
         loadingElement={<Spinner size="2rem" className="mt-[12rem]" />}
         overrides={{
           'mainSeriesProperties.candleStyle.borderDownColor': '#DC2140',
