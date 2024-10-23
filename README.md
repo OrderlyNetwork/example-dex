@@ -4,7 +4,7 @@ This repository can be used as an example of how to use [Orderly Hooks SDKs](htt
 
 The example uses [Remix](https://remix.run/) with React and is deployed via Docker.
 
-[>> open dapp <<](https://orderly-dex.pages.dev/)
+[>> open dapp <<](https://orderlynetwork.github.io/example-dex/)
 
 ## Docker
 
