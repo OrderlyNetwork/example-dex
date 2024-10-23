@@ -3,14 +3,11 @@ on:
     branches:
       - master
 
-permissions:
-  contents: write
-
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       deployments: write
     name: Publish to Github Pages
     steps:
