@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 3000
   },
+  base: process.env.BASE ?? '/',
   ssr: {
     noExternal: [/^@orderly.*$/]
   },
@@ -22,7 +23,7 @@ export default defineConfig({
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true
       },
-      basename: '/example-dex'
+      basename: process.env.BASE ?? '/'
     }),
     tsconfigPaths(),
     nodePolyfills({

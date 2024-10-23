@@ -33,6 +33,7 @@ jobs:
         run: |
           yarn install
           export VITE_USE_ADVANCED_CHARTS=true
+          export BASE=/example-dex/
           yarn build
 
       - name: Publish to Github Pages
