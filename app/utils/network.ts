@@ -19,7 +19,7 @@ type SupportedSolanaChain = Omit<SupportedEvmChain, 'rpcUrl' | 'network'> & {
 export const supportedEvmChains: SupportedEvmChain[] = [
   {
     network: 'mainnet',
-    icon: '/assets/ethereum.svg',
+    icon: './assets/ethereum.svg',
     id: '0x1',
     token: 'ETH',
     label: 'Ethereum',
@@ -27,7 +27,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'mainnet',
-    icon: '/assets/arbitrum.svg',
+    icon: './assets/arbitrum.svg',
     id: '0xa4b1',
     token: 'ETH',
     label: 'Arbitrum One',
@@ -35,7 +35,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'mainnet',
-    icon: '/assets/optimism.svg',
+    icon: './assets/optimism.svg',
     id: '0xa',
     token: 'ETH',
     label: 'OP Mainnet',
@@ -43,7 +43,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'mainnet',
-    icon: '/assets/base.svg',
+    icon: './assets/base.svg',
     id: '0x2105',
     token: 'ETH',
     label: 'Base',
@@ -51,7 +51,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'testnet',
-    icon: '/assets/sepolia.svg',
+    icon: './assets/sepolia.svg',
     id: '0xaa36a7',
     token: 'ETH',
     label: 'Sepolia',
@@ -59,7 +59,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'testnet',
-    icon: '/assets/arbitrum_sepolia.svg',
+    icon: './assets/arbitrum_sepolia.svg',
     id: '0x66eee',
     token: 'ETH',
     label: 'Arbitrum Sepolia',
@@ -67,7 +67,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'testnet',
-    icon: '/assets/optimism_sepolia.svg',
+    icon: './assets/optimism_sepolia.svg',
     id: '0xaa37dc',
     token: 'ETH',
     label: 'OP Sepolia',
@@ -75,7 +75,7 @@ export const supportedEvmChains: SupportedEvmChain[] = [
   },
   {
     network: 'testnet',
-    icon: '/assets/base_sepolia.svg',
+    icon: './assets/base_sepolia.svg',
     id: '0x14a34',
     token: 'ETH',
     label: 'Base Sepolia',
@@ -88,7 +88,7 @@ export const supportedEvmChainIds = supportedEvmChains.map(({ id }) => Number(id
 export const supportedSolanaChains: SupportedSolanaChain[] = [
   {
     network: WalletAdapterNetwork.Devnet,
-    icon: '/assets/solana_devnet.svg',
+    icon: './assets/solana_devnet.svg',
     id: '901901901',
     token: 'SOL',
     label: 'Solana Devnet'

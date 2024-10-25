@@ -37,7 +37,7 @@ export const ConnectWalletButton: FC = () => {
             }}
           >
             <img
-              src="/assets/ethereum.svg"
+              src="./assets/ethereum.svg"
               alt="EVM Wallets"
               style={{ marginRight: '0.3rem', height: '1.8rem' }}
             />{' '}
@@ -60,7 +60,7 @@ export const ConnectWalletButton: FC = () => {
             }}
           >
             <img
-              src="/assets/solana.svg"
+              src="./assets/solana.svg"
               alt="Solana Wallets"
               style={{ marginRight: '0.3rem', height: '1.8rem' }}
             />{' '}
