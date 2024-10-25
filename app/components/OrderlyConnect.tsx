@@ -43,12 +43,14 @@ export const OrderlyConnect: FC = () => {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Content
         onInteractOutside={(event) => {
+          if (isRegistered && hasOrderlyKey) return;
           event.preventDefault();
         }}
       >
         <Dialog.Title className="flex justify-between flex-items-center">
           <span className="mr-2">Connect with Orderly Network</span>
           <Button
+            className={isRegistered && hasOrderlyKey ? '' : 'invisible'}
             variant="ghost"
             color="crimson"
             onClick={() => {
