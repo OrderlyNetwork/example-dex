@@ -1,15 +1,14 @@
 import { useAccount, useChains, useDeposit, useWithdraw } from '@orderly.network/hooks';
-import { API, ChainNamespace } from '@orderly.network/types';
+import { ChainNamespace } from '@orderly.network/types';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Tabs } from '@radix-ui/themes';
-import { useNotifications, useSetChain } from '@web3-onboard/react';
+import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
 import { PendingButton, TokenInput } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { supportedEvmChainIds, supportedSolanaChainIds } from '~/utils';
 
 export const OrderlyDeposit: FC<{
   walletBalance: FixedNumber;
@@ -27,30 +26,22 @@ export const OrderlyDeposit: FC<{
 
   const [isTestnet] = useIsTestnet();
   const { account, state } = useAccount();
-  const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
-    filter: (item: API.Chain) =>
-      supportedEvmChainIds.includes(item.network_infos?.chain_id) ||
-      supportedSolanaChainIds.includes(item.network_infos?.chain_id)
-  });
-  const [{ connectedChain: connectedEvmChain }] = useSetChain();
-  const token = useMemo(() => {
-    return Array.isArray(chains)
-      ? chains
-          .find((chain) => chain.network_infos.chain_id === Number(connectedEvmChain?.id))
-          ?.token_infos.find((t) => t.symbol === 'USDC')
-      : undefined;
-  }, [chains, connectedEvmChain]);
-  const deposit = useDeposit({
+  const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet');
+  const token = useMemo(
+    () => chains.find((item) => item.network_infos.chain_id === account.chainId)?.token_infos[0],
+    [chains, account.chainId]
+  );
+  const { deposit, approve, allowance, setQuantity } = useDeposit({
     address: token?.address,
     decimals: token?.decimals,
     srcToken: token?.symbol,
-    srcChainId: Number(connectedEvmChain?.id)
+    srcChainId: Number(account.chainId)
   });
 
   useEffect(() => {
     if (amount == null) return;
-    deposit.setQuantity(amount.toString());
-  }, [amount, deposit]);
+    setQuantity(amount.toString());
+  }, [amount, setQuantity]);
   useEffect(() => {
     if (!newOrderlyBalance || !newWalletBalance) {
       setDisabled(true);
@@ -130,14 +121,14 @@ export const OrderlyDeposit: FC<{
             if (amount == null) return;
 
             if (isDeposit) {
-              if (Number(deposit.allowance) < amount.toUnsafeFloat()) {
+              if (Number(allowance) < amount.toUnsafeFloat()) {
                 const { update } = customNotification({
                   eventCode: 'approval',
                   type: 'pending',
                   message: 'Approving USDC for deposit...'
                 });
                 try {
-                  await deposit.approve(amount.toString());
+                  await approve(amount.toString());
                   update({
                     eventCode: 'approvalSuccess',
                     type: 'success',
@@ -161,7 +152,7 @@ export const OrderlyDeposit: FC<{
                   message: 'Depositing USDC into your Orderly Account...'
                 });
                 try {
-                  await deposit.deposit();
+                  await deposit();
                   update({
                     eventCode: 'depositSuccess',
                     type: 'success',
@@ -218,7 +209,7 @@ export const OrderlyDeposit: FC<{
           }}
         >
           {isDeposit
-            ? amount != null && Number(deposit.allowance) < amount.toUnsafeFloat()
+            ? amount != null && Number(allowance) < amount.toUnsafeFloat()
               ? 'Approve'
               : 'Deposit'
             : 'Withdraw'}
@@ -305,7 +296,7 @@ export const OrderlyDeposit: FC<{
               }
             }}
           >
-            Mint 1k USDC via faucet
+            Request USDC via faucet
           </PendingButton>
         )}
       </div>

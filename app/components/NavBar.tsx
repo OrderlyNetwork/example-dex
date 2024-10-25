@@ -43,8 +43,6 @@ export const NavBar: FC = () => {
               Account
             </Link>
           </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item>TODO</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
       <OrderlyConnect />

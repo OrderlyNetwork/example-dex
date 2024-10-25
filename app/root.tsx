@@ -17,7 +17,8 @@ export const links: LinksFunction = () => [
     href: radixTheme
   },
   { rel: 'stylesheet', href: uno },
-  { rel: 'stylesheet', href: solana }
+  { rel: 'stylesheet', href: solana },
+  { rel: 'icon', href: './assets/orderly.svg' }
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

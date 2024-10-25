@@ -1,42 +1,45 @@
 import {
-  useAccountInstance,
+  useAccount,
   useChains,
   useCollateral,
   useDeposit,
   useWithdraw
 } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
+import { AccountStatusEnum } from '@orderly.network/types';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import { Table, Tooltip } from '@radix-ui/themes';
-import { useNotifications, useSetChain } from '@web3-onboard/react';
+import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { FC, useMemo } from 'react';
 
 import { OrderlyDeposit, PendingButton } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { supportedEvmChainIds, supportedSolanaChainIds, usdFormatter } from '~/utils';
+import { usdFormatter } from '~/utils';
 
 export const Assets: FC = () => {
   const [isTestnet] = useIsTestnet();
   const collateral = useCollateral();
-  const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
-    filter: (item: API.Chain) =>
-      supportedEvmChainIds.includes(item.network_infos?.chain_id) ||
-      supportedSolanaChainIds.includes(item.network_infos?.chain_id)
-  });
-  const account = useAccountInstance();
+  const {
+    account,
+    state: { status }
+  } = useAccount();
+  const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet');
   const [_, customNotification] = useNotifications();
 
-  const token = useMemo(() => {
-    return Array.isArray(chains) ? chains[0]?.token_infos[0] : undefined;
-  }, [chains]);
-  const [{ connectedChain }] = useSetChain();
+  const token = useMemo(
+    () => chains.find((item) => item.network_infos.chain_id === account.chainId)?.token_infos[0],
+    [chains, account.chainId]
+  );
   const deposit = useDeposit({
     address: token?.address,
     decimals: token?.decimals,
     srcToken: token?.symbol,
-    srcChainId: Number(connectedChain?.id)
+    srcChainId: Number(account.chainId)
   });
+  const balance = useMemo(
+    () => (status >= AccountStatusEnum.Connected ? deposit.balance : undefined),
+    [status, deposit]
+  );
   const { withdraw, unsettledPnL, availableWithdraw } = useWithdraw();
 
   return (
@@ -46,7 +49,7 @@ export const Assets: FC = () => {
           <Table.Row>
             <Table.RowHeaderCell>Wallet Balance:</Table.RowHeaderCell>
             <Table.Cell className="text-right">
-              {usdFormatter.format(Number(deposit.balance))} $
+              {usdFormatter.format(Number(balance ?? '0'))} $
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -73,7 +76,7 @@ export const Assets: FC = () => {
         </Table.Row>
       </Table.Root>
       <OrderlyDeposit
-        walletBalance={FixedNumber.fromString(deposit.balance, { decimals: 6 })}
+        walletBalance={FixedNumber.fromString(balance ?? '0', { decimals: 6 })}
         orderlyBalance={FixedNumber.fromString(availableWithdraw.toPrecision(6), {
           decimals: 6
         })}
