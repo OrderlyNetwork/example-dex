@@ -13,7 +13,7 @@ export const NavBar: FC = () => {
   };
 
   return (
-    <nav className="flex flex-self-stretch gap-sm flex-justify-end align-center">
+    <nav className="w-full flex flex-self-stretch gap-sm flex-justify-end align-center">
       <h2 className="flex-auto m0">
         <Link to="/" className="color-unset">
           Orderly DEX

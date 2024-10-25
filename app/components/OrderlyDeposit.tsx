@@ -1,14 +1,15 @@
 import { useAccount, useChains, useDeposit, useWithdraw } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
+import { API, ChainNamespace } from '@orderly.network/types';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Tabs } from '@radix-ui/themes';
 import { useNotifications, useSetChain } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { FC, useEffect, useMemo, useState } from 'react';
+import { match } from 'ts-pattern';
 
 import { PendingButton, TokenInput } from '~/components';
 import { useIsTestnet } from '~/hooks';
-import { supportedChainIds } from '~/utils';
+import { supportedEvmChainIds, supportedSolanaChainIds } from '~/utils';
 
 export const OrderlyDeposit: FC<{
   walletBalance: FixedNumber;
@@ -25,23 +26,25 @@ export const OrderlyDeposit: FC<{
   const [_, customNotification] = useNotifications();
 
   const [isTestnet] = useIsTestnet();
-  const { account } = useAccount();
+  const { account, state } = useAccount();
   const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet', {
-    filter: (item: API.Chain) => supportedChainIds.includes(item.network_infos?.chain_id)
+    filter: (item: API.Chain) =>
+      supportedEvmChainIds.includes(item.network_infos?.chain_id) ||
+      supportedSolanaChainIds.includes(item.network_infos?.chain_id)
   });
-  const [{ connectedChain }] = useSetChain();
+  const [{ connectedChain: connectedEvmChain }] = useSetChain();
   const token = useMemo(() => {
     return Array.isArray(chains)
       ? chains
-          .find((chain) => chain.network_infos.chain_id === Number(connectedChain?.id))
+          .find((chain) => chain.network_infos.chain_id === Number(connectedEvmChain?.id))
           ?.token_infos.find((t) => t.symbol === 'USDC')
       : undefined;
-  }, [chains, connectedChain]);
+  }, [chains, connectedEvmChain]);
   const deposit = useDeposit({
     address: token?.address,
     decimals: token?.decimals,
     srcToken: token?.symbol,
-    srcChainId: Number(connectedChain?.id)
+    srcChainId: Number(connectedEvmChain?.id)
   });
 
   useEffect(() => {
@@ -221,27 +224,51 @@ export const OrderlyDeposit: FC<{
             : 'Withdraw'}
         </PendingButton>
 
-        {isTestnet && (
+        {isTestnet && state.chainNamespace != null && (
           <PendingButton
             disabled={mintedTestUSDC}
             onClick={async () => {
+              if (state.chainNamespace == null) return;
               const { update } = customNotification({
                 eventCode: 'mint',
                 type: 'pending',
                 message: 'Minting 1k USDC on testnet...'
               });
               try {
-                const res = await fetch('https://testnet-operator-evm.orderly.org/v1/faucet/usdc', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    broker_id: 'orderly',
-                    chain_id: String(Number(connectedChain?.id)),
-                    user_address: account.address
-                  })
-                });
+                const chainNamespace = state.chainNamespace;
+                const res = await fetch(
+                  match(chainNamespace)
+                    .with(
+                      ChainNamespace.evm,
+                      () => 'https://testnet-operator-evm.orderly.org/v1/faucet/usdc'
+                    )
+                    .with(
+                      ChainNamespace.solana,
+                      () => 'https://testnet-operator-sol.orderly.org/v1/faucet/usdc'
+                    )
+                    .exhaustive(),
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: match(chainNamespace)
+                      .with(ChainNamespace.evm, () =>
+                        JSON.stringify({
+                          broker_id: import.meta.env.VITE_BROKER_ID,
+                          chain_id: String(Number(account.chainId)),
+                          user_address: account.address
+                        })
+                      )
+                      .with(ChainNamespace.solana, () =>
+                        JSON.stringify({
+                          broker_id: import.meta.env.VITE_BROKER_ID,
+                          user_address: account.address
+                        })
+                      )
+                      .exhaustive()
+                  }
+                );
                 if (!res.ok) {
                   throw new Error(res.status === 429 ? 'Too many requests' : res.statusText);
                 }

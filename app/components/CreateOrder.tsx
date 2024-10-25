@@ -1,7 +1,7 @@
-import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
+import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
-import { useConnectWallet, useNotifications } from '@web3-onboard/react';
+import { useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
@@ -34,7 +34,7 @@ export const CreateOrder: FC<{
     defaultValues
   });
   const symbolsInfo = useSymbolsInfo();
-  const [{ wallet }] = useConnectWallet();
+  const { account } = useAccount();
   const { availableWithdraw } = useWithdraw();
   const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
@@ -253,11 +253,11 @@ export const CreateOrder: FC<{
       <button
         type="submit"
         disabled={loading}
-        className={`relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0 ${wallet == null ? 'hidden' : ''}`}
+        className={`relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0 ${account.address == null ? 'hidden' : ''}`}
       >
         {loading && <Spinner overlay={true} />} Create Order
       </button>
-      {wallet == null && <ConnectWalletButton />}
+      {account.address == null && <ConnectWalletButton />}
     </form>
   );
 };

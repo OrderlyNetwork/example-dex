@@ -2,45 +2,13 @@ import { Theme } from '@radix-ui/themes';
 import radixTheme from '@radix-ui/themes/styles.css?url';
 import type { LinksFunction } from '@remix-run/node';
 import { Links, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
-import injectedModule from '@web3-onboard/injected-wallets';
-import { Web3OnboardProvider, init } from '@web3-onboard/react';
-import walletConnectModule from '@web3-onboard/walletconnect';
+import solana from '@solana/wallet-adapter-react-ui/styles.css?url';
 
 import { Spinner } from './components';
-import { supportedChains } from './utils';
 
 import { App } from '~/App';
 import globalCss from '~/global.css?url';
 import uno from '~/styles/uno.css?url';
-
-const injected = injectedModule();
-const walletConnect = walletConnectModule({
-  projectId: '5f4e967f02cf92c8db957c56e877e149',
-  requiredChains: [10, 42161],
-  optionalChains: [421614, 11155420],
-  dappUrl: 'https://orderly-dex.pages.dev'
-});
-
-const web3Onboard = init({
-  wallets: [injected, walletConnect],
-  chains: supportedChains.map(({ id, token, label, rpcUrl }) => ({
-    id,
-    token,
-    label,
-    rpcUrl
-  })),
-  appMetadata: {
-    name: 'Orderly DEX',
-    description: 'Fully fledged example DEX using Orderly Network'
-  },
-  accountCenter: {
-    desktop: { enabled: false },
-    mobile: { enabled: false }
-  },
-  connect: {
-    autoConnectLastWallet: true
-  }
-});
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: globalCss },
@@ -48,7 +16,8 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: radixTheme
   },
-  { rel: 'stylesheet', href: uno }
+  { rel: 'stylesheet', href: uno },
+  { rel: 'stylesheet', href: solana }
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -68,7 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           radius="small"
           className="flex flex-col flex-items-center"
         >
-          <Web3OnboardProvider web3Onboard={web3Onboard}>{children}</Web3OnboardProvider>
+          {children}
         </Theme>
         <ScrollRestoration />
         <Scripts />

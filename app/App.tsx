@@ -1,29 +1,29 @@
-import { DefaultEVMAdapterWalletAdapter } from '@orderly.network/default-evm-adapter';
-import { OrderlyConfigProvider } from '@orderly.network/hooks';
-import { EthersProvider } from '@orderly.network/web3-provider-ethers';
+import { Theme } from '@radix-ui/themes';
 import { Outlet } from '@remix-run/react';
 import { FC } from 'react';
 
+import { EvmProvider } from './providers/EvmProvider';
+import { OrderlyProvider } from './providers/OrderlyProvider';
+import { SolanaProvider } from './providers/SolanaProvider';
+
 import { NavBar } from '~/components';
-import { useIsTestnet } from '~/hooks';
 
 export const App: FC = () => {
-  const [isTestnet, networkChanged] = useIsTestnet();
-
-  if (networkChanged && typeof window !== 'undefined') {
-    window.localStorage.setItem('networkId', isTestnet ? 'testnet' : 'mainnet');
-    window.location.reload();
-  }
-
   return (
-    <OrderlyConfigProvider
-      networkId={isTestnet ? 'testnet' : 'mainnet'}
-      brokerId="orderly"
-      brokerName="Orderly Network"
-      walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
+    <Theme
+      appearance="dark"
+      accentColor="iris"
+      radius="small"
+      className="w-full flex flex-col flex-items-center"
     >
-      <NavBar />
-      <Outlet />
-    </OrderlyConfigProvider>
+      <EvmProvider>
+        <SolanaProvider>
+          <OrderlyProvider>
+            <NavBar />
+            <Outlet />
+          </OrderlyProvider>
+        </SolanaProvider>
+      </EvmProvider>
+    </Theme>
   );
 };

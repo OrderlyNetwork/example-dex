@@ -1,15 +1,22 @@
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useSetChain } from '@web3-onboard/react';
 import { useEffect, useState } from 'react';
 
+import { useSolanaNetwork } from '~/providers/SolanaProvider';
 import { isTestnet } from '~/utils';
 
 export function useIsTestnet() {
   const [networkId, setNetworkId] = useState<'testnet' | 'mainnet'>();
-  const [{ connectedChain }] = useSetChain();
+  const [{ connectedChain: connectedEvmChain }] = useSetChain();
+  const { solanaNetwork } = useSolanaNetwork();
+  const { connected: solanaWalletConnected } = useWallet();
 
   let testnet: boolean;
-  if (connectedChain != null) {
-    testnet = isTestnet(connectedChain);
+  if (connectedEvmChain != null) {
+    testnet = isTestnet(connectedEvmChain.id);
+  } else if (solanaWalletConnected && solanaNetwork === WalletAdapterNetwork.Devnet) {
+    testnet = true;
   } else if (typeof window !== 'undefined') {
     testnet = window.localStorage.getItem('networkId') === 'testnet';
   } else {
@@ -27,10 +34,9 @@ export function useIsTestnet() {
   }, []);
 
   useEffect(() => {
-    if (connectedChain == null) return;
     setNetworkId(testnet ? 'testnet' : 'mainnet');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connectedChain]);
+  }, [connectedEvmChain]);
 
   return [testnet, networkChanged];
 }

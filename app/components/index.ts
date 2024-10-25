@@ -1,6 +1,6 @@
 export * from './AdvancedChart';
 export * from './Assets';
-export * from './ConnectWalletButton';
+export * from './wallet/ConnectWalletButton';
 export * from './ClosePosition';
 export * from './CreateOrder';
 export * from './LightweightChart';
@@ -19,4 +19,4 @@ export * from './SymbolHeader';
 export * from './SymbolSelection';
 export * from './TokenInput';
 export * from './UpdatePosition';
-export * from './WalletConnection';
+export * from './wallet/WalletConnection';

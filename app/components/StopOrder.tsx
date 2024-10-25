@@ -59,7 +59,6 @@ export const StopOrder: FC<{
       message: 'Creating order...'
     });
     try {
-      console.log('getInput(data, position)', getInput(data, position));
       await onSubmit(getInput(data, position));
       update({
         eventCode: 'createStopOrderSuccess',

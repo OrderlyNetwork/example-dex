@@ -1,8 +1,8 @@
 import { useAccount } from '@orderly.network/hooks';
-import { AccountStatusEnum, ChainNamespace } from '@orderly.network/types';
+import { AccountStatusEnum } from '@orderly.network/types';
 import { CheckCircledIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { Button, Dialog, Separator } from '@radix-ui/themes';
-import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
+import { useNotifications, useSetChain } from '@web3-onboard/react';
 import { FC, useEffect, useState } from 'react';
 
 import { WalletConnection, PendingButton } from '~/components';
@@ -12,7 +12,6 @@ let timer: number | undefined;
 
 export const OrderlyConnect: FC = () => {
   const [open, setOpen] = useState(false);
-  const [{ wallet }] = useConnectWallet();
   const [isTestnet] = useIsTestnet();
 
   const { account, state } = useAccount();
@@ -30,27 +29,12 @@ export const OrderlyConnect: FC = () => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
+      if (state.status < AccountStatusEnum.EnableTrading && account.address != null) {
         setOpen(true);
         timer = undefined;
       }
     }, 3_000) as unknown as number;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, setOpen, wallet]);
-
-  useEffect(() => {
-    if (!wallet || !connectedChain) return;
-    account.setAddress(wallet.accounts[0].address, {
-      chain: {
-        id: connectedChain?.id,
-        namespace: ChainNamespace.evm
-      },
-      provider: wallet.provider,
-      wallet: {
-        name: wallet.label
-      }
-    });
-  }, [wallet, account, connectedChain]);
+  }, [state, setOpen, account]);
 
   const isRegistered = state.status >= AccountStatusEnum.SignedIn;
   const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
@@ -121,7 +105,7 @@ export const OrderlyConnect: FC = () => {
               local storage and is unique per device.
             </span>
             <PendingButton
-              disabled={hasOrderlyKey}
+              disabled={hasOrderlyKey || !isRegistered}
               onClick={async () => {
                 const { update } = customNotification({
                   eventCode: 'orderlyKey',
