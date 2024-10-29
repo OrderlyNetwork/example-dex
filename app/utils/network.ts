@@ -50,6 +50,14 @@ export const supportedEvmChains: SupportedEvmChain[] = [
     rpcUrl: 'https://base-rpc.publicnode.com'
   },
   {
+    network: 'mainnet',
+    icon: './assets/sei.svg',
+    id: '0x531',
+    token: 'SEI',
+    label: 'Sei',
+    rpcUrl: 'https://evm-rpc.sei-apis.com'
+  },
+  {
     network: 'testnet',
     icon: './assets/sepolia.svg',
     id: '0xaa36a7',
@@ -80,6 +88,14 @@ export const supportedEvmChains: SupportedEvmChain[] = [
     token: 'ETH',
     label: 'Base Sepolia',
     rpcUrl: 'https://base-sepolia-rpc.publicnode.com'
+  },
+  {
+    network: 'testnet',
+    icon: './assets/sei_testnet.svg',
+    id: '0xae3f3',
+    token: 'SEI',
+    label: 'Sei Devnet',
+    rpcUrl: 'https://evm-rpc-arctic-1.sei-apis.com'
   }
 ];
 
