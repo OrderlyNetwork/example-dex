@@ -8,14 +8,14 @@ import { Spinner, UpdatePosition } from '.';
 import { baseFormatter, usdFormatter } from '~/utils';
 
 export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
-  const [positions, _info, { refresh, loading }] = usePositionStream(symbol);
+  const [positions, _info, { refresh, isLoading }] = usePositionStream();
   const { state } = useAccount();
 
   if (state.status <= AccountStatusEnum.NotSignedIn) {
     return;
   }
 
-  if (!positions.rows || loading) {
+  if (!positions.rows || isLoading) {
     return <Spinner size="2rem" className="m-3" />;
   }
 
