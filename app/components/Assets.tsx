@@ -6,8 +6,7 @@ import {
   useWithdraw
 } from '@orderly.network/hooks';
 import { AccountStatusEnum } from '@orderly.network/types';
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { Table, Tooltip } from '@radix-ui/themes';
+import { Table } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { FC, useMemo } from 'react';
@@ -40,7 +39,7 @@ export const Assets: FC = () => {
     () => (status >= AccountStatusEnum.Connected ? deposit.balance : undefined),
     [status, deposit]
   );
-  const { withdraw, unsettledPnL, availableWithdraw } = useWithdraw();
+  const { withdraw, availableWithdraw } = useWithdraw();
 
   return (
     <div className="flex flex-col gap-8">
@@ -58,26 +57,14 @@ export const Assets: FC = () => {
               {usdFormatter.format(collateral.availableBalance)} $
             </Table.Cell>
           </Table.Row>
-          <Table.Row>
-            <Table.RowHeaderCell>Unsettled PnL:</Table.RowHeaderCell>
-            <Table.Cell className="text-right">{usdFormatter.format(unsettledPnL)} $</Table.Cell>
-          </Table.Row>
         </Table.Body>
-        <Table.Row>
-          <Table.RowHeaderCell className="flex">
-            <Tooltip content="The maximum withdrawable amount. 'freeCollateral - unsettledPnL'">
-              <div className="content">
-                Withdrawable Balance <QuestionMarkCircledIcon />
-              </div>
-            </Tooltip>
-            :
-          </Table.RowHeaderCell>
-          <Table.Cell className="text-right">{usdFormatter.format(availableWithdraw)} $</Table.Cell>
-        </Table.Row>
       </Table.Root>
       <OrderlyDeposit
         walletBalance={FixedNumber.fromString(balance ?? '0', { decimals: 6 })}
-        orderlyBalance={FixedNumber.fromString(availableWithdraw.toPrecision(6), {
+        orderlyBalance={FixedNumber.fromString(collateral.availableBalance.toPrecision(6), {
+          decimals: 6
+        })}
+        availableWithdraw={FixedNumber.fromString(availableWithdraw.toPrecision(6), {
           decimals: 6
         })}
         withdraw={withdraw}

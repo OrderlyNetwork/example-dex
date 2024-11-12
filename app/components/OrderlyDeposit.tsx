@@ -13,8 +13,9 @@ import { useIsTestnet } from '~/hooks';
 export const OrderlyDeposit: FC<{
   walletBalance: FixedNumber;
   orderlyBalance: FixedNumber;
+  availableWithdraw: FixedNumber;
   withdraw: ReturnType<typeof useWithdraw>['withdraw'];
-}> = ({ walletBalance, orderlyBalance, withdraw }) => {
+}> = ({ walletBalance, orderlyBalance, availableWithdraw, withdraw }) => {
   const [amount, setAmount] = useState<FixedNumber>();
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -174,6 +175,32 @@ export const OrderlyDeposit: FC<{
                 }
               }
             } else {
+              if (availableWithdraw.lt(orderlyBalance)) {
+                const { update } = customNotification({
+                  eventCode: 'settle',
+                  type: 'pending',
+                  message: 'Settling PnL...'
+                });
+                try {
+                  await account.settle();
+                  update({
+                    eventCode: 'settleSuccess',
+                    type: 'success',
+                    message: 'Successfully settled PnL!',
+                    autoDismiss: 5_000
+                  });
+                } catch (err) {
+                  console.error(err);
+                  update({
+                    eventCode: 'settleError',
+                    type: 'error',
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    message: (err as any).message ?? 'Something went wrong',
+                    autoDismiss: 15_000
+                  });
+                }
+              }
+
               const { update } = customNotification({
                 eventCode: 'withdraw',
                 type: 'pending',
@@ -223,7 +250,7 @@ export const OrderlyDeposit: FC<{
               const { update } = customNotification({
                 eventCode: 'mint',
                 type: 'pending',
-                message: 'Minting 1k USDC on testnet...'
+                message: 'Minting USDC on testnet...'
               });
               try {
                 const chainNamespace = state.chainNamespace;
