@@ -31,7 +31,7 @@ export const ClosePosition: FC<{
     defaultValues: {
       direction: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
       type: OrderType.MARKET,
-      quantity: position.position_qty
+      quantity: Math.abs(position.position_qty)
     }
   });
   const { onSubmit, helper } = useOrderEntry(
@@ -116,7 +116,7 @@ export const ClosePosition: FC<{
                   value = newVal.toString();
                 }}
                 min={FixedNumber.fromString('0')}
-                max={FixedNumber.fromString(String(position.position_qty))}
+                max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
                 hasError={error != null}
               />
               <Slider
@@ -129,7 +129,7 @@ export const ClosePosition: FC<{
                 }}
                 onValueCommit={onBlur}
                 min={0}
-                max={position.position_qty}
+                max={Math.abs(position.position_qty)}
                 step={symbolInfo.base_tick}
               />
               <div className="font-size-[1.1rem] flex w-full justify-center my-1">
