@@ -9,10 +9,9 @@ import { TpSlOrder } from './TpSlOrder';
 import { baseFormatter, usdFormatter } from '~/utils';
 
 export const UpdatePosition: FC<{
-  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
-}> = ({ symbol, position, refresh }) => {
+}> = ({ position, refresh }) => {
   const [open, setOpen] = useState(false);
 
   const renderPositionValue = (header: string, value: string) => (
@@ -69,18 +68,13 @@ export const UpdatePosition: FC<{
           </Tabs.List>
 
           <Tabs.Content value="close" className="mt-3">
-            <ClosePosition
-              symbol={symbol}
-              position={position}
-              refresh={refresh}
-              setOpen={setOpen}
-            />
+            <ClosePosition position={position} refresh={refresh} setOpen={setOpen} />
           </Tabs.Content>
           <Tabs.Content value="stop" className="mt-3">
-            <StopOrder symbol={symbol} position={position} refresh={refresh} setOpen={setOpen} />
+            <StopOrder position={position} refresh={refresh} setOpen={setOpen} />
           </Tabs.Content>
           <Tabs.Content value="tp_sl" className="mt-3">
-            <TpSlOrder symbol={symbol} position={position} refresh={refresh} setOpen={setOpen} />
+            <TpSlOrder position={position} refresh={refresh} setOpen={setOpen} />
           </Tabs.Content>
         </Tabs.Root>
       </Dialog.Content>

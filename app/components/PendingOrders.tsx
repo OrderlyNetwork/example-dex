@@ -5,9 +5,12 @@ import { FC } from 'react';
 
 import { Spinner, PendingOrder } from '.';
 
-export const PendingOrders: FC<{ symbol: string }> = ({ symbol }) => {
+export const PendingOrders: FC<{ symbol: string; showAll?: boolean }> = ({
+  symbol,
+  showAll = true
+}) => {
   const [ordersUntyped, { cancelOrder, cancelAlgoOrder, isLoading }] = useOrderStream({
-    symbol,
+    symbol: showAll ? undefined : symbol,
     status: OrderStatus.INCOMPLETE
   });
   const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
@@ -48,7 +51,6 @@ export const PendingOrders: FC<{ symbol: string }> = ({ symbol }) => {
             <PendingOrder
               key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
               order={order}
-              symbol={symbol}
               cancelOrder={cancelOrder}
               cancelAlgoOrder={cancelAlgoOrder}
             />

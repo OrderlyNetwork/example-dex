@@ -10,10 +10,9 @@ import { baseFormatter, usdFormatter } from '~/utils';
 
 export const PendingOrder: FC<{
   order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
-  symbol: string;
   cancelOrder: ReturnType<typeof useOrderStream>[1]['cancelOrder'];
   cancelAlgoOrder: ReturnType<typeof useOrderStream>[1]['cancelAlgoOrder'];
-}> = ({ order, symbol, cancelOrder, cancelAlgoOrder }) => {
+}> = ({ order, cancelOrder, cancelAlgoOrder }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [_0, customNotification] = useNotifications();
@@ -72,9 +71,9 @@ export const PendingOrder: FC<{
                     });
                     try {
                       if (order.isAlgoOrder) {
-                        await cancelAlgoOrder(order.order.algo_order_id, symbol);
+                        await cancelAlgoOrder(order.order.algo_order_id, order.order.symbol);
                       } else {
-                        await cancelOrder(order.order.order_id, symbol);
+                        await cancelOrder(order.order.order_id, order.order.symbol);
                       }
                       update({
                         eventCode: 'cancelOrderSuccess',

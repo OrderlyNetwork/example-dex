@@ -17,11 +17,10 @@ type Inputs = {
 };
 
 export const TpSlOrder: FC<{
-  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ symbol, position, refresh, setOpen }) => {
+}> = ({ position, refresh, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const symbolsInfo = useSymbolsInfo();
@@ -95,8 +94,8 @@ export const TpSlOrder: FC<{
   //   markPrice: Number(watch('trigger_price') ?? 0)
   // });
 
-  const symbolInfo = symbolsInfo[symbol]();
-  const [_, base, quote] = symbol.split('_');
+  const symbolInfo = symbolsInfo[position.symbol]();
+  const [_, base, quote] = position.symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   return (

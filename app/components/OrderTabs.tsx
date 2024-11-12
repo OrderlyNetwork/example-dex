@@ -12,10 +12,10 @@ export const OrderTabs: FC<{ symbol: string }> = ({ symbol }) => {
       </Tabs.List>
 
       <Tabs.Content value="positions">
-        <Positions symbol={symbol} />
+        <Positions symbol={symbol} showAll={true} />
       </Tabs.Content>
       <Tabs.Content value="pending">
-        <PendingOrders symbol={symbol} />
+        <PendingOrders symbol={symbol} showAll={true} />
       </Tabs.Content>
     </Tabs.Root>
   );

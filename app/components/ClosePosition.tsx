@@ -18,11 +18,10 @@ type Inputs = {
 };
 
 export const ClosePosition: FC<{
-  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ symbol, position, refresh, setOpen }) => {
+}> = ({ position, refresh, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const symbolsInfo = useSymbolsInfo();
@@ -36,7 +35,7 @@ export const ClosePosition: FC<{
   });
   const { onSubmit, helper } = useOrderEntry(
     {
-      symbol,
+      symbol: position.symbol,
       side: OrderSide.BUY,
       order_type: OrderType.MARKET
     },
@@ -56,7 +55,7 @@ export const ClosePosition: FC<{
       message: 'Closing position...'
     });
     try {
-      await onSubmit(getInput(data, symbol));
+      await onSubmit(getInput(data, position.symbol));
       update({
         eventCode: 'closePositionSuccess',
         type: 'success',
@@ -78,8 +77,8 @@ export const ClosePosition: FC<{
     }
   };
 
-  const symbolInfo = symbolsInfo[symbol]();
-  const [_, base] = symbol.split('_');
+  const symbolInfo = symbolsInfo[position.symbol]();
+  const [_, base] = position.symbol.split('_');
   const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
   return (
@@ -97,7 +96,7 @@ export const ClosePosition: FC<{
           rules={{
             validate: {
               custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol, helper.validator);
+                const errors = await getValidationErrors(data, position.symbol, helper.validator);
                 return errors?.order_quantity != null ? errors.order_quantity.message : true;
               }
             }

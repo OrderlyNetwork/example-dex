@@ -20,11 +20,10 @@ type Inputs = {
 };
 
 export const StopOrder: FC<{
-  symbol: string;
   position: API.PositionExt;
   refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ symbol, position, refresh, setOpen }) => {
+}> = ({ position, refresh, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const symbolsInfo = useSymbolsInfo();
@@ -39,7 +38,7 @@ export const StopOrder: FC<{
   });
   const { onSubmit, helper } = useOrderEntry(
     {
-      symbol,
+      symbol: position.symbol,
       side: OrderSide.BUY,
       order_type: OrderType.STOP_MARKET
     },
@@ -87,8 +86,8 @@ export const StopOrder: FC<{
     markPrice: Number(watch('trigger_price') ?? 0)
   });
 
-  const symbolInfo = symbolsInfo[symbol]();
-  const [_, base, quote] = symbol.split('_');
+  const symbolInfo = symbolsInfo[position.symbol]();
+  const [_, base, quote] = position.symbol.split('_');
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   return (

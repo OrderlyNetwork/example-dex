@@ -7,8 +7,13 @@ import { Spinner, UpdatePosition } from '.';
 
 import { baseFormatter, usdFormatter } from '~/utils';
 
-export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
-  const [positions, _info, { refresh, isLoading }] = usePositionStream();
+export const Positions: FC<{ symbol: string; showAll?: boolean }> = ({
+  symbol,
+  showAll = true
+}) => {
+  const [positions, _info, { refresh, isLoading }] = usePositionStream(
+    showAll ? undefined : symbol
+  );
   const { state } = useAccount();
 
   if (state.status <= AccountStatusEnum.NotSignedIn) {
@@ -48,7 +53,7 @@ export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
                   <Badge color="red">Short</Badge>
                 )}
               </Table.Cell>
-              <Table.Cell>{baseFormatter.format(position.position_qty)}</Table.Cell>
+              <Table.Cell>{baseFormatter.format(Math.abs(position.position_qty))}</Table.Cell>
               <Table.Cell>{usdFormatter.format(position.average_open_price)}</Table.Cell>
               <Table.Cell>{usdFormatter.format(position.mark_price)}</Table.Cell>
               <Table.Cell>
@@ -59,7 +64,7 @@ export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
                 {position.est_liq_price ? usdFormatter.format(position.est_liq_price) : '-'}
               </Table.Cell>
               <Table.Cell>
-                <UpdatePosition symbol={symbol} position={position} refresh={refresh} />
+                <UpdatePosition position={position} refresh={refresh} />
               </Table.Cell>
             </Table.Row>
           );
