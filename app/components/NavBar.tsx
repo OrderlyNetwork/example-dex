@@ -35,7 +35,7 @@ export const NavBar: FC = () => {
         <DropdownMenu.Content onPointerDownOutside={closeMenu}>
           <DropdownMenu.Item className="p0">
             <Link to="/" className="w-full h-full px5 line-height-8" onClick={closeMenu}>
-              Home
+              Trade
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="p0">
