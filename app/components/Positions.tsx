@@ -1,6 +1,6 @@
 import { useAccount, usePositionStream } from '@orderly.network/hooks';
 import { AccountStatusEnum } from '@orderly.network/types';
-import { Table } from '@radix-ui/themes';
+import { Badge, Table } from '@radix-ui/themes';
 import { FC } from 'react';
 
 import { Spinner, UpdatePosition } from '.';
@@ -24,6 +24,7 @@ export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
       <Table.Header>
         <Table.Row className="[&>*]:align-mid">
           <Table.ColumnHeaderCell>Symbol</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Direction</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Avg. Open</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Mark Price</Table.ColumnHeaderCell>
@@ -39,6 +40,13 @@ export const Positions: FC<{ symbol: string }> = ({ symbol }) => {
             <Table.Row key={position.symbol} className="[&>*]:align-mid">
               <Table.Cell>
                 {base} / {quote}
+              </Table.Cell>
+              <Table.Cell>
+                {position.position_qty > 0 ? (
+                  <Badge color="green">Long</Badge>
+                ) : (
+                  <Badge color="red">Short</Badge>
+                )}
               </Table.Cell>
               <Table.Cell>{baseFormatter.format(position.position_qty)}</Table.Cell>
               <Table.Cell>{usdFormatter.format(position.average_open_price)}</Table.Cell>
