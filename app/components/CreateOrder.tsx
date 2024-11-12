@@ -4,7 +4,7 @@ import { Separator } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { match } from 'ts-pattern';
+import { match, P } from 'ts-pattern';
 
 import { ConnectWalletButton, Spinner, TokenInput } from '.';
 
@@ -193,6 +193,10 @@ export const CreateOrder: FC<{
                 onBlur={onBlur}
                 onChange={onChange}
                 hasError={error != null}
+                readonly={match(watch('type'))
+                  .with('Market', () => true)
+                  .with(P.union('Limit', 'StopLimit'), () => false)
+                  .exhaustive()}
               />
               {renderFormError(error)}
             </>
