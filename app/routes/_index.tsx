@@ -34,7 +34,7 @@ export default function Index() {
           <LightweightChart symbol={symbol} />
         )}
       </div>
-      <div className="flex flex-1 w-full flex-wrap flex-items-center flex-justify-around gap-4">
+      <div className="flex flex-1 w-full flex-wrap items-stretch flex-justify-around gap-4">
         <Orderbook symbol={symbol} />
         <CreateOrder symbol={symbol} />
       </div>
