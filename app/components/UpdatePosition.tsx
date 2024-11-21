@@ -10,8 +10,7 @@ import { baseFormatter, usdFormatter } from '~/utils';
 
 export const UpdatePosition: FC<{
   position: API.PositionExt;
-  refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
-}> = ({ position, refresh }) => {
+}> = ({ position }) => {
   const [open, setOpen] = useState(false);
 
   const renderPositionValue = (header: string, value: string) => (
@@ -68,13 +67,13 @@ export const UpdatePosition: FC<{
           </Tabs.List>
 
           <Tabs.Content value="close" className="mt-3">
-            <ClosePosition position={position} refresh={refresh} setOpen={setOpen} />
+            <ClosePosition position={position} setOpen={setOpen} />
           </Tabs.Content>
           <Tabs.Content value="stop" className="mt-3">
-            <StopOrder position={position} refresh={refresh} setOpen={setOpen} />
+            <StopOrder position={position} setOpen={setOpen} />
           </Tabs.Content>
           <Tabs.Content value="tp_sl" className="mt-3">
-            <TpSlOrder position={position} refresh={refresh} setOpen={setOpen} />
+            <TpSlOrder position={position} setOpen={setOpen} />
           </Tabs.Content>
         </Tabs.Root>
       </Dialog.Content>

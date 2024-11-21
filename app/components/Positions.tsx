@@ -11,9 +11,7 @@ export const Positions: FC<{ symbol: string; showAll?: boolean }> = ({
   symbol,
   showAll = true
 }) => {
-  const [positions, _info, { refresh, isLoading }] = usePositionStream(
-    showAll ? undefined : symbol
-  );
+  const [positions, _info, { isLoading }] = usePositionStream(showAll ? undefined : symbol);
   const { state } = useAccount();
 
   if (state.status <= AccountStatusEnum.NotSignedIn) {
@@ -64,7 +62,7 @@ export const Positions: FC<{ symbol: string; showAll?: boolean }> = ({
                 {position.est_liq_price ? usdFormatter.format(position.est_liq_price) : '-'}
               </Table.Cell>
               <Table.Cell>
-                <UpdatePosition position={position} refresh={refresh} />
+                <UpdatePosition position={position} />
               </Table.Cell>
             </Table.Row>
           );

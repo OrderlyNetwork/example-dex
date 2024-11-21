@@ -1,56 +1,65 @@
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { positions } from '@orderly.network/perp';
-import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { API, OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
 import { Slider } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { P, match } from 'ts-pattern';
+import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
+import { match } from 'ts-pattern';
 
 import { Spinner, TokenInput } from '.';
 
 import { getDecimalsFromTick, renderFormError, usdFormatter } from '~/utils';
 
-type Inputs = {
-  direction: 'TakeProfit' | 'StopLoss';
-  type: OrderType;
-  trigger_price?: string;
-  quantity?: string | number;
-};
-
 export const StopOrder: FC<{
   position: API.PositionExt;
-  refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ position, refresh, setOpen }) => {
+}> = ({ position, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const symbolsInfo = useSymbolsInfo();
 
-  const { register, handleSubmit, control, watch } = useForm<Inputs>({
-    defaultValues: {
-      direction: 'TakeProfit',
-      type: OrderType.STOP_MARKET,
+  const isLong = position.position_qty > 0;
+  const {
+    submit,
+    setValue,
+    formattedOrder,
+    metaState: { dirty, errors, submitted }
+  } = useOrderEntry(position.symbol, {
+    initialOrder: {
+      side: isLong ? OrderSide.SELL : OrderSide.BUY,
+      order_type: OrderType.STOP_MARKET,
       trigger_price: undefined,
-      quantity: String(Math.abs(position.position_qty))
+      order_quantity: String(Math.abs(position.position_qty))
     }
   });
-  const { onSubmit, helper } = useOrderEntry(
-    {
-      symbol: position.symbol,
-      side: OrderSide.BUY,
-      order_type: OrderType.STOP_MARKET
+  const hasError = useCallback(
+    (
+      key: keyof OrderlyOrder
+    ):
+      | {
+          type: string;
+          message: string;
+        }
+      | undefined => {
+      if (!dirty[key] && !submitted) {
+        return;
+      }
+      return errors?.[key];
     },
-    { watchOrderbook: true }
+    [errors, dirty, submitted]
   );
   const [_0, customNotification] = useNotifications();
+
+  const isTakeProfit = isLong
+    ? formattedOrder.side === OrderSide.SELL
+    : formattedOrder.side === OrderSide.BUY;
 
   if (symbolsInfo.isNil) {
     return <Spinner />;
   }
 
-  const submitForm: SubmitHandler<Inputs> = async (data) => {
+  const submitForm = async () => {
     setLoading(true);
     const { update } = customNotification({
       eventCode: 'createStopOrder',
@@ -58,7 +67,8 @@ export const StopOrder: FC<{
       message: 'Creating order...'
     });
     try {
-      await onSubmit(getInput(data, position));
+      console.log(errors);
+      await submit();
       update({
         eventCode: 'createStopOrderSuccess',
         type: 'success',
@@ -75,15 +85,14 @@ export const StopOrder: FC<{
       });
     } finally {
       setLoading(false);
-      refresh();
       setOpen(false);
     }
   };
 
   const estimatedPnl = positions.unrealizedPnL({
-    qty: Number(watch('quantity') ?? 0),
+    qty: Number(formattedOrder.order_quantity ?? 0),
     openPrice: position.average_open_price,
-    markPrice: Number(watch('trigger_price') ?? 0)
+    markPrice: Number(formattedOrder.trigger_price ?? 0)
   });
 
   const symbolInfo = symbolsInfo[position.symbol]();
@@ -91,139 +100,91 @@ export const StopOrder: FC<{
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
   return (
-    <form className="flex flex-1 flex-col gap-3 w-full" onSubmit={handleSubmit(submitForm)}>
+    <form
+      className="flex flex-1 flex-col gap-3 w-full"
+      onSubmit={(event) => {
+        event.preventDefault();
+        submitForm();
+      }}
+    >
       <div>
         Create an algorithmic order to (partially) close a position when a specific mark price is
         reached.
       </div>
 
       <div className="flex flex-1">
-        <label
-          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${watch('direction') === 'TakeProfit' ? 'border-solid border-3 border-[var(--color-light-green)]' : ''}`}
+        <button
+          type="button"
+          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${isTakeProfit ? 'border-solid border-3 border-[var(--color-light-green)]' : 'border-none'}`}
+          onClick={() => {
+            setValue('side', isLong ? OrderSide.SELL : OrderSide.BUY);
+          }}
         >
-          <input type="radio" className="hidden" {...register('direction')} value="TakeProfit" />
           Take Profit
-        </label>
-        <label
-          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-red)] hover:bg-[var(--color-bg-red-hover)] font-bold border-rd-r-1 border-rd-l-0 w-[50%] ${watch('direction') === 'StopLoss' ? 'border-solid border-3 border-[var(--color-light-red)]' : ''}`}
+        </button>
+        <button
+          type="button"
+          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-red)] hover:bg-[var(--color-bg-red-hover)] font-bold border-rd-r-1 border-rd-l-0 w-[50%] ${!isTakeProfit ? 'border-solid border-3 border-[var(--color-light-red)]' : 'border-none'}`}
+          onClick={() => {
+            setValue('side', isLong ? OrderSide.BUY : OrderSide.SELL);
+          }}
         >
-          <input type="radio" className="hidden" {...register('direction')} value="StopLoss" />
           Stop Loss
-        </label>
+        </button>
       </div>
-
-      <input className="hidden" {...register('type')} />
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Price ({quote})</span>
-        <Controller
+        <TokenInput
+          className={`${hasError('trigger_price') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={quoteDecimals}
+          placeholder="Price"
           name="trigger_price"
-          control={control}
-          rules={{
-            validate: {
-              min: (_, data) => {
-                const isLong = position.position_qty > 0;
-                if (data.trigger_price == null) return true;
-                const triggerPrice = Number(data.trigger_price);
-                return match([isLong, data.direction])
-                  .with(P.union([true, 'TakeProfit'], [false, 'StopLoss']), () =>
-                    triggerPrice > position.mark_price
-                      ? true
-                      : 'Minimum trigger price should be greater than mark price'
-                  )
-                  .otherwise(() => true);
-              },
-              max: (_, data) => {
-                const isLong = position.position_qty > 0;
-                if (data.trigger_price == null) return true;
-                const triggerPrice = Number(data.trigger_price);
-                return match([isLong, data.direction])
-                  .with(P.union([false, 'TakeProfit'], [true, 'StopLoss']), () =>
-                    triggerPrice < position.mark_price
-                      ? true
-                      : 'Maximum trigger price should be less than mark price'
-                  )
-                  .otherwise(() => true);
-              },
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, position, helper.validator);
-                return errors?.trigger_price != null ? errors.trigger_price.message : true;
-              }
-            }
+          hasError={!!hasError('trigger_price')}
+          onValueChange={(value) => {
+            setValue('trigger_price', value.toString());
           }}
-          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={quoteDecimals}
-                placeholder="Price"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                hasError={error != null}
-              />
-              {renderFormError(error)}
-            </>
-          )}
         />
+        {renderFormError(hasError('trigger_price'))}
       </label>
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Quantity ({base})</span>
-        <Controller
-          name="quantity"
-          control={control}
-          rules={{
-            validate: {
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, position, helper.validator);
-                return errors?.order_quantity != null ? errors.order_quantity.message : true;
-              }
-            }
+        <TokenInput
+          className={`mb-2 ${hasError('order_quantity') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={baseDecimals}
+          placeholder="Quantity"
+          name="order_quantity"
+          value={formattedOrder.order_quantity}
+          onValueChange={(value) => {
+            setValue('order_quantity', value.toString());
           }}
-          render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`mb-2 ${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={baseDecimals}
-                placeholder="Quantity"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                value={value}
-                onValueChange={(newVal) => {
-                  value = newVal.toString();
-                }}
-                min={FixedNumber.fromString('0')}
-                max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
-                hasError={error != null}
-              />
-              <Slider
-                value={[Number(value)]}
-                defaultValue={[100]}
-                variant="surface"
-                name={name}
-                onValueChange={(value) => {
-                  onChange(value[0]);
-                }}
-                onValueCommit={onBlur}
-                min={0}
-                max={Math.abs(position.position_qty)}
-                step={symbolInfo.base_tick}
-              />
-              <div className="font-size-[1.1rem] flex w-full justify-center my-1">
-                {value} {base}
-              </div>
-              {renderFormError(error)}
-            </>
-          )}
+          min={FixedNumber.fromString('0')}
+          max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
+          hasError={!!hasError('order_quantity')}
         />
+        <Slider
+          value={[Number(formattedOrder.order_quantity)]}
+          defaultValue={[100]}
+          variant="surface"
+          name="order_quantity"
+          onValueChange={(value) => {
+            setValue('order_quantity', value.toString());
+          }}
+          min={0}
+          max={Math.abs(position.position_qty)}
+          step={symbolInfo.base_tick}
+        />
+        <div className="font-size-[1.1rem] flex w-full justify-center my-1">
+          {formattedOrder.order_quantity} {base}
+        </div>
+        {renderFormError(hasError('order_quantity'))}
       </label>
 
       <div className="flex flex-1 justify-between gap-3">
         <span className="font-bold color-[var(--gray-12)]">Est. PnL:</span>
         <span>
-          {watch('quantity') && watch('trigger_price')
+          {formattedOrder.order_quantity && formattedOrder.trigger_price
             ? `${usdFormatter.format(estimatedPnl)} ${quote}`
             : '-'}
         </span>
@@ -235,31 +196,11 @@ export const StopOrder: FC<{
         className="relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0"
       >
         {loading && <Spinner overlay={true} />}{' '}
-        {match(watch('direction'))
-          .with('TakeProfit', () => 'Take Profit')
-          .with('StopLoss', () => 'Stop Loss')
+        {match(isTakeProfit)
+          .with(true, () => 'Take Profit')
+          .with(false, () => 'Stop Loss')
           .exhaustive()}
       </button>
     </form>
   );
 };
-
-async function getValidationErrors(
-  data: Inputs,
-  position: API.PositionExt,
-  validator: ReturnType<typeof useOrderEntry>['helper']['validator']
-): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
-  return validator(getInput(data, position));
-}
-
-function getInput(data: Inputs, position: API.PositionExt): OrderEntity {
-  const isLong = position.position_qty > 0;
-  return {
-    symbol: position.symbol,
-    isStopOrder: true,
-    order_quantity: data.quantity,
-    trigger_price: data.trigger_price,
-    side: isLong ? OrderSide.SELL : OrderSide.BUY,
-    order_type: OrderType.STOP_MARKET
-  };
-}

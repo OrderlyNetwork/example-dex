@@ -18,9 +18,8 @@ type Inputs = {
 
 export const TpSlOrder: FC<{
   position: API.PositionExt;
-  refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ position, refresh, setOpen }) => {
+}> = ({ position, setOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const symbolsInfo = useSymbolsInfo();
@@ -83,7 +82,6 @@ export const TpSlOrder: FC<{
       });
     } finally {
       setLoading(false);
-      refresh();
       setOpen(false);
     }
   };

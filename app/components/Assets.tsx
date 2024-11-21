@@ -37,6 +37,7 @@ export const Assets: FC = () => {
   });
   const balance = useMemo(
     () => (status >= AccountStatusEnum.Connected ? deposit.balance : undefined),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [status, deposit, account.chainId]
   );
   const { withdraw, availableWithdraw } = useWithdraw();

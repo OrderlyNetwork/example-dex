@@ -1,4 +1,4 @@
-import { DefaultEVMAdapterWalletAdapter } from '@orderly.network/default-evm-adapter';
+import { DefaultEVMWalletAdapter } from '@orderly.network/default-evm-adapter';
 import { DefaultSolanaWalletAdapter } from '@orderly.network/default-solana-adapter';
 import { OrderlyConfigProvider } from '@orderly.network/hooks';
 import { EthersProvider } from '@orderly.network/web3-provider-ethers';
@@ -22,7 +22,7 @@ export const OrderlyProvider: FC<{ children: React.ReactNode }> = ({ children })
       brokerId={import.meta.env.VITE_BROKER_ID}
       brokerName={import.meta.env.VITE_BROKER_NAME}
       walletAdapters={[
-        new DefaultEVMAdapterWalletAdapter(new EthersProvider()),
+        new DefaultEVMWalletAdapter(new EthersProvider()),
         new DefaultSolanaWalletAdapter()
       ]}
     >

@@ -1,72 +1,62 @@
 import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
-import { FC, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { match, P } from 'ts-pattern';
+import { FC, useCallback, useState } from 'react';
+import { match } from 'ts-pattern';
 
 import { ConnectWalletButton, Spinner, TokenInput } from '.';
 
 import { getDecimalsFromTick, usdFormatter, renderFormError } from '~/utils';
 
-type Inputs = {
-  direction: 'Buy' | 'Sell';
-  type: 'Market' | 'Limit' | 'StopLimit';
-  triggerPrice?: string;
-  price?: string;
-  quantity?: string;
-};
-
-const defaultValues: Inputs = {
-  direction: 'Buy',
-  type: 'Market',
-  triggerPrice: undefined,
-  price: undefined,
-  quantity: undefined
-};
-
 export const CreateOrder: FC<{
   symbol: string;
 }> = ({ symbol }) => {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, watch, control } = useForm<Inputs>({
-    defaultValues
-  });
   const symbolsInfo = useSymbolsInfo();
   const { account } = useAccount();
   const { availableWithdraw } = useWithdraw();
-  const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
-    {
-      symbol,
-      side: match(watch('direction', 'Buy'))
-        .with('Buy', () => OrderSide.BUY)
-        .with('Sell', () => OrderSide.SELL)
-        .exhaustive(),
-      order_type: match(watch('type', 'Market'))
-        .with('Market', () => OrderType.MARKET)
-        .with('Limit', () => OrderType.LIMIT)
-        .with('StopLimit', () => OrderType.STOP_LIMIT)
-        .exhaustive(),
-      order_quantity: watch('quantity', undefined),
-      order_price: watch('price', undefined)
+  const {
+    submit,
+    setValue,
+    maxQty,
+    estLeverage,
+    estLiqPrice,
+    formattedOrder,
+    metaState: { errors, dirty, submitted },
+    reset
+  } = useOrderEntry(symbol, {
+    initialOrder: {
+      side: OrderSide.BUY,
+      order_type: OrderType.MARKET,
+      trigger_price: undefined,
+      price: undefined,
+      order_quantity: undefined
+    }
+  });
+  const hasError = useCallback(
+    (
+      key: keyof OrderlyOrder
+    ):
+      | {
+          type: string;
+          message: string;
+        }
+      | undefined => {
+      if (!dirty[key] && !submitted) {
+        return;
+      }
+      return errors?.[key];
     },
-    { watchOrderbook: true }
+    [errors, dirty, submitted]
   );
   const [_0, customNotification] = useNotifications();
-
-  // TODO reset doesn't work on controlled `TokenInput`
-  // useEffect(() => {
-  //   if (formState.isSubmitSuccessful) {
-  //     reset(defaultValues);
-  //   }
-  // }, [formState, reset]);
 
   if (symbolsInfo.isNil) {
     return <Spinner />;
   }
 
-  const submitForm: SubmitHandler<Inputs> = async (data) => {
+  const submitForm = async () => {
     setLoading(true);
     const { update } = customNotification({
       eventCode: 'createOrder',
@@ -74,13 +64,14 @@ export const CreateOrder: FC<{
       message: 'Creating order...'
     });
     try {
-      await onSubmit(getInput(data, symbol));
+      await submit();
       update({
         eventCode: 'createOrderSuccess',
         type: 'success',
         message: 'Order successfully created!',
         autoDismiss: 5_000
       });
+      reset();
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
       update({
@@ -91,7 +82,6 @@ export const CreateOrder: FC<{
       });
     } finally {
       setLoading(false);
-      // reset(defaultValues);
     }
   };
 
@@ -104,21 +94,30 @@ export const CreateOrder: FC<{
   return (
     <form
       className="flex flex-1 flex-col gap-6 min-w-[16rem] max-w-[24rem]"
-      onSubmit={handleSubmit(submitForm)}
+      onSubmit={(event) => {
+        event.preventDefault();
+        submitForm();
+      }}
     >
       <div className="flex flex-1">
-        <label
-          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${watch('direction') === 'Buy' ? 'border-solid border-3 border-[var(--color-light-green)]' : ''}`}
+        <button
+          type="button"
+          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-green)] hover:bg-[var(--color-bg-green-hover)] font-bold border-rd-l-1 border-rd-r-0 w-[50%] ${formattedOrder.side === OrderSide.BUY ? 'border-solid border-3 border-[var(--color-light-green)]' : 'border-none'}`}
+          onClick={() => {
+            setValue('side', OrderSide.BUY);
+          }}
         >
-          <input type="radio" className="hidden" {...register('direction')} value="Buy" />
           Long
-        </label>
-        <label
-          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-red)] hover:bg-[var(--color-bg-red-hover)] font-bold border-rd-r-1 border-rd-l-0 w-[50%] ${watch('direction') === 'Sell' ? 'border-solid border-3 border-[var(--color-light-red)]' : ''}`}
+        </button>
+        <button
+          type="button"
+          className={`flex flex-items-center flex-justify-center py-1 bg-[var(--color-bg-red)] hover:bg-[var(--color-bg-red-hover)] font-bold border-rd-r-1 border-rd-l-0 w-[50%] ${formattedOrder.side === OrderSide.SELL ? 'border-solid border-3 border-[var(--color-light-red)]' : 'border-none'}`}
+          onClick={() => {
+            setValue('side', OrderSide.SELL);
+          }}
         >
-          <input type="radio" className="hidden" {...register('direction')} value="Sell" />
           Short
-        </label>
+        </button>
       </div>
 
       <div className="flex flex-1 justify-between gap-3">
@@ -128,117 +127,74 @@ export const CreateOrder: FC<{
         </span>
       </div>
 
-      <select {...register('type')} className="flex flex-1 py-2 text-center font-bold">
-        <option value="Market">Market</option>
-        <option value="Limit">Limit</option>
-        <option value="StopLimit">Stop Limit</option>
+      <select
+        className="flex flex-1 py-2 text-center font-bold"
+        onChange={(event) => {
+          console.log('CHANGE', event.target.value);
+          setValue('order_type', event.target.value);
+        }}
+      >
+        <option value="MARKET">Market</option>
+        <option value="LIMIT">Limit</option>
+        <option value="STOP_LIMIT">Stop Limit</option>
       </select>
 
       <label
-        className={`flex-col ${match(watch('type', 'Market'))
-          .with('StopLimit', () => 'flex')
+        className={`flex-col ${match(formattedOrder.order_type)
+          .with(OrderType.STOP_LIMIT, () => 'flex')
           .otherwise(() => 'hidden')}`}
       >
         <span className="font-bold font-size-5">Trigger Price ({quote})</span>
-        <Controller
-          name="triggerPrice"
-          control={control}
-          defaultValue={undefined}
-          rules={{
-            validate: {
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol, helper.validator);
-                return errors?.trigger_price != null ? errors.trigger_price.message : true;
-              }
-            }
+        <TokenInput
+          className={`${hasError('trigger_price') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={quoteDecimals}
+          placeholder="Trigger Price"
+          name="trigger_price"
+          hasError={!!hasError('trigger_price')}
+          onValueChange={(value) => {
+            setValue('trigger_price', value.toString());
           }}
-          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={quoteDecimals}
-                placeholder="Price"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                hasError={error != null}
-              />
-              {renderFormError(error)}
-            </>
-          )}
         />
+        {renderFormError(hasError('trigger_price'))}
       </label>
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Price ({quote})</span>
-        <Controller
+        <TokenInput
+          className={`${hasError('price') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={quoteDecimals}
+          placeholder="Price"
           name="price"
-          control={control}
-          defaultValue={undefined}
-          rules={{
-            validate: {
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol, helper.validator);
-                return errors?.order_price != null ? errors.order_price.message : true;
-              }
-            }
+          hasError={!!hasError('price')}
+          readonly={match(formattedOrder.order_type)
+            .with(OrderType.MARKET, () => true)
+            .otherwise(() => false)}
+          onValueChange={(value) => {
+            setValue('price', value.toString());
           }}
-          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={quoteDecimals}
-                placeholder="Price"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                hasError={error != null}
-                readonly={match(watch('type'))
-                  .with('Market', () => true)
-                  .with(P.union('Limit', 'StopLimit'), () => false)
-                  .exhaustive()}
-              />
-              {renderFormError(error)}
-            </>
-          )}
         />
+        {renderFormError(hasError('price'))}
       </label>
 
       <label className="flex flex-col">
         <span className="font-bold font-size-5">Quantity ({base})</span>
-        <Controller
-          name="quantity"
-          control={control}
-          defaultValue={undefined}
-          rules={{
-            validate: {
-              custom: async (_, data) => {
-                const errors = await getValidationErrors(data, symbol, helper.validator);
-                return errors?.order_quantity != null ? errors.order_quantity.message : true;
-              }
-            }
+        <TokenInput
+          className={`${hasError('order_quantity') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={baseDecimals}
+          placeholder="Quantity"
+          name="order_quantity"
+          hasError={!!hasError('trigger_price')}
+          onValueChange={(value) => {
+            setValue('order_quantity', value.toString());
           }}
-          render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-            <>
-              <TokenInput
-                className={`${error != null ? 'border-[var(--color-red)]' : ''}`}
-                decimals={baseDecimals}
-                placeholder="Quantity"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                hasError={error != null}
-              />
-              {renderFormError(error)}
-              <div className="flex flex-1 justify-between gap-3">
-                <span className="font-bold color-[var(--gray-12)]">Max:</span>
-                <span>
-                  {formatter.format(maxQty)} {base}
-                </span>
-              </div>
-            </>
-          )}
         />
+        {renderFormError(hasError('order_quantity'))}
+        <div className="flex flex-1 justify-between gap-3">
+          <span className="font-bold color-[var(--gray-12)]">Max:</span>
+          <span>
+            {formatter.format(maxQty)} {base}
+          </span>
+        </div>
       </label>
 
       <Separator className="min-w-full my--2" />
@@ -265,29 +221,3 @@ export const CreateOrder: FC<{
     </form>
   );
 };
-
-async function getValidationErrors(
-  data: Inputs,
-  symbol: string,
-  validator: ReturnType<typeof useOrderEntry>['helper']['validator']
-): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
-  return validator(getInput(data, symbol));
-}
-
-function getInput(data: Inputs, symbol: string): OrderEntity {
-  return {
-    symbol,
-    side: match(data.direction)
-      .with('Buy', () => OrderSide.BUY)
-      .with('Sell', () => OrderSide.SELL)
-      .exhaustive(),
-    order_type: match(data.type)
-      .with('Market', () => OrderType.MARKET)
-      .with('Limit', () => OrderType.LIMIT)
-      .with('StopLimit', () => OrderType.STOP_LIMIT)
-      .exhaustive(),
-    order_price: data.price,
-    order_quantity: data.quantity,
-    trigger_price: data.triggerPrice
-  };
-}

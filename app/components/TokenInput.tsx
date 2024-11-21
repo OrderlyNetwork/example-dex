@@ -36,7 +36,7 @@ export const TokenInput: FC<
   const [value, setValue] = useState(outerValue ? String(outerValue) : '');
 
   useEffect(() => {
-    if (outerValue == null || typeof outerValue === 'string') return;
+    if (outerValue == null) return;
     let newValue = filterAllowedCharacters(String(outerValue));
     const quantity = getFormattedNumber(newValue, decimals);
     if (getFormattedNumber(value, decimals) !== quantity) {

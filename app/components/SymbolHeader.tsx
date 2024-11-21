@@ -17,15 +17,9 @@ export const SymbolHeader: FC<{
   } else {
     let dailyChange: string | undefined;
     let dailyChangePercentage: string | undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((stream as any)['24h_change'] != null && stream.index_price != null) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      dailyChange = String((stream as any)['24h_change'].toNumber());
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      dailyChangePercentage = (stream as any)['24h_change']
-        .div(stream.index_price)
-        .mul(100)
-        .toPrecision(4, 2);
+    if (stream['24h_change'] != null && stream.change != null) {
+      dailyChange = String(stream['24h_change']);
+      dailyChangePercentage = ((stream.change ?? 0) * 100).toFixed(2);
     }
 
     content = (
