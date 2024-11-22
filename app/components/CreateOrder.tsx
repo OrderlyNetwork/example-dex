@@ -130,7 +130,6 @@ export const CreateOrder: FC<{
       <select
         className="flex flex-1 py-2 text-center font-bold"
         onChange={(event) => {
-          console.log('CHANGE', event.target.value);
           setValue('order_type', event.target.value);
         }}
       >
@@ -183,7 +182,7 @@ export const CreateOrder: FC<{
           decimals={baseDecimals}
           placeholder="Quantity"
           name="order_quantity"
-          hasError={!!hasError('trigger_price')}
+          hasError={!!hasError('order_quantity')}
           onValueChange={(value) => {
             setValue('order_quantity', value.toString());
           }}
