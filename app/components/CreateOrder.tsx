@@ -1,5 +1,5 @@
 import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
+import { AlgoOrderRootType, OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
 import { FC, useCallback, useState } from 'react';
@@ -93,7 +93,7 @@ export const CreateOrder: FC<{
 
   return (
     <form
-      className="flex flex-1 flex-col gap-6 min-w-[16rem] max-w-[24rem]"
+      className="flex flex-1 flex-col gap-4 min-w-[16rem] max-w-[24rem]"
       onSubmit={(event) => {
         event.preventDefault();
         submitForm();
@@ -130,20 +130,29 @@ export const CreateOrder: FC<{
       <select
         className="flex flex-1 py-2 text-center font-bold"
         onChange={(event) => {
-          setValue('order_type', event.target.value);
+          if (event.target.value === 'BRACKET_MARKET') {
+            setValue('order_type', OrderType.MARKET);
+            setValue('algo_type', AlgoOrderRootType.BRACKET);
+          } else {
+            setValue('order_type', event.target.value);
+            setValue('algo_type', undefined);
+          }
         }}
       >
         <option value="MARKET">Market</option>
         <option value="LIMIT">Limit</option>
         <option value="STOP_LIMIT">Stop Limit</option>
+        <option value="BRACKET_MARKET">Bracket Market</option>
       </select>
 
       <label
-        className={`flex-col ${match(formattedOrder.order_type)
-          .with(OrderType.STOP_LIMIT, () => 'flex')
-          .otherwise(() => 'hidden')}`}
+        className={`flex flex-col max-h-fit overflow-hidden transition-duration-300 transition-property-[all] transition-ease-out ${match(
+          formattedOrder.order_type
+        )
+          .with(OrderType.STOP_LIMIT, () => 'h-[6rem] my-0')
+          .otherwise(() => 'h-0 my--2')}`}
       >
-        <span className="font-bold font-size-5">Trigger Price ({quote})</span>
+        <span className="font-bold font-size-4">Trigger Price ({quote})</span>
         <TokenInput
           className={`${hasError('trigger_price') ? 'border-[var(--color-red)]' : ''}`}
           decimals={quoteDecimals}
@@ -157,8 +166,14 @@ export const CreateOrder: FC<{
         {renderFormError(hasError('trigger_price'))}
       </label>
 
-      <label className="flex flex-col">
-        <span className="font-bold font-size-5">Price ({quote})</span>
+      <label
+        className={`flex flex-col max-h-fit overflow-hidden transition-duration-300 transition-property-[all] transition-ease-out ${match(
+          formattedOrder.order_type
+        )
+          .with(OrderType.MARKET, () => 'h-0 my--2')
+          .otherwise(() => 'h-[6rem] my-0')}`}
+      >
+        <span className="font-bold font-size-4">Price ({quote})</span>
         <TokenInput
           className={`${hasError('price') ? 'border-[var(--color-red)]' : ''}`}
           decimals={quoteDecimals}
@@ -175,8 +190,50 @@ export const CreateOrder: FC<{
         {renderFormError(hasError('price'))}
       </label>
 
+      <label
+        className={`flex flex-col max-h-fit overflow-hidden transition-duration-300 transition-property-[all] transition-ease-out ${match(
+          formattedOrder.algo_type
+        )
+          .with(AlgoOrderRootType.BRACKET, () => 'h-[6rem] my-0')
+          .otherwise(() => 'h-0 my--2')}`}
+      >
+        <span className="font-bold font-size-4">Take Profit Price ({quote})</span>
+        <TokenInput
+          className={`${hasError('tp_trigger_price') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={quoteDecimals}
+          placeholder="Take Profit Price"
+          name="tp_trigger_price"
+          hasError={!!hasError('tp_trigger_price')}
+          onValueChange={(value) => {
+            setValue('tp_trigger_price', value.toString());
+          }}
+        />
+        {renderFormError(hasError('tp_trigger_price'))}
+      </label>
+
+      <label
+        className={`flex flex-col max-h-fit overflow-hidden transition-duration-300 transition-property-[all] transition-ease-out ${match(
+          formattedOrder.algo_type
+        )
+          .with(AlgoOrderRootType.BRACKET, () => 'h-[6rem] my-0')
+          .otherwise(() => 'h-0 my--2')}`}
+      >
+        <span className="font-bold font-size-4">Stop Loss Price ({quote})</span>
+        <TokenInput
+          className={`${hasError('sl_trigger_price') ? 'border-[var(--color-red)]' : ''}`}
+          decimals={quoteDecimals}
+          placeholder="Stop Loss Price"
+          name="sl_trigger_price"
+          hasError={!!hasError('sl_trigger_price')}
+          onValueChange={(value) => {
+            setValue('sl_trigger_price', value.toString());
+          }}
+        />
+        {renderFormError(hasError('sl_trigger_price'))}
+      </label>
+
       <label className="flex flex-col">
-        <span className="font-bold font-size-5">Quantity ({base})</span>
+        <span className="font-bold font-size-4">Quantity ({base})</span>
         <TokenInput
           className={`${hasError('order_quantity') ? 'border-[var(--color-red)]' : ''}`}
           decimals={baseDecimals}
@@ -212,7 +269,7 @@ export const CreateOrder: FC<{
       <button
         type="submit"
         disabled={loading}
-        className={`relative py-2 font-size-5 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0 ${account.address == null ? 'hidden' : ''}`}
+        className={`relative py-2 font-size-4 bg-[var(--accent-9)] hover:bg-[var(--accent-10)] border-rd-1 border-0 ${account.address == null ? 'hidden' : ''}`}
       >
         {loading && <Spinner overlay={true} />} Create Order
       </button>

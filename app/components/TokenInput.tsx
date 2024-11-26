@@ -62,7 +62,7 @@ export const TokenInput: FC<
 
   return (
     <input
-      className={`${readonly ? 'cursor-default' : ''} ${className ?? ''} ${hasError ? 'error hover:border-[var(--color-light-red)]' : ''} line-height-10 font-size-5`}
+      className={`${readonly ? 'cursor-default' : ''} ${className ?? ''} ${hasError ? 'error hover:border-[var(--color-light-red)]' : ''} line-height-8 font-size-4`}
       type="string"
       id={id}
       value={value}
