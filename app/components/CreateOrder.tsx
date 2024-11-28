@@ -52,12 +52,6 @@ export const CreateOrder: FC<{
   );
   const [_0, customNotification] = useNotifications();
 
-  useEffect(() => {
-    reset();
-    console.log('[reset]');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formattedOrder.order_type]);
-
   if (symbolsInfo.isNil) {
     return <Spinner />;
   }
@@ -255,10 +249,7 @@ export const CreateOrder: FC<{
           name="order_quantity"
           hasError={!!hasError('order_quantity')}
           onValueChange={(value) => {
-            setValue(
-              'order_quantity',
-              formattedOrder.side === OrderSide.BUY ? value.toString() : `-${value.toString()}`
-            );
+            setValue('order_quantity', value.toString());
           }}
         />
         {renderFormError(hasError('order_quantity'))}
