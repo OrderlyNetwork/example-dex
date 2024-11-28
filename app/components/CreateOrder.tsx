@@ -2,7 +2,7 @@ import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly
 import { AlgoOrderRootType, OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
 
 import { ConnectWalletButton, Spinner, TokenInput } from '.';
@@ -28,10 +28,10 @@ export const CreateOrder: FC<{
   } = useOrderEntry(symbol, {
     initialOrder: {
       side: OrderSide.BUY,
-      order_type: OrderType.MARKET,
-      trigger_price: undefined,
-      price: undefined,
-      order_quantity: undefined
+      order_type: OrderType.LIMIT,
+      trigger_price: '',
+      order_price: '',
+      order_quantity: ''
     }
   });
   const hasError = useCallback(
@@ -52,11 +52,19 @@ export const CreateOrder: FC<{
   );
   const [_0, customNotification] = useNotifications();
 
+  useEffect(() => {
+    reset();
+    console.log('[reset]');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formattedOrder.order_type]);
+
   if (symbolsInfo.isNil) {
     return <Spinner />;
   }
 
   const submitForm = async () => {
+    console.log('[errors]', errors);
+    console.log('[formattedOrder]', formattedOrder);
     setLoading(true);
     const { update } = customNotification({
       eventCode: 'createOrder',
@@ -133,6 +141,9 @@ export const CreateOrder: FC<{
           if (event.target.value === 'BRACKET_MARKET') {
             setValue('order_type', OrderType.MARKET);
             setValue('algo_type', AlgoOrderRootType.BRACKET);
+          } else if (event.target.value === 'BRACKET_LIMIT') {
+            setValue('order_type', OrderType.LIMIT);
+            setValue('algo_type', AlgoOrderRootType.BRACKET);
           } else {
             setValue('order_type', event.target.value);
             setValue('algo_type', undefined);
@@ -140,9 +151,12 @@ export const CreateOrder: FC<{
         }}
       >
         <option value="MARKET">Market</option>
-        <option value="LIMIT">Limit</option>
+        <option value="LIMIT" selected>
+          Limit
+        </option>
         <option value="STOP_LIMIT">Stop Limit</option>
         <option value="BRACKET_MARKET">Bracket Market</option>
+        <option value="BRACKET_LIMIT">Bracket Limit</option>
       </select>
 
       <label
@@ -175,19 +189,19 @@ export const CreateOrder: FC<{
       >
         <span className="font-bold font-size-4">Price ({quote})</span>
         <TokenInput
-          className={`${hasError('price') ? 'border-[var(--color-red)]' : ''}`}
+          className={`${hasError('order_price') ? 'border-[var(--color-red)]' : ''}`}
           decimals={quoteDecimals}
           placeholder="Price"
-          name="price"
-          hasError={!!hasError('price')}
+          name="order_price"
+          hasError={!!hasError('order_price')}
           readonly={match(formattedOrder.order_type)
             .with(OrderType.MARKET, () => true)
             .otherwise(() => false)}
           onValueChange={(value) => {
-            setValue('price', value.toString());
+            setValue('order_price', value.toString());
           }}
         />
-        {renderFormError(hasError('price'))}
+        {renderFormError(hasError('order_price'))}
       </label>
 
       <label

@@ -11,6 +11,7 @@ export function filterAllowedCharacters(value: string): string {
 }
 
 export function getFormattedNumber(value: string, decimals: number): string {
+  if (value === '') return '';
   let commaPos: number;
   [value, commaPos] = getNumberAsUInt128(value, decimals);
   value = value.slice(0, commaPos) + '.' + value.slice(commaPos);
