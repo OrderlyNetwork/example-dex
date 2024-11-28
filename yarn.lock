@@ -2284,41 +2284,41 @@
   dependencies:
     which "^3.0.0"
 
-"@orderly.network/core@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-2.0.1-alpha.1.tgz#53fc9ee9b9b67e0838e16738bf1269540bdf2103"
-  integrity sha512-8tXN3KLO02j/7Wj8p59K6taTSx7C6OF8ACEpWPez6uOwZHg0XqRXgjUZkYhLHAFmX18XA4YnMmoilCXXo9xfcA==
+"@orderly.network/core@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-2.0.1-alpha.2.tgz#46759df4e3f673f53509def2740c11e5e4e45521"
+  integrity sha512-E0a7oby78sNZ8Vf/wk73M8+d07E7+wIEQJoHLQ2rQsfB7RfetrzVfY5nH44rJah62KUr8aQYzIqnm+OByfrh3w==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/types" "2.0.1-alpha.1"
+    "@orderly.network/types" "2.0.1-alpha.2"
     "@solana/web3.js" "1.95.3"
     bs58 "^5.0.0"
     ethers "^6.13.2"
     eventemitter3 "^5.0.1"
     lodash.merge "^4.6.2"
 
-"@orderly.network/default-evm-adapter@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/default-evm-adapter/-/default-evm-adapter-2.0.1-alpha.1.tgz#e09817388e4769e99c05cf2fbacd662de89122a4"
-  integrity sha512-VVviVNtlnB0wmGMLEdStTDQzL2SUpzlLIjxjHf4j1txOiMla5pkZohlRAewIbhrsfNu0J2/zftjDpww/XQ6enA==
+"@orderly.network/default-evm-adapter@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/default-evm-adapter/-/default-evm-adapter-2.0.1-alpha.2.tgz#d3d503d39bd2852f345a413dd30cfbec29d4ad9c"
+  integrity sha512-tSqIcduW0mbN5NJ0PVVJGwDcwPlgtm/qPSzti4E6iXEktSRY3c6A5a83xufstVUCxf54HJPjNcCcPF4blxcjYQ==
   dependencies:
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/core" "2.0.1-alpha.1"
-    "@orderly.network/types" "2.0.1-alpha.1"
+    "@orderly.network/core" "2.0.1-alpha.2"
+    "@orderly.network/types" "2.0.1-alpha.2"
     bs58 "^5.0.0"
 
-"@orderly.network/default-solana-adapter@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/default-solana-adapter/-/default-solana-adapter-2.0.1-alpha.1.tgz#348ce08376d3cf8eb66ffdaea547aa714a226a3e"
-  integrity sha512-kIZUXVB1zA6rlwKmU+p1vDJXTopD947Z3ky6fv+Y6pvDGNyfwKVM3fW7dbE6F4wqNzf/EjP8vlj6ATLi18QKTA==
+"@orderly.network/default-solana-adapter@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/default-solana-adapter/-/default-solana-adapter-2.0.1-alpha.2.tgz#8da831b0224f369abf6d8790111e048f1b2d5c31"
+  integrity sha512-Ub2AWce7hYwwT6LI63CHS/5dxTI1RrG68Ay1ZP52GQJLr/F09CcJoHwP+N056ZBABOKth7+KzIgTWlXxEKJyJg==
   dependencies:
     "@coral-xyz/anchor" "0.29.0"
     "@layerzerolabs/lz-solana-sdk-v2" "2.3.45-oft-rc.0"
     "@layerzerolabs/lz-v2-utilities" "2.3.45-oft-rc.0"
     "@noble/ed25519" "^2.0.0"
-    "@orderly.network/core" "2.0.1-alpha.1"
-    "@orderly.network/types" "2.0.1-alpha.1"
+    "@orderly.network/core" "2.0.1-alpha.2"
+    "@orderly.network/types" "2.0.1-alpha.2"
     "@solana/spl-token" "0.4.8"
     "@solana/wallet-adapter-base" "0.9.23"
     "@solana/web3.js" "1.95.3"
@@ -2326,20 +2326,20 @@
     ethereum-cryptography "2.2.1"
     ethers "^6.13.2"
 
-"@orderly.network/hooks@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-2.0.1-alpha.1.tgz#c87264aa32ce43b27b1761e07ccbad6f78d5f675"
-  integrity sha512-nA3nCc8CQySDaJfkF8k9P5FZGoA7agG5pNxAisBBVu31vjXKPTPLMrla5wjQKAplbtvxXbnhwSaVkHuix+y+9A==
+"@orderly.network/hooks@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/hooks/-/hooks-2.0.1-alpha.2.tgz#087a3f14b67486f7ff486624300d2edef3584cb1"
+  integrity sha512-fTR2qNW3fq4prwBAasyYnLOhkH8bQlG8EV1C0D661cuTI5PQNU06lEv8t5uWXdd758IEG2sLz36U/5DkcKlxXg==
   dependencies:
     "@akamfoad/qr" "^0.4.0"
-    "@orderly.network/core" "2.0.1-alpha.1"
-    "@orderly.network/default-evm-adapter" "2.0.1-alpha.1"
-    "@orderly.network/default-solana-adapter" "2.0.1-alpha.1"
-    "@orderly.network/net" "2.0.1-alpha.1"
-    "@orderly.network/perp" "4.0.1-alpha.1"
-    "@orderly.network/types" "2.0.1-alpha.1"
-    "@orderly.network/utils" "2.0.1-alpha.1"
-    "@orderly.network/web3-provider-ethers" "2.0.1-alpha.1"
+    "@orderly.network/core" "2.0.1-alpha.2"
+    "@orderly.network/default-evm-adapter" "2.0.1-alpha.2"
+    "@orderly.network/default-solana-adapter" "2.0.1-alpha.2"
+    "@orderly.network/net" "2.0.1-alpha.2"
+    "@orderly.network/perp" "4.0.1-alpha.2"
+    "@orderly.network/types" "2.0.1-alpha.2"
+    "@orderly.network/utils" "2.0.1-alpha.2"
+    "@orderly.network/web3-provider-ethers" "2.0.1-alpha.2"
     immer "^10.1.1"
     ramda "^0.29.0"
     swr "2.2.4"
@@ -2347,54 +2347,54 @@
     use-debounce "^9.0.4"
     zustand "^4.5.5"
 
-"@orderly.network/net@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-2.0.1-alpha.1.tgz#020516b0ff5d72970cd3b610be195658f832595a"
-  integrity sha512-RYdI9iC/pTcXLFzResEPW0XbegEb9StTLPEAZ3Qp3zsoScTBWAlvz1qopNfllnolv62Oj7htJOjel1o6wvBw5w==
+"@orderly.network/net@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/net/-/net-2.0.1-alpha.2.tgz#711eeeb6149d7570b0fd64d148941ca55c669428"
+  integrity sha512-0/kceu6A87XTWZ9Opn+jTIoopWKS1AFCr9Jpr9iSxXVq4WD73fldZ2BrXPFwDd7AS5QhoMtyqWtMO7iG84KT1Q==
 
-"@orderly.network/perp@4.0.1-alpha.1":
-  version "4.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-4.0.1-alpha.1.tgz#0667e6fd38b1f81dd9d1769a9324d4c78d725b9d"
-  integrity sha512-dUAMQ16Q3Q39AlLBGHsAThjN6m63PaSI8PAQFehBIOBAicZnYiO0WFQwXWCV8x+Z+5o6v+Yn9vdKer01RXopFw==
+"@orderly.network/perp@4.0.1-alpha.2":
+  version "4.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/perp/-/perp-4.0.1-alpha.2.tgz#5c105269498e5255369feb7ea77a420fcae7924e"
+  integrity sha512-xChgog6qp50q7EVc7EdzgCOmsiTbDhSFixOX19ZpXslh6ljAXWJtSw7oF/VaoBcxf1YCvs4w4EOnwwu9RhS+gg==
   dependencies:
-    "@orderly.network/types" "2.0.1-alpha.1"
-    "@orderly.network/utils" "2.0.1-alpha.1"
+    "@orderly.network/types" "2.0.1-alpha.2"
+    "@orderly.network/utils" "2.0.1-alpha.2"
 
-"@orderly.network/trading-view@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-2.0.1-alpha.1.tgz#854e1b5e05b03e7d634195076eafaba43feca66d"
-  integrity sha512-CjC/gKQjXq5K390YVjZCs/CktVpP4z+gCRhD0q7PWYDahm/KiBSal/X6JsJiPGFXeP0obDa0kEDzy+RpCr4Gqg==
+"@orderly.network/trading-view@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/trading-view/-/trading-view-2.0.1-alpha.2.tgz#1ea6752b0dfdbac823c91e658cba771881e088cb"
+  integrity sha512-NzAc1tk+iCVmI0NazX7CDG2D6E1K+XkDm5rlK1PhO4SwKwJlkmNq9JXlATinfPtRx2c7xYk3NNDxTLND3LSsQw==
   dependencies:
-    "@orderly.network/core" "2.0.1-alpha.1"
-    "@orderly.network/hooks" "2.0.1-alpha.1"
-    "@orderly.network/net" "2.0.1-alpha.1"
-    "@orderly.network/types" "2.0.1-alpha.1"
-    "@orderly.network/utils" "2.0.1-alpha.1"
+    "@orderly.network/core" "2.0.1-alpha.2"
+    "@orderly.network/hooks" "2.0.1-alpha.2"
+    "@orderly.network/net" "2.0.1-alpha.2"
+    "@orderly.network/types" "2.0.1-alpha.2"
+    "@orderly.network/utils" "2.0.1-alpha.2"
 
-"@orderly.network/types@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-2.0.1-alpha.1.tgz#2fecbde64276786c8d81c4d5a85b3adf8d4ec474"
-  integrity sha512-+jchX0XiY4/NkVTdFIX3pcKHWbj4t57oxTUttyVdNnLtPW++qYsXiIs0QVBTt9h1xbKuggII3aHCjkCx/SrGgw==
+"@orderly.network/types@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-2.0.1-alpha.2.tgz#76d2fb456dbbde0abc37a4fac3426c401afaad96"
+  integrity sha512-4UmNY8rlX5XOMPIhQbHC/p8ud7ViZqyvX2Md17EE4Zs+Fjt7dwPRSYi2DSMmDwqAF83g9EaT3s2xo3CdQThWUQ==
   dependencies:
     superstruct "^2.0.2"
 
-"@orderly.network/utils@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-2.0.1-alpha.1.tgz#e12da593c0529ecabec02765180544c48d17007c"
-  integrity sha512-q9M2gcAeZm1AnagURECrYJSscZgFZN+aYh1hMuYDGNtc95uIgwe3zs8MqJYR1N7GsOulRSIK3sbQrtoj0lhw5g==
+"@orderly.network/utils@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/utils/-/utils-2.0.1-alpha.2.tgz#c5da2ae565bee107652677ef82998f1f812873fb"
+  integrity sha512-H02YYSkCfTLceh0kDXh7Un4mdJ7aWWyrUbJxthXtClyb/5sY4ehKXvrqm78zFSW0yo3yICZtK6CI2wK2qn6c9Q==
   dependencies:
-    "@orderly.network/types" "2.0.1-alpha.1"
+    "@orderly.network/types" "2.0.1-alpha.2"
     dayjs "^1.11.9"
     decimal.js-light "^2.5.1"
 
-"@orderly.network/web3-provider-ethers@2.0.1-alpha.1":
-  version "2.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@orderly.network/web3-provider-ethers/-/web3-provider-ethers-2.0.1-alpha.1.tgz#169c9c298e99c364b35dc8b9a0a740b8b0671df3"
-  integrity sha512-6Ed2j1nQA9/AptVWXMV1XXEcGK+b9OnoEAaIWQKInFLppitfz0IcAh/g2T492FPgO6SVm/q+DzhoXY8aIa29hw==
+"@orderly.network/web3-provider-ethers@2.0.1-alpha.2":
+  version "2.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@orderly.network/web3-provider-ethers/-/web3-provider-ethers-2.0.1-alpha.2.tgz#3c6522ea8f67d054ffc658d0961336563af85e94"
+  integrity sha512-dNYOceSIonA3AKtmdveRACjRnLzFiU+xJgglhhfcNJlAHyryfjuCiCQTYCO1GourEzfxRfeFJATXLb9db4eA9g==
   dependencies:
     "@enzoferey/ethers-error-parser" "^0.2.3"
-    "@orderly.network/default-evm-adapter" "2.0.1-alpha.1"
-    "@orderly.network/types" "2.0.1-alpha.1"
+    "@orderly.network/default-evm-adapter" "2.0.1-alpha.2"
+    "@orderly.network/types" "2.0.1-alpha.2"
     ethers "^6.13.2"
 
 "@parcel/watcher-android-arm64@2.4.1":
