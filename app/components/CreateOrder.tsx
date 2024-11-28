@@ -255,7 +255,10 @@ export const CreateOrder: FC<{
           name="order_quantity"
           hasError={!!hasError('order_quantity')}
           onValueChange={(value) => {
-            setValue('order_quantity', value.toString());
+            setValue(
+              'order_quantity',
+              formattedOrder.side === OrderSide.BUY ? value.toString() : `-${value.toString()}`
+            );
           }}
         />
         {renderFormError(hasError('order_quantity'))}
