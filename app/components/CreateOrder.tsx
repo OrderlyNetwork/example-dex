@@ -2,7 +2,7 @@ import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly
 import { AlgoOrderRootType, OrderlyOrder, OrderSide, OrderType } from '@orderly.network/types';
 import { Separator } from '@radix-ui/themes';
 import { useNotifications } from '@web3-onboard/react';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { match } from 'ts-pattern';
 
 import { ConnectWalletButton, Spinner, TokenInput } from '.';
