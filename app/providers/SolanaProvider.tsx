@@ -36,7 +36,13 @@ export const SolanaProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     networkId === 'testnet' ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet
   );
 
-  const endPoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endPoint = useMemo(
+    () =>
+      network === WalletAdapterNetwork.Devnet
+        ? clusterApiUrl(network)
+        : 'https://mainnet.helius-rpc.com/?api-key=4cdab4eb-eefe-4790-a0d6-45f66f2ddba5',
+    [network]
+  );
   const wallets = useMemo(() => {
     return [
       new PhantomWalletAdapter(),

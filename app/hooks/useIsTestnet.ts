@@ -17,7 +17,7 @@ export function useIsTestnet() {
     testnet = isTestnet(connectedEvmChain.id);
   } else if (solanaWalletConnected && solanaNetwork === WalletAdapterNetwork.Devnet) {
     testnet = true;
-  } else if (typeof window !== 'undefined') {
+  } else if (!solanaWalletConnected && typeof window !== 'undefined') {
     testnet = window.localStorage.getItem('networkId') === 'testnet';
   } else {
     testnet = false;

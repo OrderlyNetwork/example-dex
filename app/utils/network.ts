@@ -103,6 +103,13 @@ export const supportedEvmChainIds = supportedEvmChains.map(({ id }) => Number(id
 
 export const supportedSolanaChains: SupportedSolanaChain[] = [
   {
+    network: WalletAdapterNetwork.Mainnet,
+    icon: './assets/solana.svg',
+    id: '900900900',
+    token: 'SOL',
+    label: 'Solana Mainnet Beta'
+  },
+  {
     network: WalletAdapterNetwork.Devnet,
     icon: './assets/solana_devnet.svg',
     id: '901901901',

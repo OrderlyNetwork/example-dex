@@ -9,11 +9,12 @@ import { ConnectWalletButton } from './ConnectWalletButton';
 import { EvmDropdownMenu } from './EvmDropdownMenu';
 import { SolanaDropdownMenu } from './SolanaDropdownMenu';
 
+import { useIsTestnet } from '~/hooks';
 import { useSolanaNetwork } from '~/providers/SolanaProvider';
 
 export const WalletConnection: FC = () => {
   const { account, state } = useAccount();
-  const { setSolanaNetwork } = useSolanaNetwork();
+  const [isTestnet] = useIsTestnet();
 
   // EVM wallet setup
   const [{ wallet: evmWallet }] = useConnectWallet();
@@ -39,6 +40,7 @@ export const WalletConnection: FC = () => {
   }, [account, evmWallet, evmAddress, connectedEvmChain]);
 
   // Solana wallet setup
+  const { setSolanaNetwork } = useSolanaNetwork();
   const { signMessage, sendTransaction, publicKey, wallet: solanaWallet } = useWallet();
   const { connection: solanaConnection } = useConnection();
   const solanaAddress = useMemo(() => {
@@ -47,26 +49,30 @@ export const WalletConnection: FC = () => {
   }, [publicKey]);
   useEffect(() => {
     if (!solanaWallet || !solanaAddress) return;
-    account
-      .setAddress(solanaAddress, {
-        chain: {
-          id: 901901901,
-          namespace: ChainNamespace.solana
-        },
-        provider: {
-          signMessage,
-          connection: solanaConnection,
-          sendTransaction
-        },
-        wallet: {
-          name: solanaWallet.adapter.name
-        }
-      })
-      .then(() => {
-        // TODO Solana mainnet
-        setSolanaNetwork(WalletAdapterNetwork.Devnet);
-        window.localStorage.setItem('chain-namespace', ChainNamespace.solana);
-      });
+    if (solanaAddress !== account.address) {
+      account
+        .setAddress(solanaAddress, {
+          chain: {
+            id: isTestnet ? 901901901 : 900900900,
+            namespace: ChainNamespace.solana
+          },
+          provider: {
+            signMessage,
+            connection: solanaConnection,
+            sendTransaction
+          },
+          wallet: {
+            name: solanaWallet.adapter.name
+          }
+        })
+        .then(() => {
+          setSolanaNetwork(isTestnet ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet);
+          window.localStorage.setItem('chain-namespace', ChainNamespace.solana);
+        });
+    } else {
+      account.switchChainId(isTestnet ? 901901901 : 900900900);
+      setSolanaNetwork(isTestnet ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet);
+    }
   }, [
     solanaAddress,
     account,
@@ -74,7 +80,8 @@ export const WalletConnection: FC = () => {
     signMessage,
     sendTransaction,
     solanaWallet,
-    setSolanaNetwork
+    setSolanaNetwork,
+    isTestnet
   ]);
 
   return account.address ? (
