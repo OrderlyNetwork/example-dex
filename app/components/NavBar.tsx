@@ -14,7 +14,7 @@ export const NavBar: FC = () => {
 
   return (
     <nav className="w-full flex flex-self-stretch gap-sm flex-justify-end align-center">
-      <h2 className="flex-auto m0">
+      <h2 className="flex-auto m0 font-size-6 font-bold">
         <Link to="/" className="color-unset">
           Orderly DEX
         </Link>

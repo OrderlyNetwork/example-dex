@@ -17,6 +17,11 @@
   margin: 0;
 }
 
+html,
+body {
+  background-color: unset !important;
+}
+
 a {
   text-decoration: none;
 }
