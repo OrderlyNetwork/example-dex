@@ -79,5 +79,12 @@
     "vite-plugin-node-polyfills": "^0.22.0",
     "vite-tsconfig-paths": "^5.0.1",
     "wrangler": "^3.39.0"
+  },
+  "resolutions": {
+    "**/*/@orderly.network/hooks": "2.0.1-alpha.4",
+    "**/*/@orderly.network/types": "2.0.1-alpha.4",
+    "**/*/@orderly.network/ui": "2.0.1-alpha.4",
+    "**/*/@orderly.network/ui-tpsl": "2.0.1-alpha.4",
+    "**/*/@orderly.network/utils": "2.0.1-alpha.4"
   }
 }
