@@ -23,13 +23,13 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@orderly.network/default-evm-adapter": "2.0.1-alpha.4",
-    "@orderly.network/default-solana-adapter": "2.0.1-alpha.4",
-    "@orderly.network/hooks": "2.0.1-alpha.4",
+    "@orderly.network/default-evm-adapter": "2.0.1-alpha.7",
+    "@orderly.network/default-solana-adapter": "2.0.1-alpha.7",
+    "@orderly.network/hooks": "2.0.1-alpha.7",
     "@orderly.network/perp": "4.0.1-alpha.3",
-    "@orderly.network/trading": "2.0.1-alpha.4",
-    "@orderly.network/types": "2.0.1-alpha.4",
-    "@orderly.network/web3-provider-ethers": "2.0.1-alpha.4",
+    "@orderly.network/trading": "2.0.1-alpha.7",
+    "@orderly.network/types": "2.0.1-alpha.7",
+    "@orderly.network/web3-provider-ethers": "2.0.1-alpha.7",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/themes": "^3.0.1",
     "@remix-run/node": "^2.13.1",
@@ -79,12 +79,5 @@
     "vite-plugin-node-polyfills": "^0.22.0",
     "vite-tsconfig-paths": "^5.0.1",
     "wrangler": "^3.39.0"
-  },
-  "resolutions": {
-    "**/*/@orderly.network/hooks": "2.0.1-alpha.4",
-    "**/*/@orderly.network/types": "2.0.1-alpha.4",
-    "**/*/@orderly.network/ui": "2.0.1-alpha.4",
-    "**/*/@orderly.network/ui-tpsl": "2.0.1-alpha.4",
-    "**/*/@orderly.network/utils": "2.0.1-alpha.4"
   }
 }
